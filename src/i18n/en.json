@@ -1,0 +1,161 @@
+{
+  "app": {
+    "name": "Orochia"
+  },
+  "units": {
+    "d": "d",
+    "h": "h",
+    "m": "m",
+    "s": "s"
+  },
+  "age": {
+    "badge": "Adults only",
+    "title": "Welcome to Orochia",
+    "body": "Orochia is a video platform for independent creators. It contains adult content, so it is for adults only. By entering you confirm you are 18 or older (or the age of majority where you live) and accept the terms.",
+    "enter": "I am 18 or older — enter",
+    "terms": "Read the terms"
+  },
+  "tabs": {
+    "home": "Home",
+    "challenges": "Challenges",
+    "auctions": "Auctions",
+    "me": "You"
+  },
+  "home": {
+    "stories": "Stories",
+    "trending": "Trending now",
+    "empty": "The first videos are on their way",
+    "emptyBody": "Creators are setting up their spaces. Pull to refresh.",
+    "error": "Orochia is out of reach. Pull to try again."
+  },
+  "visibility": {
+    "PUBLIC": "Free",
+    "APPROVED_FOLLOWERS_ONLY": "Followers",
+    "CONTACTS_ONLY": "Contacts",
+    "TIPPED_UNLOCKED": "Unlock",
+    "INVITED_ONLY": "Invited",
+    "AUCTION": "Auction",
+    "CHALLENGE": "Backers"
+  },
+  "video": {
+    "views": "{count} views",
+    "locked": {
+      "PAYWALL_REQUIRED": "Unlock this video from {amount} to watch it.",
+      "FOLLOWERS_ONLY": "For the creator's approved followers.",
+      "CONTACTS_ONLY": "For the creator's contacts.",
+      "INVITED_ONLY": "Shared with invited people only.",
+      "AUCTION": "In an auction: only the winner watches it.",
+      "CHALLENGE": "Made for a challenge: only its backers watch it.",
+      "AGE_VERIFICATION_REQUIRED": "Sign in with a verified 18+ account to watch.",
+      "NOT_FOUND": "This video is no longer available.",
+      "SIGN_IN": "Sign in to watch it."
+    },
+    "unlockOnWeb": "Unlock on orochia.com",
+    "more": "More from {name}",
+    "signIn": "Sign in"
+  },
+  "challenge": {
+    "kind": {
+      "GOAL": "Goal",
+      "REQUEST": "Dare",
+      "OPEN_CALL": "Open call"
+    },
+    "stage": {
+      "FUNDING": "Funding",
+      "GOAL_REACHED": "Goal reached",
+      "AWAITING_ANSWER": "Awaiting answer",
+      "CASTING": "Taking applications",
+      "CLOSING": "Closing",
+      "IN_PROGRESS": "In the making",
+      "DELIVERED": "Delivered",
+      "DECLINED": "Declined",
+      "EXPIRED": "Expired",
+      "FAILED": "Not delivered",
+      "CANCELLED": "Withdrawn"
+    },
+    "title": "Fund it. Dare it. Make it.",
+    "subtitle": "Credits are held until the video is delivered — and come back if it is not.",
+    "tabs": {
+      "open": "Open",
+      "calls": "Open calls",
+      "done": "Delivered",
+      "backing": "Backing"
+    },
+    "empty": "Nothing here yet",
+    "emptyBody": "Start one from orochia.com, or back the next one here.",
+    "backers": "Backers · {count}",
+    "ofGoal": "of {goal}",
+    "anyCreator": "Any creator",
+    "endsIn": "Ends in",
+    "deliverIn": "Delivery due in",
+    "pledge": "Pledge {amount}",
+    "held": "Held in credits until delivery — back to you if not.",
+    "balance": "Balance {amount}",
+    "yours": "You put in {amount}",
+    "recent": "Latest pledges",
+    "backer": "Backer {n}",
+    "you": "You",
+    "leaderboard": "Top backers",
+    "watch": "Watch it",
+    "deliveredLocked": "Delivered to its backers.",
+    "pledged": "Pledged — thank you!",
+    "signIn": "Sign in to back it"
+  },
+  "auction": {
+    "phase": {
+      "UPCOMING": "Upcoming",
+      "OPEN": "Open",
+      "ENDING": "Closing",
+      "AWAITING_DECISION": "Under review",
+      "SOLD": "Sold",
+      "DECLINED": "Declined",
+      "UNSOLD": "Unsold",
+      "CANCELLED": "Cancelled"
+    },
+    "endsIn": "Ends in",
+    "empty": "No auction open right now",
+    "emptyBody": "The next one shows up here the moment it starts.",
+    "currentBid": "Current bid",
+    "bid": "Bid {amount}",
+    "bids": "Bids · {count}",
+    "leading": "You lead",
+    "won": "You won it",
+    "bidder": "Bidder {n}",
+    "placed": "Bid placed",
+    "rights": {
+      "WATCH": "The winner watches it",
+      "DOWNLOAD": "The winner watches and downloads it"
+    }
+  },
+  "me": {
+    "signInTitle": "Sign in to Orochia",
+    "identifier": "E-mail or username",
+    "password": "Password",
+    "signIn": "Sign in",
+    "noAccount": "No account yet? Create one on orochia.com",
+    "wallet": "Wallet",
+    "balance": "Balance",
+    "held": "{amount} held in bids and pledges",
+    "topUp": "Add credits",
+    "notifications": "Notifications",
+    "noNotifications": "Nothing new.",
+    "profile": "Your public page",
+    "signOut": "Sign out",
+    "history": "Recent movements",
+    "errors": {
+      "credentials": "Wrong e-mail, username or password.",
+      "unverified": "Confirm your e-mail first — the link is in your inbox.",
+      "suspended": "This account is suspended.",
+      "tooMany": "Too many attempts. Try again later.",
+      "network": "Orochia is out of reach. Check your connection."
+    }
+  },
+  "errors": {
+    "INSUFFICIENT_CREDITS": "Not enough credits — add some on orochia.com.",
+    "generic": "Something went wrong. Try again."
+  },
+  "common": {
+    "close": "Close",
+    "retry": "Try again"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "cli": { "version": ">= 16.0.0", "appVersionSource": "local" },
+  "build": {
+    "development": { "developmentClient": true, "distribution": "internal" },
+    "preview": { "distribution": "internal", "env": { "EXPO_PUBLIC_OROCHIA_URL": "https://dev.orochia.com" } },
+    "production": { "env": { "EXPO_PUBLIC_OROCHIA_URL": "https://dev.orochia.com" } }
+  }
+}
