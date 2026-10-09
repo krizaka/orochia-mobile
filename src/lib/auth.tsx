@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { api, ApiError, setSignedOutHandler } from "./api";
 import { clearToken, readToken, saveToken } from "./session";
+import { registerForPush, unregisterPush } from "./push";
 import { storage } from "./storage";
 import type { SessionUser } from "./types";
 
@@ -42,7 +43,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let live = true;
     setSignedOutHandler(() => setUser(null));
-    void loadUser().then((u) => live && setUser(u));
+    void loadUser().then((u) => {
+      if (!live) return;
+      setUser(u);
+      if (u) void registerForPush();
+    });
     void storage.get(AGE_KEY).then((v) => live && setAgeConfirmed(v === "yes"));
     return () => {
       live = false;
@@ -57,11 +62,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!res.emailVerified) throw new ApiError(403, { code: "EMAIL_NOT_VERIFIED" });
       await saveToken(res.token);
       await refresh();
+      void registerForPush();
     },
     [refresh],
   );
 
   const signOut = useCallback(async () => {
+    await unregisterPush();
     await clearToken();
     setUser(null);
   }, []);

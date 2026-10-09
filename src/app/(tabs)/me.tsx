@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, View } from "react-native";
-import { router } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as WebBrowser from "expo-web-browser";
 import { Bell, ExternalLink, LogOut, Wallet as WalletIcon } from "lucide-react-native";
@@ -9,6 +8,8 @@ import { Avatar, Button, Card, Txt } from "@/components/ui";
 import { t, usd } from "@/i18n";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { openPath } from "@/lib/links";
+import { useLive } from "@/lib/live";
 import { OROCHIA_URL } from "@/lib/config";
 import { useApi } from "@/lib/useApi";
 import { radius, space, useTheme } from "@/lib/theme";
@@ -76,13 +77,9 @@ function Account() {
   const { user, signOut } = useAuth();
   const wallet = useApi<Wallet>("/api/me/wallet");
   const notes = useApi<{ items: NotificationItem[] }>("/api/me/notifications");
-  const open = (path: string) => {
-    const challenge = path.match(/^\/challenges\/([0-9a-f-]{36})/);
-    const watch = path.match(/^\/watch\/([0-9a-f-]{36})/);
-    if (challenge) return router.push(`/challenges/${challenge[1]}`);
-    if (watch) return router.push(`/watch/${watch[1]}`);
-    void WebBrowser.openBrowserAsync(`${OROCHIA_URL}${path}`);
-  };
+  const { markSeen } = useLive();
+  useEffect(markSeen, [markSeen]);
+  const open = openPath;
   return (
     <ScrollView
       contentContainerStyle={{ gap: space.lg }}
