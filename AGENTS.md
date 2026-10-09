@@ -17,6 +17,10 @@
 - **Every user-facing string is in `src/i18n/en.json`** and read with `t("key")` (typed keys). No literal text in JSX.
 - **Both themes**: colours come from `useTheme()` only; a screen is checked in dark and light.
 - **The 18+ gate** runs before anything else on a fresh install.
+- **Notifications**: in the foreground, the live stream (`src/lib/live.tsx`, SSE with the bearer session) shows toasts and
+  the account badge; in the background, push (`src/lib/push.ts`, Expo token registered at sign-in, forgotten at sign-out).
+  A tapped push opens its `path` through `openPath` (`src/lib/links.ts`). Push needs a development or EAS build, never
+  Expo Go; secrets (`EAS_PROJECT_ID`, `GOOGLE_SERVICES_JSON`) come from the build environment (`app.config.js`).
 
 ## Expo changes with every SDK
 

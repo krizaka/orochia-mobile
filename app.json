@@ -47,6 +47,14 @@
             "backgroundColor": "#09090b"
           }
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#a855f7",
+          "defaultChannel": "default"
+        }
       ]
     ],
     "scheme": "orochia",

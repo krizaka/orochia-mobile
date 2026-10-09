@@ -27,6 +27,7 @@
 | **Challenges** | Goals, dares and open calls: the pot as a ring that fills as pledges land, the clock, the leaderboard, back it in one tap — credits held until delivery |
 | **Auctions** | The price, the clock aligned on the server's, bids by alias, bid in credits |
 | **You** | Sign in (the session lives in the Keychain / Keystore), wallet and what is held, notifications |
+| **Notifications** | Live while the app is open (a toast, the badge on *You*), push when it is not — a new follower, a tip, an unlock, a bid, a pledge, a message; tapping one opens it |
 
 Paying (top-ups, unlocks) happens on orochia.com, in the payment provider's own checkout: card details never reach
 Orochia, and an adult-content platform cannot sell through the stores' in-app purchases.
@@ -63,6 +64,20 @@ EXPO_PUBLIC_OROCHIA_URL=http://192.168.1.10:3000 npx expo start   # your machine
 
 `expo-video` and `expo-secure-store` are native modules: use a development build (`npx expo run:ios` /
 `npx expo run:android`), not Expo Go.
+
+## Push notifications
+
+Pushes go through the Expo Push Service, which delivers with **Firebase Cloud Messaging** on Android and **APNs** on
+iOS; the Orochia server only needs the phone's Expo token (see
+[Orochia — Notifications & Realtime](https://github.com/krizaka/orochia/blob/main/docs/NOTIFICATIONS.md)). To turn
+them on, once:
+
+1. `npx eas-cli@latest init` — creates the Expo project; set its id as `EAS_PROJECT_ID` in the EAS environment.
+2. Firebase project → Android app `com.krizaka.orochia` → `google-services.json` as the EAS file secret
+   `GOOGLE_SERVICES_JSON`; `eas credentials` → Android → upload the FCM V1 service-account key.
+3. `eas credentials` → iOS → Push Notifications (APNs key from the Apple Developer account).
+
+Without them the app runs the same, with the live stream in the foreground and no push.
 
 ## Builds
 
