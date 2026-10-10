@@ -1,22 +1,22 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { Flame, Gavel, House, UserRound } from "lucide-react-native";
+import { useTheme } from "@krizaka/ui/native";
 import { t } from "@/i18n";
 import { useLive } from "@/lib/live";
-import { useTheme } from "@/lib/theme";
 
 /** Four places: the feed, challenges, auctions and the account (wallet, notifications). */
 export default function TabsLayout() {
-  const { c } = useTheme();
+  const { theme } = useTheme();
   const { unread } = useLive();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: c.accent,
-        tabBarInactiveTintColor: c.textTertiary,
-        tabBarStyle: { backgroundColor: c.background, borderTopColor: c.border },
-        sceneStyle: { backgroundColor: c.background },
+        tabBarActiveTintColor: theme.accent,
+        tabBarInactiveTintColor: theme.textMuted,
+        tabBarStyle: { backgroundColor: theme.surface0, borderTopColor: theme.borderDefault },
+        sceneStyle: { backgroundColor: theme.surface0 },
       }}
     >
       <Tabs.Screen name="index" options={{ title: t("tabs.home"), tabBarIcon: ({ color, size }) => <House color={color} size={size} /> }} />

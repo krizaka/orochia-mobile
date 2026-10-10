@@ -1,142 +1,167 @@
 import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import { Image } from "expo-image";
+import { StyleSheet, View } from "react-native";
 import { router } from "expo-router";
-import { Flame, Gavel, Lock, Megaphone, Target, Users } from "lucide-react-native";
+import { Clapperboard, Flame, Gavel, Lock, Megaphone, Target, Users } from "lucide-react-native";
+import { Avatar, Badge, Card, Countdown, Progress, Txt, useTheme } from "@krizaka/ui/native";
 import { compact, t, usd } from "@/i18n";
+import { auctionCountdown, auctionPrice } from "@/lib/auction-presenter";
+import { challengeRatio, TICKING } from "@/lib/challenge";
 import { absoluteUrl } from "@/lib/config";
-import { radius, space, useTheme } from "@/lib/theme";
+import { countdownUnits } from "@/lib/countdown";
+import { space } from "@/lib/theme";
 import type { AuctionCard, ChallengeCard, VideoSummary } from "@/lib/types";
-import { Countdown } from "./Countdown";
-import { ProgressRing } from "./ProgressRing";
-import { Avatar, Card, Txt } from "./ui";
 
 const duration = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
+/** A caption over a countdown: what the clock counts to, then the time left. */
+function Clock({ target, label }: { target: string; label: string }) {
+  return (
+    <View style={{ alignItems: "flex-end", gap: 2 }}>
+      <Txt variant="caption" tone="muted">
+        {label}
+      </Txt>
+      <Countdown target={target} label={label} units={countdownUnits()} size="sm" urgentBelowMs={120_000} />
+    </View>
+  );
+}
+
+/** A badge on a picture: an icon and a word, white on the scrim. */
+function MediaBadge({ icon, children }: { icon?: React.ReactNode; children: string }) {
+  return (
+    <Badge tone="scrim" size="md">
+      {icon}
+      <Txt variant="caption" tone="onMedia" style={styles.badgeText}>
+        {children}
+      </Txt>
+    </Badge>
+  );
+}
+
 /** A video in a list: picture, duration, lock when it is not free, creator and views — opens the player. */
 export function VideoTile({ v }: { v: VideoSummary }) {
-  const { c } = useTheme();
+  const { theme } = useTheme();
   const locked = v.visibility !== "PUBLIC";
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={v.title} onPress={() => router.push(`/watch/${v.id}`)} style={({ pressed }) => ({ opacity: pressed ? 0.85 : 1 })}>
-      <View style={[styles.thumb, { backgroundColor: c.surfaceElevated }]}>
-        <Image source={absoluteUrl(v.thumbnailUrl)} style={StyleSheet.absoluteFill} contentFit="cover" transition={200} />
+    <Card.Root testID={`video-${v.id}`} aria-label={v.title} onPress={() => router.push(`/watch/${v.id}`)}>
+      <Card.Media>
+        <Card.Image src={absoluteUrl(v.thumbnailUrl)} fallback={<Clapperboard size={32} color={theme.accent} />} />
         {locked && (
-          <View style={[styles.badge, { left: space.sm }]}>
-            <Lock size={12} color="#fff" />
-            <Txt variant="caption" style={{ color: "#fff", fontWeight: "700" }}>
-              {t(`visibility.${v.visibility as "PUBLIC"}`)}
-            </Txt>
-          </View>
+          <Card.Overlay corner="top-left">
+            <MediaBadge icon={<Lock size={12} color={theme.textOnMedia} />}>{t(`visibility.${v.visibility as "PUBLIC"}`)}</MediaBadge>
+          </Card.Overlay>
         )}
-        <View style={[styles.badge, { right: space.sm }]}>
-          <Txt variant="caption" style={{ color: "#fff", fontWeight: "700" }}>
-            {duration(v.durationSeconds)}
-          </Txt>
-        </View>
-      </View>
-      <View style={styles.meta}>
-        <Avatar uri={v.creatorAvatar} size={32} />
+        <Card.Overlay corner="bottom-right">
+          <MediaBadge>{duration(v.durationSeconds)}</MediaBadge>
+        </Card.Overlay>
+      </Card.Media>
+      <Card.Body style={styles.row}>
+        <Avatar src={absoluteUrl(v.creatorAvatar)} alt={v.creatorName} size="sm" />
         <View style={{ flex: 1 }}>
-          <Txt variant="label" numberOfLines={2}>
-            {v.title}
-          </Txt>
-          <Txt variant="caption" tone="textSecondary">
-            {v.creatorName} · {t("video.views", { count: compact(v.viewsCount) })}
-          </Txt>
+          <Card.Title numberOfLines={2}>{v.title}</Card.Title>
+          <Card.Description numberOfLines={1}>{`${v.creatorName} · ${t("video.views", { count: compact(v.viewsCount) })}`}</Card.Description>
         </View>
-      </View>
-    </Pressable>
+      </Card.Body>
+    </Card.Root>
   );
 }
 
 const KIND_ICONS = { GOAL: Target, REQUEST: Flame, OPEN_CALL: Megaphone } as const;
-const TICKING = new Set(["FUNDING", "GOAL_REACHED", "AWAITING_ANSWER", "CASTING"]);
 
 /** A challenge in a list: kind, stage, the pot as a ring, backers and the clock — opens it. */
 export function ChallengeTile({ ch }: { ch: ChallengeCard }) {
-  const { c } = useTheme();
+  const { theme } = useTheme();
   const Icon = KIND_ICONS[ch.kind];
-  const ratio = ch.progress ?? Math.min(1, ch.pledgedCents / 100_00);
+  const clock = TICKING.has(ch.stage)
+    ? { target: ch.deadline, label: t("challenge.endsIn") }
+    : ch.stage === "IN_PROGRESS" && ch.deliveryDeadline
+      ? { target: ch.deliveryDeadline, label: t("challenge.deliverIn") }
+      : null;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={ch.title} onPress={() => router.push(`/challenges/${ch.id}`)}>
-      <Card style={{ gap: space.md }}>
-        <View style={styles.row}>
-          <View style={[styles.row, { gap: 6 }]}>
-            <Icon size={14} color={c.magenta} />
-            <Txt variant="caption" tone="accent" style={{ fontWeight: "800", letterSpacing: 1 }}>
+    <Card.Root testID={`challenge-${ch.id}`} aria-label={ch.title} onPress={() => router.push(`/challenges/${ch.id}`)}>
+      <Card.Body>
+        <View style={[styles.row, styles.between]}>
+          <Badge tone="accent" size="md">
+            <Icon size={12} color={theme.accent2} />
+            <Txt variant="caption" style={styles.badgeText}>
               {t(`challenge.kind.${ch.kind}`).toUpperCase()}
             </Txt>
-          </View>
-          <Txt variant="caption" tone="textSecondary">
+          </Badge>
+          <Txt variant="caption" tone="secondary">
             {t(`challenge.stage.${ch.stage}`)}
           </Txt>
         </View>
-        <View style={[styles.row, { justifyContent: "flex-start", gap: space.lg }]}>
-          <ProgressRing ratio={ratio} size={72} stroke={7}>
+        <View style={[styles.row, { gap: space.lg }]}>
+          <Progress variant="ring" size="md" value={challengeRatio(ch)} max={1} label={t("challenge.raised")} valueText={usd(ch.pledgedCents)}>
             <Txt variant="caption" style={{ fontWeight: "900" }}>
               {usd(ch.pledgedCents)}
             </Txt>
-          </ProgressRing>
-          <View style={{ flex: 1, gap: 4 }}>
-            <Txt variant="label" numberOfLines={2}>
-              {ch.title}
-            </Txt>
-            <View style={[styles.row, { justifyContent: "flex-start", gap: 6 }]}>
-              <Users size={12} color={c.textTertiary} />
-              <Txt variant="caption" tone="textTertiary">
+          </Progress>
+          <View style={{ flex: 1, gap: space.xs }}>
+            <Card.Title numberOfLines={2}>{ch.title}</Card.Title>
+            <View style={[styles.row, { gap: 6 }]}>
+              <Users size={12} color={theme.textMuted} />
+              <Txt variant="caption" tone="muted">
                 {t("challenge.backers", { count: ch.backersCount })}
               </Txt>
             </View>
           </View>
         </View>
-        <View style={styles.row}>
-          <View style={[styles.row, { gap: 8 }]}>
-            {ch.creator ? <Avatar uri={ch.creator.avatarUrl} size={20} /> : null}
-            <Txt variant="caption" tone="textSecondary">
+        <Card.Footer style={styles.between}>
+          <View style={[styles.row, { flex: 1 }]}>
+            {ch.creator ? <Avatar src={absoluteUrl(ch.creator.avatarUrl)} alt={ch.creator.name} size="xs" /> : null}
+            <Txt variant="caption" tone="secondary" numberOfLines={1} style={{ flex: 1 }}>
               {ch.creator ? ch.creator.name : t("challenge.anyCreator")}
             </Txt>
           </View>
-          {TICKING.has(ch.stage) ? <Countdown target={ch.deadline} label={t("challenge.endsIn")} /> : ch.stage === "IN_PROGRESS" && ch.deliveryDeadline ? <Countdown target={ch.deliveryDeadline} label={t("challenge.deliverIn")} /> : null}
-        </View>
-      </Card>
-    </Pressable>
+          {clock ? <Clock target={clock.target} label={clock.label} /> : null}
+        </Card.Footer>
+      </Card.Body>
+    </Card.Root>
   );
 }
 
-/** An auction in a list: picture, price, clock — opens it. */
+/** An auction in a list: picture, state, price, clock, creator — opens it. Read like the web card (auction-presenter). */
 export function AuctionTile({ a }: { a: AuctionCard }) {
-  const { c } = useTheme();
-  const price = a.bidsCount > 0 ? a.highestBidCents : a.startingPriceCents;
+  const { theme } = useTheme();
+  const price = auctionPrice(a);
+  const countdown = auctionCountdown(a);
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={a.title} onPress={() => router.push(`/auctions/${a.id}`)}>
-      <Card style={{ padding: 0, overflow: "hidden" }}>
-        <View style={[styles.thumb, { borderRadius: 0, backgroundColor: c.surfaceElevated }]}>
-          <Image source={absoluteUrl(a.thumbnailUrl)} style={StyleSheet.absoluteFill} contentFit="cover" transition={200} />
-          <View style={[styles.badge, { left: space.sm }]}>
-            <Gavel size={12} color="#fff" />
-            <Txt variant="caption" style={{ color: "#fff", fontWeight: "700" }}>
-              {t(`auction.phase.${a.phase as "OPEN"}`)}
+    <Card.Root testID={`auction-${a.id}`} aria-label={a.title} onPress={() => router.push(`/auctions/${a.id}`)}>
+      <Card.Media>
+        <Card.Image src={absoluteUrl(a.thumbnailUrl)} fallback={<Gavel size={32} color={theme.accent} />} />
+        <Card.Overlay corner="top-left">
+          <Badge tone="scrim" size="md" dot={a.phase === "OPEN"} pulse={a.phase === "OPEN"}>
+            {t(`auction.phase.${a.phase as "OPEN"}`)}
+          </Badge>
+        </Card.Overlay>
+      </Card.Media>
+      <Card.Body>
+        <Card.Title>{a.title}</Card.Title>
+        <View style={[styles.row, styles.between, { alignItems: "flex-end" }]}>
+          <View>
+            <Txt variant="caption" tone="muted">
+              {t(price.labelKey)}
             </Txt>
+            <Txt variant="title">{usd(price.cents)}</Txt>
           </View>
+          {countdown ? <Clock target={countdown.target} label={t(countdown.labelKey)} /> : null}
         </View>
-        <View style={[styles.row, { padding: space.lg }]}>
-          <View style={{ flex: 1 }}>
-            <Txt variant="label" numberOfLines={1}>
-              {a.title}
-            </Txt>
-            <Txt variant="title">{usd(price)}</Txt>
-          </View>
-          {a.phase === "OPEN" ? <Countdown target={a.endsAt} label={t("auction.endsIn")} /> : null}
-        </View>
-      </Card>
-    </Pressable>
+        <Card.Footer>
+          <Avatar src={absoluteUrl(a.creatorAvatar)} alt={a.creatorName} size="xs" />
+          <Txt variant="caption" tone="secondary" numberOfLines={1} style={{ flex: 1 }}>
+            {a.creatorName}
+          </Txt>
+          <Txt variant="caption" tone="secondary">
+            {t("auction.bids", { count: a.bidsCount })}
+          </Txt>
+        </Card.Footer>
+      </Card.Body>
+    </Card.Root>
   );
 }
 
 const styles = StyleSheet.create({
-  thumb: { aspectRatio: 16 / 9, borderRadius: radius.lg, overflow: "hidden" },
-  badge: { position: "absolute", top: space.sm, flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(0,0,0,0.6)", borderRadius: radius.full, paddingHorizontal: 8, paddingVertical: 3 },
-  meta: { flexDirection: "row", gap: space.md, paddingTop: space.md },
-  row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  row: { flexDirection: "row", alignItems: "center", gap: space.sm },
+  between: { justifyContent: "space-between" },
+  badgeText: { fontWeight: "700", fontSize: 11, letterSpacing: 0.5 },
 });

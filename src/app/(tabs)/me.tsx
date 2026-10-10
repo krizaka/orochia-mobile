@@ -3,26 +3,27 @@ import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as WebBrowser from "expo-web-browser";
 import { Bell, ExternalLink, LogOut, Wallet as WalletIcon } from "lucide-react-native";
+import { Avatar, Button, Card, Txt, useTheme } from "@krizaka/ui/native";
 import { OrochiaMark } from "@/components/OrochiaMark";
-import { Avatar, Button, Card, Txt } from "@/components/ui";
 import { t, usd } from "@/i18n";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { openPath } from "@/lib/links";
 import { useLive } from "@/lib/live";
-import { OROCHIA_URL } from "@/lib/config";
+import { OROCHIA_URL, absoluteUrl } from "@/lib/config";
+import { withTap } from "@/lib/haptics";
 import { useApi } from "@/lib/useApi";
-import { radius, space, useTheme } from "@/lib/theme";
+import { space } from "@/lib/theme";
 import type { NotificationItem, Wallet } from "@/lib/types";
 
 function SignIn() {
-  const { c } = useTheme();
+  const { theme, radius } = useTheme();
   const { signIn } = useAuth();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const field = { borderWidth: 1, borderColor: c.border, backgroundColor: c.surface, color: c.text, borderRadius: radius.md, padding: space.md, fontSize: 16 };
+  const field = { borderWidth: 1, borderColor: theme.borderDefault, backgroundColor: theme.surface1, color: theme.textPrimary, borderRadius: radius.md, padding: space.md, fontSize: 16 };
   const submit = async () => {
     setBusy(true);
     setError(null);
@@ -48,7 +49,7 @@ function SignIn() {
         value={identifier}
         onChangeText={setIdentifier}
         placeholder={t("me.identifier")}
-        placeholderTextColor={c.textTertiary}
+        placeholderTextColor={theme.textMuted}
         autoCapitalize="none"
         autoComplete="username"
         textContentType="username"
@@ -58,7 +59,7 @@ function SignIn() {
         value={password}
         onChangeText={setPassword}
         placeholder={t("me.password")}
-        placeholderTextColor={c.textTertiary}
+        placeholderTextColor={theme.textMuted}
         secureTextEntry
         autoComplete="current-password"
         textContentType="password"
@@ -66,14 +67,14 @@ function SignIn() {
         style={field}
       />
       {error && <Txt tone="danger">{error}</Txt>}
-      <Button label={t("me.signIn")} onPress={() => void submit()} loading={busy} disabled={!identifier || !password} />
-      <Button label={t("me.noAccount")} variant="secondary" onPress={() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/auth/register`)} />
+      <Button label={t("me.signIn")} variant="primary" size="lg" onPress={withTap(() => void submit())} loading={busy} disabled={!identifier || !password} />
+      <Button label={t("me.noAccount")} variant="secondary" size="lg" onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/auth/register`))} />
     </View>
   );
 }
 
 function Account() {
-  const { c } = useTheme();
+  const { theme } = useTheme();
   const { user, signOut } = useAuth();
   const wallet = useApi<Wallet>("/api/me/wallet");
   const notes = useApi<{ items: NotificationItem[] }>("/api/me/notifications");
@@ -83,48 +84,52 @@ function Account() {
   return (
     <ScrollView
       contentContainerStyle={{ gap: space.lg }}
-      refreshControl={<RefreshControl refreshing={wallet.refreshing} onRefresh={() => void Promise.all([wallet.refresh(), notes.refresh()])} tintColor={c.accent} />}
+      refreshControl={<RefreshControl refreshing={wallet.refreshing} onRefresh={() => void Promise.all([wallet.refresh(), notes.refresh()])} tintColor={theme.accent} />}
     >
       <View style={{ flexDirection: "row", alignItems: "center", gap: space.md }}>
-        <Avatar uri={user?.avatarUrl} size={56} />
+        <Avatar src={absoluteUrl(user?.avatarUrl)} alt={user?.displayName || user?.username} size="lg" />
         <View style={{ flex: 1 }}>
           <Txt variant="title">{user?.displayName || user?.username}</Txt>
-          <Txt tone="textSecondary">@{user?.username}</Txt>
+          <Txt tone="secondary">@{user?.username}</Txt>
         </View>
       </View>
 
-      <Card style={{ gap: space.sm }}>
+      <Card.Root>
+        <Card.Body style={{ gap: space.sm }}>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-          <WalletIcon size={16} color={c.accent} />
+          <WalletIcon size={16} color={theme.accent} />
           <Txt variant="label">{t("me.wallet")}</Txt>
         </View>
         <Txt variant="display">{usd(wallet.data?.balanceCents ?? 0)}</Txt>
         {(wallet.data?.heldCents ?? 0) > 0 && (
-          <Txt variant="caption" tone="textSecondary">
+          <Txt variant="caption" tone="secondary">
             {t("me.held", { amount: usd(wallet.data?.heldCents ?? 0) })}
           </Txt>
         )}
-        <Button label={t("me.topUp")} variant="secondary" icon={<ExternalLink size={14} color={c.text} />} onPress={() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/wallet`)} />
-      </Card>
+        <Button label={t("me.topUp")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/wallet`))} />
+        </Card.Body>
+      </Card.Root>
 
-      <Card style={{ gap: space.md }}>
+      <Card.Root>
+        <Card.Body>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-          <Bell size={16} color={c.accent} />
+          <Bell size={16} color={theme.accent} />
           <Txt variant="label">{t("me.notifications")}</Txt>
         </View>
         {(notes.data?.items ?? []).length === 0 ? (
-          <Txt tone="textSecondary">{t("me.noNotifications")}</Txt>
+          <Txt tone="secondary">{t("me.noNotifications")}</Txt>
         ) : (
           (notes.data?.items ?? []).slice(0, 15).map((n) => (
-            <Txt key={n.id} tone={n.readAt ? "textSecondary" : "text"} onPress={() => open(n.path)} accessibilityRole="link">
+            <Txt key={n.id} tone={n.readAt ? "secondary" : "text"} onPress={() => open(n.path)} role="link">
               {n.text}
             </Txt>
           ))
         )}
-      </Card>
+        </Card.Body>
+      </Card.Root>
 
-      <Button label={t("me.profile")} variant="secondary" icon={<ExternalLink size={14} color={c.text} />} onPress={() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/@${user?.username}`)} />
-      <Button label={t("me.signOut")} variant="secondary" icon={<LogOut size={14} color={c.text} />} onPress={() => void signOut()} />
+      <Button label={t("me.profile")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/@${user?.username}`))} />
+      <Button label={t("me.signOut")} variant="secondary" size="lg" icon={<LogOut size={14} color={theme.textPrimary} />} onPress={withTap(() => void signOut())} />
     </ScrollView>
   );
 }
