@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { Stack } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
+import { ThemeProvider, Toaster, useTheme } from "@krizaka/ui/native";
+import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
 import { AgeGate } from "@/components/AgeGate";
-import { LiveToast } from "@/components/LiveToast";
+import { t } from "@/i18n";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { openPath } from "@/lib/links";
 import { LiveProvider } from "@/lib/live";
-import { useTheme } from "@/lib/theme";
 
 // In the foreground the live stream shows notifications as toasts; a push that arrives then stays in the list only.
 Notifications.setNotificationHandler({
@@ -27,23 +28,25 @@ function useOpenTappedPush() {
 }
 
 /**
- * The app: the 18+ gate first, then tabs and the detail screens, in the system's appearance — with the live stream
- * (toasts, the account tab's badge) while signed in, and pushes opened where they point.
+ * The app: the 18+ gate first, then tabs and the detail screens, in the system's appearance under the Orochia theme
+ * (`nativeTheme` over the @krizaka/ui roles) — with the live stream (toasts, the account tab's badge) while signed in,
+ * and pushes opened where they point.
  */
 function Root() {
-  const { c, dark } = useTheme();
+  const { theme, scheme } = useTheme();
+  const insets = useSafeAreaInsets();
   const { ageConfirmed, confirmAge, user } = useAuth();
   useOpenTappedPush();
   return (
     <LiveProvider signedIn={Boolean(user)}>
-      <StatusBar style={dark ? "light" : "dark"} />
+      <StatusBar style={scheme === "dark" ? "light" : "dark"} />
       <Stack
         screenOptions={{
-          headerStyle: { backgroundColor: c.background },
-          headerTintColor: c.text,
+          headerStyle: { backgroundColor: theme.surface0 },
+          headerTintColor: theme.textPrimary,
           headerShadowVisible: false,
           headerBackButtonDisplayMode: "minimal",
-          contentStyle: { backgroundColor: c.background },
+          contentStyle: { backgroundColor: theme.surface0 },
         }}
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -51,7 +54,7 @@ function Root() {
         <Stack.Screen name="challenges/[id]" options={{ title: "" }} />
         <Stack.Screen name="auctions/[id]" options={{ title: "" }} />
       </Stack>
-      <LiveToast />
+      <Toaster closeLabel={t("common.close")} offset={insets.top + 8} />
       {ageConfirmed === false && <AgeGate onConfirm={() => void confirmAge()} />}
     </LiveProvider>
   );
@@ -60,9 +63,11 @@ function Root() {
 export default function Layout() {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <Root />
-      </AuthProvider>
+      <ThemeProvider overrides={nativeTheme}>
+        <AuthProvider>
+          <Root />
+        </AuthProvider>
+      </ThemeProvider>
     </SafeAreaProvider>
   );
 }

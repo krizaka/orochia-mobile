@@ -84,6 +84,7 @@
     "empty": "Nothing here yet",
     "emptyBody": "Start one from orochia.com, or back the next one here.",
     "backers": "Backers · {count}",
+    "raised": "Raised so far",
     "ofGoal": "of {goal}",
     "anyCreator": "Any creator",
     "endsIn": "Ends in",
@@ -99,7 +100,9 @@
     "watch": "Watch it",
     "deliveredLocked": "Delivered to its backers.",
     "pledged": "Pledged — thank you!",
-    "signIn": "Sign in to back it"
+    "signIn": "Sign in to back it",
+    "tabsLabel": "Challenges to show",
+    "amounts": "Pledge amounts"
   },
   "auction": {
     "phase": {
@@ -113,9 +116,12 @@
       "CANCELLED": "Cancelled"
     },
     "endsIn": "Ends in",
+    "startsIn": "Starts in",
     "empty": "No auction open right now",
     "emptyBody": "The next one shows up here the moment it starts.",
     "currentBid": "Current bid",
+    "startingPrice": "Starting price",
+    "soldFor": "Sold for",
     "bid": "Bid {amount}",
     "bids": "Bids · {count}",
     "leading": "You lead",
@@ -125,7 +131,8 @@
     "rights": {
       "WATCH": "The winner watches it",
       "DOWNLOAD": "The winner watches and downloads it"
-    }
+    },
+    "amounts": "Bid amounts"
   },
   "me": {
     "signInTitle": "Sign in to Orochia",

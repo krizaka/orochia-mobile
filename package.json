@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
-    "@krizaka/orochia-design-system": "^2.3.0",
-    "@krizaka/ui": "^1.1.0",
+    "@krizaka/orochia-design-system": "^4.0.0",
+    "@krizaka/tokens": "2.0.0-beta.4",
+    "@krizaka/ui": "2.0.0-beta.4",
     "expo": "~57.0.27",
     "expo-constants": "~57.0.21",
     "expo-dev-client": "~57.0.19",
@@ -62,6 +63,14 @@
     "url": "git+https://github.com/krizaka/orochia-mobile.git"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@krizaka))"
+    ],
+    "moduleNameMapper": {
+      "^@krizaka/ui/native$": "<rootDir>/node_modules/@krizaka/ui/dist/native.js",
+      "^@krizaka/tokens/native$": "<rootDir>/node_modules/@krizaka/tokens/dist/native.js",
+      "^@krizaka/orochia-design-system/tokens$": "<rootDir>/node_modules/@krizaka/orochia-design-system/dist/tokens.js"
+    }
   }
 }

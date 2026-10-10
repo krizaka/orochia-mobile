@@ -5,20 +5,22 @@ import { useVideoPlayer, VideoView } from "expo-video";
 import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { Lock } from "lucide-react-native";
+import { Avatar, Button, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
 import { VideoTile } from "@/components/Tiles";
-import { Avatar, Button, Card, Skeleton, Txt } from "@/components/ui";
 import { compact, t, usd, type MessageKey } from "@/i18n";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { OROCHIA_URL, absoluteUrl } from "@/lib/config";
-import { radius, space, useTheme } from "@/lib/theme";
+import { withTap } from "@/lib/haptics";
+import { space } from "@/lib/theme";
 import type { StreamAccess, VideoDetails } from "@/lib/types";
 
 /** The player: HLS signed for this viewer by the server (5-minute token), never a raw URL. */
 function Player({ uri, poster }: { uri: string; poster: string | null }) {
   const player = useVideoPlayer({ uri, contentType: "hls" }, (p) => p.play());
+  const { radius } = useTheme();
   return (
-    <View style={styles.video}>
+    <View style={[styles.video, { borderRadius: radius.sm }]}>
       {poster ? <Image source={poster} style={StyleSheet.absoluteFill} contentFit="cover" /> : null}
       <VideoView player={player} style={StyleSheet.absoluteFill} contentFit="contain" nativeControls fullscreenOptions={{ enable: true }} allowsPictureInPicture />
     </View>
@@ -31,7 +33,7 @@ function Player({ uri, poster }: { uri: string; poster: string | null }) {
  */
 export default function Watch() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { c } = useTheme();
+  const { theme, radius } = useTheme();
   const { user } = useAuth();
   const [details, setDetails] = useState<VideoDetails | null>(null);
   const [access, setAccess] = useState<StreamAccess | null>(null);
@@ -53,19 +55,19 @@ export default function Watch() {
     <ScrollView contentContainerStyle={{ paddingBottom: space.xxl }}>
       <Stack.Screen options={{ title: details?.title ?? "" }} />
       {!access ? (
-        <Skeleton height={220} style={{ borderRadius: 0 }} />
+        <Skeleton shape="rect" height={220} style={{ borderRadius: 0 }} />
       ) : access.allowed ? (
         <Player uri={access.streamUrl} poster={poster} />
       ) : (
-        <View style={[styles.video, { alignItems: "center", justifyContent: "center", gap: space.md, padding: space.xl }]}>
+        <View style={[styles.video, { borderRadius: radius.sm, alignItems: "center", justifyContent: "center", gap: space.md, padding: space.xl }]}>
           {poster ? <Image source={poster} style={StyleSheet.absoluteFill} contentFit="cover" blurRadius={30} /> : null}
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,0,0,0.55)" }]} />
-          <Lock color="#fff" size={28} />
-          <Txt style={{ color: "#fff", textAlign: "center" }}>{t(`video.locked.${reason}` as MessageKey, { amount: usd(access.minTipAmountCents ?? 0) })}</Txt>
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: theme.scrim }]} />
+          <Lock color={theme.textOnMedia} size={28} />
+          <Txt tone="onMedia" style={{ textAlign: "center" }}>{t(`video.locked.${reason}` as MessageKey, { amount: usd(access.minTipAmountCents ?? 0) })}</Txt>
           {reason === "SIGN_IN" ? (
-            <Button label={t("video.signIn")} onPress={() => router.push("/me")} />
+            <Button label={t("video.signIn")} variant="primary" size="lg" onPress={withTap(() => router.push("/me"))} />
           ) : reason === "PAYWALL_REQUIRED" ? (
-            <Button label={t("video.unlockOnWeb")} onPress={() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/watch/${id}`)} />
+            <Button label={t("video.unlockOnWeb")} variant="primary" size="lg" onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/watch/${id}`))} />
           ) : null}
         </View>
       )}
@@ -73,22 +75,22 @@ export default function Watch() {
         <View style={{ padding: space.lg, gap: space.lg }}>
           <Txt variant="title">{details.title}</Txt>
           <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }}>
-            <Avatar uri={details.creatorAvatar} size={36} />
+            <Avatar src={absoluteUrl(details.creatorAvatar)} alt={details.creatorName} size={36} />
             <View>
               <Txt variant="label">{details.creatorName}</Txt>
-              <Txt variant="caption" tone="textSecondary">
+              <Txt variant="caption" tone="secondary">
                 {t("video.views", { count: compact(details.viewsCount) })}
               </Txt>
             </View>
           </View>
-          {details.description ? <Txt tone="textSecondary">{details.description}</Txt> : null}
+          {details.description ? <Txt tone="secondary">{details.description}</Txt> : null}
           {details.moreFromCreator.length > 0 && (
-            <Card style={{ gap: space.lg, backgroundColor: c.background, padding: 0, borderWidth: 0 }}>
+            <View style={{ gap: space.lg }}>
               <Txt variant="title">{t("video.more", { name: details.creatorName })}</Txt>
               {details.moreFromCreator.slice(0, 4).map((v) => (
                 <VideoTile key={v.id} v={v} />
               ))}
-            </Card>
+            </View>
           )}
         </View>
       )}
@@ -97,5 +99,5 @@ export default function Watch() {
 }
 
 const styles = StyleSheet.create({
-  video: { width: "100%", aspectRatio: 16 / 9, backgroundColor: "#000", overflow: "hidden", borderRadius: radius.sm },
+  video: { width: "100%", aspectRatio: 16 / 9, backgroundColor: "#000", overflow: "hidden" },
 });

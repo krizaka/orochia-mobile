@@ -41,9 +41,10 @@ nothing. What decides is everything around it:
 
 - **One language, one set of types and rules** with the web app (TypeScript, the same API shapes, the same message
   conventions) and the Orazaka mobile client, already on Expo.
-- **The same design tokens and brand mark, from npm** — `@krizaka/orochia-design-system/tokens` (themes by role) and
-  `@krizaka/ui/native` (the animated Orochia mark, drawn from the same geometry as on the web). Never a copy; Flutter
-  would need a second, drifting implementation of both.
+- **The same components, tokens and brand mark, from npm** — `@krizaka/ui/native` (Txt, Button, Card, Chip, Badge,
+  Avatar, Countdown, Progress, toasts and the animated Orochia mark, the web kit's names on React Native) themed by
+  `nativeTheme` of `@krizaka/orochia-design-system/tokens`. Never a copy; Flutter would need a second, drifting
+  implementation of all of it.
 - **Builds without local Xcode or Android Studio** (EAS, or the Android CI build below), over-the-air updates for
   JavaScript changes.
 
@@ -94,9 +95,11 @@ GitHub, TestFlight / ad hoc on iOS — unless a store-safe edition is decided.
 
 ```
 src/app/                 Expo Router: (tabs) home · challenges · auctions · you; watch/[id], challenges/[id], auctions/[id]
-src/components/          ui (Txt, Card, Button, Chip…), tiles, stories rail and viewer, progress ring, countdown, 18+ gate
-src/lib/                 api (bearer session, typed errors), auth (sign-in, secure storage), theme (design-system tokens),
-                         useApi / usePolling, config (EXPO_PUBLIC_OROCHIA_URL)
+src/components/          business components only: tiles, stories rail and viewer, amount picker, 18+ gate
+                         (every UI component comes from @krizaka/ui/native)
+src/lib/                 api (bearer session, typed errors), auth (sign-in, secure storage), theme (spacing, signature
+                         gradient), auction-presenter (shared with the web), useApi / usePolling, config
+                         (EXPO_PUBLIC_OROCHIA_URL)
 src/i18n/en.json         every user-facing string (typed keys)
 ```
 

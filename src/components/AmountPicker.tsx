@@ -1,16 +1,25 @@
 import React from "react";
-import { View } from "react-native";
+import * as Haptics from "expo-haptics";
+import { Chip } from "@krizaka/ui/native";
 import { usd } from "@/i18n";
-import { space } from "@/lib/theme";
-import { Chip } from "./ui";
 
-/** One-tap amounts (the server's suggestions). */
-export function AmountPicker({ amounts, value, onChange }: { amounts: number[]; value: number; onChange: (cents: number) => void }) {
+/** One-tap amounts (the server's suggestions), as a single-choice chip group. */
+export function AmountPicker({ amounts, value, onChange, label }: { amounts: number[]; value: number; onChange: (cents: number) => void; label: string }) {
   return (
-    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.sm }}>
+    <Chip.Group
+      type="single"
+      aria-label={label}
+      value={String(value)}
+      onValueChange={(next) => {
+        void Haptics.selectionAsync().catch(() => undefined);
+        onChange(Number(next));
+      }}
+    >
       {amounts.map((a) => (
-        <Chip key={a} label={usd(a)} active={a === value} onPress={() => onChange(a)} />
+        <Chip key={a} value={String(a)}>
+          {usd(a)}
+        </Chip>
       ))}
-    </View>
+    </Chip.Group>
   );
 }

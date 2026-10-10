@@ -12,10 +12,15 @@
   (`src/lib/storage.ts`); it is sent as `Authorization: Bearer`. No token in logs, in plain storage or in a URL.
 - **No raw media URL**: play only what `/api/videos/<id>/stream` (or a story) answers, signed for the viewer.
 - **Payments stay on the web**, in the provider's checkout (`expo-web-browser`); the app never collects card details.
-- **Shared UI comes from npm, never a copy**: tokens from `@krizaka/orochia-design-system/tokens`, the mark from
-  `@krizaka/ui/native`. A missing token or mark is added to its package first.
+- **UI components = `@krizaka/ui/native`** (Txt, Button, Card.*, Chip, Badge, Avatar, Countdown, Progress, Segmented,
+  EmptyState, Skeleton, Toaster/toast, the mark), themed by `<ThemeProvider overrides={nativeTheme}>` with `nativeTheme`
+  from `@krizaka/orochia-design-system/tokens`. `src/components` holds only business components (tiles, stories rail,
+  amount picker, 18+ gate). **A missing component is a PR in [krizaka-ui](https://github.com/krizaka/krizaka-ui)**,
+  released, then adopted here — never a local copy. Same for a missing token or mark. Haptics stay in the app
+  (`src/lib/haptics.ts`, in `onPress`).
 - **Every user-facing string is in `src/i18n/en.json`** and read with `t("key")` (typed keys). No literal text in JSX.
-- **Both themes**: colours come from `useTheme()` only; a screen is checked in dark and light.
+- **Both themes**: colours come from `useTheme()` of `@krizaka/ui/native` only (roles: `surface0`, `textPrimary`,
+  `accent`…); a screen is checked in dark and light.
 - **The 18+ gate** runs before anything else on a fresh install.
 - **Notifications**: in the foreground, the live stream (`src/lib/live.tsx`, SSE with the bearer session) shows toasts and
   the account badge; in the background, push (`src/lib/push.ts`, Expo token registered at sign-in, forgotten at sign-out).
