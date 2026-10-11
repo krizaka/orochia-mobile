@@ -17,6 +17,12 @@
   <img src="https://img.shields.io/badge/Expo-SDK%2057-000?logo=expo" alt="Expo SDK 57">
   <img src="https://img.shields.io/badge/React%20Native-0.86-61dafb?logo=react" alt="React Native 0.86">
   <img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0">
+  <a href="https://www.krizaka.com/docs/orochia"><img src="https://img.shields.io/badge/docs-krizaka.com%2Fdocs%2Forochia-7c3aed" alt="Documentation"></a>
+</p>
+
+<p align="center">
+  <a href="https://www.krizaka.com/en/products/orochia#tour"><img src="https://raw.githubusercontent.com/krizaka/.github/main/profile/assets/orochia-tour.gif" alt="Orochia, signed in as Alex: Elena's story opened from the ring on her profile, sound on, a like, a private reply and a $10 tip" width="760"></a>
+  <br><sub>Alex opens Elena's story, likes it, replies privately and tips her — recorded on the web; the app does the same on the same API. <a href="https://www.krizaka.com/en/products/orochia#tour">Full tour</a> · <a href="https://www.krizaka.com/docs/orochia">Documentation</a></sub>
 </p>
 
 ---
@@ -30,7 +36,7 @@
 | **Challenges** | Goals, dares and open calls: the pot as a ring that fills as pledges land, the clock, the leaderboard, back it in one tap — credits held until delivery |
 | **Auctions** | The price, the clock aligned on the server's, bids by alias, bid in credits |
 | **You** | Sign in (the session lives in the Keychain / Keystore), wallet and what is held, notifications |
-| **Notifications** | Live while the app is open (a toast, the badge on *You*), push when it is not — a new follower, a tip, an unlock, a bid, a pledge, a message; tapping one opens it |
+| **Notifications** | In real time while the app is open (a toast, the badge on *You*), push when it is not — a new follower, a tip, an unlock, a bid, a pledge, a message; tapping one opens it |
 
 Paying (top-ups, unlocks) happens on orochia.com, in the payment provider's own checkout: card details never reach
 Orochia, and an adult-content platform cannot sell through the stores' in-app purchases.
@@ -81,7 +87,7 @@ them on, once:
    `GOOGLE_SERVICES_JSON`; `eas credentials` → Android → upload the FCM V1 service-account key.
 3. `eas credentials` → iOS → Push Notifications (APNs key from the Apple Developer account).
 
-Without them the app runs the same, with the live stream in the foreground and no push.
+Without them the app runs the same, with real-time notifications in the foreground and no push.
 
 ## Builds
 
