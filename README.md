@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="assets/icon.png" alt="Orochia" width="96">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/krizaka/.github/main/profile/assets/orochia-dark.svg">
+    <img src="https://raw.githubusercontent.com/krizaka/.github/main/profile/assets/orochia-light.svg" alt="Orochia" width="96">
+  </picture>
 </p>
 
 <h1 align="center">Orochia for iOS and Android</h1>
