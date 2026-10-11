@@ -19,7 +19,8 @@
     "home": "Home",
     "challenges": "Challenges",
     "auctions": "Auctions",
-    "me": "You"
+    "me": "You",
+    "messages": "Messages"
   },
   "home": {
     "stories": "Stories",
@@ -164,5 +165,43 @@
   "common": {
     "close": "Close",
     "retry": "Try again"
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "Private conversations, as they happen.",
+    "onlineNow": "Online now",
+    "empty": "No conversations yet",
+    "emptyBody": "Start one from a creator's or a contact's profile on orochia.com.",
+    "signIn": "Sign in to read your messages",
+    "error": "Your messages are out of reach. Pull to try again.",
+    "noMessages": "No messages yet",
+    "you": "You: {text}",
+    "typing": "typing…",
+    "unread": "{count} unread",
+    "presence": {
+      "online": "Online",
+      "away": "Away",
+      "seen": "Seen {when}"
+    },
+    "status": {
+      "sending": "Sending…",
+      "failed": "Not sent — tap to retry",
+      "sent": "Sent",
+      "delivered": "Delivered",
+      "read": "Seen"
+    },
+    "placeholder": "Write a message…",
+    "send": "Send",
+    "startTitle": "Start the conversation",
+    "startBody": "Say hello to @{username}.",
+    "blocked": "You blocked @{username}. Unblock them on orochia.com to write again.",
+    "loadOlder": "Show earlier messages",
+    "storyReply": "Replied to a story",
+    "ago": {
+      "now": "just now",
+      "minutes": "{count} min ago",
+      "hours": "{count} h ago",
+      "days": "{count} d ago"
+    }
   }
 }
