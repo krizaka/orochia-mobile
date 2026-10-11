@@ -22,8 +22,10 @@
 - **Both themes**: colours come from `useTheme()` of `@krizaka/ui/native` only (roles: `surface0`, `textPrimary`,
   `accent`…); a screen is checked in dark and light.
 - **The 18+ gate** runs before anything else on a fresh install.
-- **Notifications**: in the foreground, the live stream (`src/lib/live.tsx`, SSE with the bearer session) shows toasts and
-  the account badge; in the background, push (`src/lib/push.ts`, Expo token registered at sign-in, forgotten at sign-out).
+- **Notifications and messages**: in the foreground, ONE live stream (`src/lib/live.tsx`, SSE with the bearer session,
+  reopened with `?after=<last message seq>` when the app comes back) shows toasts and the badges, and screens listen to
+  it with `useLiveEvents` (Messages: conversations, presence, typing, receipts — rules and events in krizaka/orochia
+  `docs/NOTIFICATIONS.md` §5; message ordering and merging in `src/lib/chat.ts`, the same as the web's); in the background, push (`src/lib/push.ts`, Expo token registered at sign-in, forgotten at sign-out).
   A tapped push opens its `path` through `openPath` (`src/lib/links.ts`). Push needs a development or EAS build, never
   Expo Go; secrets (`EAS_PROJECT_ID`, `GOOGLE_SERVICES_JSON`) come from the build environment (`app.config.js`).
 
