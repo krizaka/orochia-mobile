@@ -3,7 +3,8 @@ import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as WebBrowser from "expo-web-browser";
 import { Bell, ExternalLink, LogOut, Wallet as WalletIcon } from "lucide-react-native";
-import { Avatar, Button, Card, Txt, useTheme } from "@krizaka/ui/native";
+import { Avatar, Button, Card, EmptyState, Mascot, Txt, useTheme } from "@krizaka/ui/native";
+import { EarningsCard } from "@/components/EarningsCard";
 import { OrochiaMark } from "@/components/OrochiaMark";
 import { t, usd } from "@/i18n";
 import { ApiError } from "@/lib/api";
@@ -110,6 +111,8 @@ function Account() {
         </Card.Body>
       </Card.Root>
 
+      {(user?.role === "CREATOR" || user?.role === "ADMIN") && <EarningsCard />}
+
       <Card.Root>
         <Card.Body>
         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
@@ -117,7 +120,7 @@ function Account() {
           <Txt variant="label">{t("me.notifications")}</Txt>
         </View>
         {(notes.data?.items ?? []).length === 0 ? (
-          <Txt tone="secondary">{t("me.noNotifications")}</Txt>
+          <EmptyState icon={<Mascot bird="pigeon" mood="empty" size={72} />} title={t("me.noNotifications")} description={t("me.noNotificationsHint")} />
         ) : (
           (notes.data?.items ?? []).slice(0, 15).map((n) => (
             <Txt key={n.id} tone={n.readAt ? "secondary" : "text"} onPress={() => open(n.path)} role="link">
@@ -134,7 +137,7 @@ function Account() {
   );
 }
 
-/** The account tab: sign in (a native session in secure storage), then the wallet, notifications and sign out. */
+/** The account tab: sign in (a native session in secure storage), then the wallet, a creator's earnings (charts), notifications and sign out. */
 export default function Me() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();

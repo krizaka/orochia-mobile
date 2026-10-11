@@ -13,8 +13,9 @@
 - **No raw media URL**: play only what `/api/videos/<id>/stream` (or a story) answers, signed for the viewer.
 - **Payments stay on the web**, in the provider's checkout (`expo-web-browser`); the app never collects card details.
 - **UI components = `@krizaka/ui/native`** (Txt, Button, Card.*, Chip, Badge, Avatar, Countdown, Progress, Segmented,
-  EmptyState, Skeleton, Toaster/toast, the mark), themed by `<ThemeProvider overrides={nativeTheme}>` with `nativeTheme`
-  from `@krizaka/orochia-design-system/tokens`. `src/components` holds only business components (tiles, stories rail,
+  EmptyState, Mascot, Skeleton, Toaster/toast, the mark), themed by `<ThemeProvider overrides={nativeTheme}>` with `nativeTheme`
+  from `@krizaka/orochia-design-system/tokens` (≥ 4.1.1: it carries the Orochia brand — `accentText` violet). Charts are
+  `@krizaka/charts/native` (react-native-svg) under `src/components/Charts.tsx` (Orochia palette, the app's theme and words). `src/components` holds only business components (tiles, stories rail,
   amount picker, 18+ gate). **A missing component is a PR in [krizaka-ui](https://github.com/krizaka/krizaka-ui)**,
   released, then adopted here — never a local copy. Same for a missing token or mark. Haptics stay in the app
   (`src/lib/haptics.ts`, in `onPress`).
