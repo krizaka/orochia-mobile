@@ -14,6 +14,7 @@
 
 <p align="center">
   <a href="https://github.com/krizaka/orochia-mobile/actions/workflows/ci.yml"><img src="https://github.com/krizaka/orochia-mobile/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://scorecard.dev/viewer/?uri=github.com/krizaka/orochia-mobile"><img src="https://api.scorecard.dev/projects/github.com/krizaka/orochia-mobile/badge" alt="OpenSSF Scorecard"></a>
   <img src="https://img.shields.io/badge/Expo-SDK%2057-000?logo=expo" alt="Expo SDK 57">
   <img src="https://img.shields.io/badge/React%20Native-0.86-61dafb?logo=react" alt="React Native 0.86">
   <img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0">
