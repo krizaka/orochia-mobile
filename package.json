@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
-    "@krizaka/orochia-design-system": "^4.0.0",
-    "@krizaka/tokens": "2.0.0-beta.4",
-    "@krizaka/ui": "2.0.0-beta.4",
+    "@krizaka/charts": "^0.1.0",
+    "@krizaka/orochia-design-system": "^4.1.1",
+    "@krizaka/tokens": "^2.3.0",
+    "@krizaka/ui": "^2.3.0",
     "expo": "~57.0.27",
     "expo-constants": "~57.0.21",
     "expo-dev-client": "~57.0.19",
@@ -70,7 +71,8 @@
     "moduleNameMapper": {
       "^@krizaka/ui/native$": "<rootDir>/node_modules/@krizaka/ui/dist/native.js",
       "^@krizaka/tokens/native$": "<rootDir>/node_modules/@krizaka/tokens/dist/native.js",
-      "^@krizaka/orochia-design-system/tokens$": "<rootDir>/node_modules/@krizaka/orochia-design-system/dist/tokens.js"
+      "^@krizaka/orochia-design-system/tokens$": "<rootDir>/node_modules/@krizaka/orochia-design-system/dist/tokens.js",
+      "^@krizaka/charts/native$": "<rootDir>/node_modules/@krizaka/charts/dist/native.js"
     }
   }
 }

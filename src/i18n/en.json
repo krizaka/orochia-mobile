@@ -156,7 +156,8 @@
       "suspended": "This account is suspended.",
       "tooMany": "Too many attempts. Try again later.",
       "network": "Orochia is out of reach. Check your connection."
-    }
+    },
+    "noNotificationsHint": "Tips, unlocks, bids and follows land here as they happen."
   },
   "errors": {
     "INSUFFICIENT_CREDITS": "Not enough credits — add some on orochia.com.",
@@ -203,5 +204,22 @@
       "hours": "{count} h ago",
       "days": "{count} d ago"
     }
+  },
+  "charts": {
+    "empty": "Nothing to show yet.",
+    "loading": "Loading the chart…"
+  },
+  "earnings": {
+    "title": "Your earnings, last 30 days",
+    "net": "After the {fee}% platform fee · {payments} payments",
+    "tips": "Tips, last 30 days",
+    "months": "Your share, last 6 months",
+    "share": "Your share",
+    "payout": "Your next payout",
+    "available": "available",
+    "minimum": "Minimum payout",
+    "ready": "Ready to withdraw — on the web, to your payout method.",
+    "toGo": "{amount} more and you can withdraw.",
+    "open": "Open your earnings"
   }
 }

@@ -149,3 +149,11 @@ export interface NotificationItem {
   createdAt: string;
   readAt: string | null;
 }
+
+/** GET /api/creator/earnings — the ledger read model of the web's Earnings page (the fields the app draws). */
+export interface CreatorEarnings {
+  summary: { netCents: number; feePercent: number; payments: number; availableCents: number; payoutMinimumCents?: number };
+  monthly: { month: string; netCents: number }[];
+  /** Net tips per day over the last 30 days (Orochia ≥ the W5 earnings). */
+  tips?: { day: string; netCents: number }[];
+}

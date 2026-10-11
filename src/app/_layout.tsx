@@ -6,6 +6,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-cont
 import { ThemeProvider, Toaster, useTheme } from "@krizaka/ui/native";
 import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
 import { AgeGate } from "@/components/AgeGate";
+import { Charts } from "@/components/Charts";
 import { t } from "@/i18n";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { openPath } from "@/lib/links";
@@ -38,6 +39,7 @@ function Root() {
   const { ageConfirmed, confirmAge, user } = useAuth();
   useOpenTappedPush();
   return (
+    <Charts>
     <LiveProvider signedIn={Boolean(user)}>
       <StatusBar style={scheme === "dark" ? "light" : "dark"} />
       <Stack
@@ -58,6 +60,7 @@ function Root() {
       <Toaster closeLabel={t("common.close")} offset={insets.top + 8} />
       {ageConfirmed === false && <AgeGate onConfirm={() => void confirmAge()} />}
     </LiveProvider>
+    </Charts>
   );
 }
 
