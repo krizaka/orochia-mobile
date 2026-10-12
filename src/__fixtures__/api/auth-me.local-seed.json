@@ -1,0 +1,21 @@
+{
+  "user": {
+    "id": "1136c936-a0cb-425e-a047-a3ca08c79f3f",
+    "username": "alex_vance",
+    "email": "alex@sanctuary.io",
+    "role": "MEMBER",
+    "isAgeVerified": true,
+    "isVerified": true,
+    "emailVerified": true,
+    "displayName": "Alex Vance",
+    "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "bannerUrl": null,
+    "bio": "Patron of independent cinema and underground sound.",
+    "websiteUrl": null,
+    "directMessagePrivacy": "EVERYONE",
+    "payoutAddressCrypto": null,
+    "balanceCents": 0,
+    "unlockedVideosCount": 2
+  },
+  "demoMode": true
+}

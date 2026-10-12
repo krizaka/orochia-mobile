@@ -55,7 +55,8 @@
           "color": "#a855f7",
           "defaultChannel": "default"
         }
-      ]
+      ],
+      "./plugins/with-scene-lifecycle"
     ],
     "scheme": "orochia",
     "backgroundColor": "#09090b",
