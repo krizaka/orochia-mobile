@@ -1,14 +1,10 @@
-// Values that differ per build and never live in git, read by EAS Build (or a local build) from the environment:
-//   EAS_PROJECT_ID        the Expo project (push tokens are issued for it) — `eas init` prints it
-//   GOOGLE_SERVICES_JSON  path to google-services.json (Firebase, for push on Android) — an EAS file secret
+// The Expo project (owner + extra.eas.projectId, which push tokens are issued for) is in app.json — public, not a secret.
+// One value differs per build and never lives in git, read by EAS Build (or a local build) from the environment:
+//   GOOGLE_SERVICES_JSON  path to google-services.json (Firebase, for push on Android) — an EAS file environment variable
 module.exports = ({ config }) => ({
   ...config,
   android: {
     ...config.android,
     ...(process.env.GOOGLE_SERVICES_JSON ? { googleServicesFile: process.env.GOOGLE_SERVICES_JSON } : {}),
-  },
-  extra: {
-    ...config.extra,
-    ...(process.env.EAS_PROJECT_ID ? { eas: { projectId: process.env.EAS_PROJECT_ID } } : {}),
   },
 });

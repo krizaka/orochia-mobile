@@ -81,12 +81,14 @@ EXPO_PUBLIC_OROCHIA_URL=http://192.168.1.10:3000 npx expo start   # your machine
 Pushes go through the Expo Push Service, which delivers with **Firebase Cloud Messaging** on Android and **APNs** on
 iOS; the Orochia server only needs the phone's Expo token (see
 [Orochia — Notifications & Realtime](https://github.com/krizaka/orochia/blob/main/docs/NOTIFICATIONS.md)). To turn
-them on, once:
+them on (done for Android on 2026-10-12 — Expo project `@oussamaabid/orochia`, Firebase `orochia-2026`):
 
-1. `npx eas-cli@latest init` — creates the Expo project; set its id as `EAS_PROJECT_ID` in the EAS environment.
-2. Firebase project → Android app `com.krizaka.orochia` → `google-services.json` as the EAS file secret
-   `GOOGLE_SERVICES_JSON`; `eas credentials` → Android → upload the FCM V1 service-account key.
-3. `eas credentials` → iOS → Push Notifications (APNs key from the Apple Developer account).
+1. The Expo project is in `app.json` (`owner`, `extra.eas.projectId`) — public, push tokens are issued for it.
+2. Firebase project → Android app `com.krizaka.orochia` → `google-services.json` as the EAS **file** environment
+   variable `GOOGLE_SERVICES_JSON` (never in git; `app.config.js` reads it); the FCM V1 service-account key is uploaded
+   to the project's Android credentials (`eas credentials` → Android → FCM V1).
+3. iOS: `eas credentials` → iOS → Push Notifications (APNs key from the Apple Developer account) — once Apple activates
+   the account.
 
 Without them the app runs the same, with real-time notifications in the foreground and no push.
 
@@ -94,7 +96,7 @@ Without them the app runs the same, with real-time notifications in the foregrou
 
 | Platform | How |
 | :--- | :--- |
-| **Android** | A `v*` tag builds a preview APK in CI and attaches it to the GitHub release — install it directly on a device |
+| **Android** | A `v*` tag builds a preview APK in CI and attaches it to the GitHub release — install it directly on a device. `npx eas-cli@latest build --platform android --profile preview` builds the same APK on EAS, signed with the project's EAS keystore and with push (FCM) |
 | **iOS** | `npx eas-cli@latest build --platform ios` with the organisation's Apple Developer account (TestFlight / ad hoc) |
 
 Store listings: Apple and Google do not distribute apps whose purpose is sexually explicit content. Orochia is for
