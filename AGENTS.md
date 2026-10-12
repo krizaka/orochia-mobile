@@ -41,4 +41,8 @@ Before touching an Expo, EAS or React Native API, read the docs for this project
 `npm run check` is green (lint, type-check, tests, iOS and Android bundles), and the change is checked on a device or
 simulator in both themes.
 
+**No test, not done.** Every feature and every fix ships with its tests (Jest + `jest-expo` + Testing Library): a unit
+test for logic, a render test for a screen or a component; a fix starts with a failing test that reproduces the bug.
+CI runs them and must be green — a test is never skipped or weakened to get there.
+
 PR captures (screenshots, recordings, metrics) are never committed: they go to Bunny Storage under `pr-assets/<repo>/<pr-or-topic>/` with [`scripts/pr-assets.mjs`](https://github.com/krizaka/krizaka-com/blob/main/scripts/pr-assets.mjs) of krizaka-com (its AGENTS.md §5.1), and the PR body links their CDN URLs. `docs/screenshots/` is git-ignored.
