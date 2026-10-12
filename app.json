@@ -2,6 +2,7 @@
   "expo": {
     "name": "Orochia",
     "slug": "orochia",
+    "owner": "oussamaabid",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -62,6 +63,12 @@
     "backgroundColor": "#09090b",
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4862d613-fa21-4d43-9b5d-85ec96818187"
+      }
     }
   }
 }

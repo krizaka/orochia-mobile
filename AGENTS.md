@@ -28,7 +28,7 @@
   it with `useLiveEvents` (Messages: conversations, presence, typing, receipts — rules and events in krizaka/orochia
   `docs/NOTIFICATIONS.md` §5; message ordering and merging in `src/lib/chat.ts`, the same as the web's); in the background, push (`src/lib/push.ts`, Expo token registered at sign-in, forgotten at sign-out).
   A tapped push opens its `path` through `openPath` (`src/lib/links.ts`). Push needs a development or EAS build, never
-  Expo Go; secrets (`EAS_PROJECT_ID`, `GOOGLE_SERVICES_JSON`) come from the build environment (`app.config.js`).
+  Expo Go; the Expo project (`owner`, `extra.eas.projectId`) is in `app.json`; `google-services.json` comes from the EAS file environment variable `GOOGLE_SERVICES_JSON` (`app.config.js`).
 
 ## Expo changes with every SDK
 
