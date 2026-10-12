@@ -1,0 +1,35 @@
+# Smoke flow: a fresh install passes the 18+ gate, signs in from the "You" tab and reads the feed.
+# Run against a development build on a simulator, with an account of the Orochia the build points at:
+#   maestro test .maestro/smoke.yaml -e OROCHIA_ID=<e-mail or username> -e OROCHIA_PASSWORD=<password>
+# (a local Orochia on its development seed: alex@sanctuary.io — see krizaka/orochia `npm run db:seed`).
+appId: com.krizaka.orochia
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+- extendedWaitUntil:
+    visible: "I am 18 or older — enter"
+    timeout: 30000
+- tapOn: "I am 18 or older — enter"
+- extendedWaitUntil:
+    visible: "Trending now"
+    timeout: 20000
+- tapOn: "You.*"
+- tapOn: "E-mail or username"
+- inputText: ${OROCHIA_ID}
+- tapOn: "Password"
+- inputText: ${OROCHIA_PASSWORD}
+# The password field submits the form (onSubmitEditing), like the keyboard's return key on a phone.
+- pressKey: Enter
+# iOS offers to save the password (the field is a real password field): decline.
+- tapOn:
+    text: "Not Now"
+    optional: true
+- extendedWaitUntil:
+    visible: "Wallet"
+    timeout: 20000
+# A creator's or an administrator's earnings card comes first: scroll to the notifications.
+- scrollUntilVisible:
+    element: "Notifications"
+- tapOn: "Home.*"
+- assertVisible: "Trending now"

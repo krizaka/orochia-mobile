@@ -72,7 +72,8 @@
       "^@krizaka/ui/native$": "<rootDir>/node_modules/@krizaka/ui/dist/native.js",
       "^@krizaka/tokens/native$": "<rootDir>/node_modules/@krizaka/tokens/dist/native.js",
       "^@krizaka/orochia-design-system/tokens$": "<rootDir>/node_modules/@krizaka/orochia-design-system/dist/tokens.js",
-      "^@krizaka/charts/native$": "<rootDir>/node_modules/@krizaka/charts/dist/native.js"
+      "^@krizaka/charts/native$": "<rootDir>/node_modules/@krizaka/charts/dist/native.js",
+      "^@krizaka/intl$": "<rootDir>/node_modules/@krizaka/intl/dist/index.js"
     }
   }
 }

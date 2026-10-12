@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "balanceCents": 0,
+  "heldCents": 0,
+  "packs": [
+    {
+      "id": "starter",
+      "priceCents": 1000,
+      "creditsCents": 1000
+    },
+    {
+      "id": "plus",
+      "priceCents": 2500,
+      "creditsCents": 2600
+    },
+    {
+      "id": "pro",
+      "priceCents": 5000,
+      "creditsCents": 5400
+    },
+    {
+      "id": "max",
+      "priceCents": 10000,
+      "creditsCents": 11000
+    }
+  ],
+  "gateways": [],
+  "testTopups": true,
+  "history": []
+}

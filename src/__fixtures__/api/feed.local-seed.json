@@ -1,0 +1,120 @@
+{
+  "success": true,
+  "videos": [
+    {
+      "id": "b5a31661-e588-47eb-9f21-c2a0b1f678e0",
+      "title": "Rehearsal Tapes \u2014 Contacts Only",
+      "creatorName": "Mia Sterling",
+      "creatorUsername": "miasterling",
+      "creatorAvatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80",
+      "previewAnimationUrl": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=400&q=80",
+      "durationSeconds": 1210,
+      "visibility": "CONTACTS_ONLY",
+      "minTipAmountCents": 0,
+      "viewsCount": 380,
+      "tipsCount": 0,
+      "likesCount": 0,
+      "commentsCount": 0
+    },
+    {
+      "id": "beddc007-9a95-4338-b53d-6223a2f34d82",
+      "title": "Midnight Noir \u2014 Acoustic Lounge Session",
+      "creatorName": "Mia Sterling",
+      "creatorUsername": "miasterling",
+      "creatorAvatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+      "previewAnimationUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=400&q=80",
+      "durationSeconds": 1980,
+      "visibility": "PUBLIC",
+      "minTipAmountCents": 0,
+      "viewsCount": 5210,
+      "tipsCount": 1,
+      "likesCount": 2,
+      "commentsCount": 2
+    },
+    {
+      "id": "62a44c9d-999c-4285-b881-afd9f0185075",
+      "title": "Studio Diaries \u2014 Approved Followers Edition",
+      "creatorName": "Elena Vox",
+      "creatorUsername": "elenavox",
+      "creatorAvatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80",
+      "previewAnimationUrl": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=400&q=80",
+      "durationSeconds": 960,
+      "visibility": "APPROVED_FOLLOWERS_ONLY",
+      "minTipAmountCents": 0,
+      "viewsCount": 640,
+      "tipsCount": 0,
+      "likesCount": 0,
+      "commentsCount": 0
+    }
+  ],
+  "featured": {
+    "id": "4f650a42-51c3-4259-8874-8bac10b939ed",
+    "username": "elenavox",
+    "isVerified": true,
+    "displayName": "Elena Vox",
+    "bio": "Visual artist, nocturnal producer & independent 4K cinema director.",
+    "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+    "bannerUrl": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1600&q=80",
+    "websiteUrl": null,
+    "minTipAmountCents": 1000,
+    "totalTipsEarnedCents": 3150,
+    "isCreator": true,
+    "links": [],
+    "totalViews": 12680,
+    "videosCount": 4,
+    "patrons": 2
+  },
+  "tags": [
+    {
+      "tag": "4k",
+      "count": 2
+    },
+    {
+      "tag": "acoustic",
+      "count": 2
+    },
+    {
+      "tag": "behind-the-scenes",
+      "count": 1
+    },
+    {
+      "tag": "cinematic",
+      "count": 1
+    },
+    {
+      "tag": "concert",
+      "count": 1
+    },
+    {
+      "tag": "directors-cut",
+      "count": 1
+    },
+    {
+      "tag": "exclusive",
+      "count": 1
+    },
+    {
+      "tag": "lounge",
+      "count": 1
+    },
+    {
+      "tag": "neon",
+      "count": 1
+    },
+    {
+      "tag": "rehearsal",
+      "count": 1
+    },
+    {
+      "tag": "studio",
+      "count": 1
+    },
+    {
+      "tag": "tokyo",
+      "count": 1
+    }
+  ]
+}
