@@ -70,7 +70,7 @@ It talks to `https://dev.orochia.com` by default. To use a local Orochia (`npm r
 [krizaka/orochia](https://github.com/krizaka/orochia)):
 
 ```bash
-EXPO_PUBLIC_OROCHIA_URL=http://192.168.1.10:3000 npx expo start   # your machine's address, reachable from the phone
+EXPO_PUBLIC_APP_URL=http://192.168.1.10:3000 npx expo start   # your machine's address, reachable from the phone
 ```
 
 `expo-video` and `expo-secure-store` are native modules: use a development build (`npx expo run:ios` /
@@ -85,7 +85,7 @@ them on (done for Android on 2026-10-12 — Expo project `@oussamaabid/orochia`,
 
 1. The Expo project is in `app.json` (`owner`, `extra.eas.projectId`) — public, push tokens are issued for it.
 2. Firebase project → Android app `com.krizaka.orochia` → `google-services.json` as the EAS **file** environment
-   variable `GOOGLE_SERVICES_JSON` (never in git; `app.config.js` reads it); the FCM V1 service-account key is uploaded
+   variable `PUSH_ANDROID_CONFIG_FILE` (never in git; `app.config.js` reads it); the FCM V1 service-account key is uploaded
    to the project's Android credentials (`eas credentials` → Android → FCM V1).
 3. iOS: `eas credentials` → iOS → Push Notifications (APNs key from the Apple Developer account) — once Apple activates
    the account.
@@ -111,7 +111,7 @@ src/components/          business components only: tiles, stories rail and viewe
                          (every UI component comes from @krizaka/ui/native)
 src/lib/                 api (bearer session, typed errors), auth (sign-in, sign-up, e-mail verification, secure storage), signup (the sign-up API client), theme (spacing, signature
                          gradient), auction-presenter (shared with the web), useApi / usePolling, config
-                         (EXPO_PUBLIC_OROCHIA_URL)
+                         (EXPO_PUBLIC_APP_URL)
 src/i18n/en.json         every user-facing string (typed keys)
 ```
 

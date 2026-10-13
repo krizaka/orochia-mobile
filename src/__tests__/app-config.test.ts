@@ -6,10 +6,10 @@ const appJson = require("../../app.json") as { expo: Record<string, any> };
 const appConfig = require("../../app.config.js") as (ctx: { config: Record<string, any> }) => Record<string, any>;
 
 describe("app config (EAS project, push)", () => {
-  const saved = process.env.GOOGLE_SERVICES_JSON;
+  const saved = process.env.PUSH_ANDROID_CONFIG_FILE;
   afterEach(() => {
-    if (saved === undefined) delete process.env.GOOGLE_SERVICES_JSON;
-    else process.env.GOOGLE_SERVICES_JSON = saved;
+    if (saved === undefined) delete process.env.PUSH_ANDROID_CONFIG_FILE;
+    else process.env.PUSH_ANDROID_CONFIG_FILE = saved;
   });
 
   it("names the EAS project push tokens are issued for, in git", () => {
@@ -21,9 +21,9 @@ describe("app config (EAS project, push)", () => {
   });
 
   it("takes google-services.json from the build environment only, never from the repository", () => {
-    delete process.env.GOOGLE_SERVICES_JSON;
+    delete process.env.PUSH_ANDROID_CONFIG_FILE;
     expect(appConfig({ config: appJson.expo }).android.googleServicesFile).toBeUndefined();
-    process.env.GOOGLE_SERVICES_JSON = "/eas/google-services.json";
+    process.env.PUSH_ANDROID_CONFIG_FILE = "/eas/google-services.json";
     const config = appConfig({ config: appJson.expo });
     expect(config.android.googleServicesFile).toBe("/eas/google-services.json");
     expect(config.android.package).toBe("com.krizaka.orochia");

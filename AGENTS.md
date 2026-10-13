@@ -33,7 +33,11 @@
   (`src/lib/live-updates.ts`, numbers never go back down), then a reload brings what is the viewer's — no polling.
   Preferences by kind (`orochia://settings/notifications`, `src/lib/notification-prefs.ts`) write the account's
   `inAppOff` list, which covers the bell, the toasts and the push. Push needs a development or EAS build, never
-  Expo Go; the Expo project (`owner`, `extra.eas.projectId`) is in `app.json`; `google-services.json` comes from the EAS file environment variable `GOOGLE_SERVICES_JSON` (`app.config.js`).
+  Expo Go; the Expo project (`owner`, `extra.eas.projectId`) is in `app.json`; `google-services.json` comes from the EAS file environment variable `PUSH_ANDROID_CONFIG_FILE` (`app.config.js`).
+- **Environment variables are named by bounded context** (krizaka/.github#46): `EXPO_PUBLIC_<CONTEXT>_<THING>` for what the
+  JavaScript reads (`EXPO_PUBLIC_APP_URL`, validated in `src/lib/config.ts`, the app's one env module), `<CONTEXT>_<THING>` for
+  build inputs (`PUSH_ANDROID_CONFIG_FILE`) — never a product (`OROCHIA_…`) nor a vendor (`GOOGLE_…`, `EXPO_…`).
+  `src/__tests__/env.test.ts` refuses another name.
 
 ## Expo changes with every SDK
 
