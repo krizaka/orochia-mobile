@@ -46,6 +46,7 @@ function Root() {
         <Stack.Screen name="auctions/[id]" options={{ title: "" }} />
         <Stack.Screen name="messages/[id]" options={{ title: "" }} />
         <Stack.Screen name="settings/notifications" options={{ title: t("prefs.title") }} />
+        <Stack.Screen name="auth/sign-up" options={{ title: "" }} />
       </Stack>
       <Toaster closeLabel={t("common.close")} offset={insets.top + 8} />
       {ageConfirmed === false && <AgeGate onConfirm={() => void confirmAge()} />}

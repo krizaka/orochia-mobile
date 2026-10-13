@@ -18,19 +18,44 @@ export function setSignedOutHandler(handler: (() => void) | null) {
   onSignedOut = handler;
 }
 
-/** Calls the Orochia API with the session, as JSON. A 401 on a signed-in call drops the stored session. */
-export async function api<T>(path: string, init: { method?: string; body?: unknown; signal?: AbortSignal } = {}): Promise<T> {
+/** How long a call may wait for an answer: past it, the app says Orochia is out of reach instead of waiting forever. */
+export const API_TIMEOUT_MS = 20_000;
+
+/**
+ * Calls the Orochia API with the session, as JSON. A 401 on a signed-in call drops the stored session. A call that gets
+ * no answer within {@link API_TIMEOUT_MS} fails like a network error (a TypeError); one cancelled by its caller's
+ * `signal` rejects as cancelled.
+ */
+export async function api<T>(path: string, init: { method?: string; body?: unknown; signal?: AbortSignal; headers?: Record<string, string> } = {}): Promise<T> {
   const token = await readToken();
-  const res = await fetch(`${OROCHIA_URL}${path}`, {
-    method: init.method ?? "GET",
-    headers: {
-      Accept: "application/json",
-      ...(init.body !== undefined ? { "Content-Type": "application/json" } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
-    signal: init.signal,
-  });
+  const controller = new AbortController();
+  const cancel = () => controller.abort();
+  init.signal?.addEventListener("abort", cancel);
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, API_TIMEOUT_MS);
+  let res: Response;
+  try {
+    res = await fetch(`${OROCHIA_URL}${path}`, {
+      method: init.method ?? "GET",
+      headers: {
+        Accept: "application/json",
+        ...(init.body !== undefined ? { "Content-Type": "application/json" } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...init.headers,
+      },
+      body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (timedOut) throw new TypeError("Orochia did not answer in time");
+    throw error;
+  } finally {
+    clearTimeout(timer);
+    init.signal?.removeEventListener("abort", cancel);
+  }
   const body = (await res.json().catch(() => ({}))) as Record<string, unknown>;
   if (res.status === 401 && token) {
     await clearToken();

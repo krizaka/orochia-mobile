@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { ThemeProvider } from "@krizaka/ui/native";
 import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
+import { router } from "expo-router";
 import Me from "@/app/(tabs)/me";
 import { AuthProvider } from "@/lib/auth";
 import { clearToken, readToken, saveToken } from "@/lib/session";
@@ -68,14 +69,29 @@ describe("You (the account tab)", () => {
     expect(await readToken()).toBeNull();
   });
 
-  it("asks to confirm the e-mail first when the account is not verified", async () => {
-    answerFetch({ "/api/auth/login": { success: true, emailVerified: false, token: "t", expiresIn: 1 } });
+  it("shows the verification step when the account's e-mail is not verified yet, and lets another account sign in", async () => {
+    answerFetch({
+      "/api/auth/login": { success: true, emailVerified: false, token: "unverified-session", expiresIn: 604800 },
+      "/api/auth/me": { user: { ...meSeed.user, email: "new@example.com", emailVerified: false } },
+    });
     await show();
     await fireEvent.changeText(await screen.findByPlaceholderText("E-mail or username"), "new@example.com");
     await fireEvent.changeText(screen.getByPlaceholderText("Password"), "pw");
     await fireEvent.press(screen.getByRole("button", { name: "Sign in" }));
-    expect(await screen.findByText("Confirm your e-mail first — the link is in your inbox.")).toBeTruthy();
+    expect(await screen.findByText("Check your inbox")).toBeTruthy();
+    expect(screen.getByText("We sent a link to new@example.com. Open it to confirm your address — then come back here.")).toBeTruthy();
+    expect(await readToken()).toBe("unverified-session");
+    await fireEvent.press(screen.getByRole("button", { name: "Use another account" }));
+    expect(await screen.findByRole("button", { name: "Sign in" })).toBeTruthy();
     expect(await readToken()).toBeNull();
+  });
+
+  it("creates an account in the app, not on the website", async () => {
+    answerFetch({});
+    await show();
+    await fireEvent.press(await screen.findByRole("button", { name: "Create an account" }));
+    expect(router.push).toHaveBeenCalledWith("/auth/sign-up");
+    expect(screen.queryByText(/orochia\.com/)).toBeNull();
   });
 
   it("opens on the account when a stored session is still accepted, and signs out", async () => {

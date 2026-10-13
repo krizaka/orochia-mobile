@@ -5,8 +5,10 @@ import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
 import { Bell, ExternalLink, LogOut, Settings, Wallet as WalletIcon } from "lucide-react-native";
 import { Avatar, Button, Card, EmptyState, Mascot, Txt, useTheme } from "@krizaka/ui/native";
+import { BusyMark } from "@/components/BusyMark";
 import { EarningsCard } from "@/components/EarningsCard";
 import { OrochiaMark } from "@/components/OrochiaMark";
+import { VerifyEmail } from "@/components/VerifyEmail";
 import { t, usd } from "@/i18n";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -33,10 +35,7 @@ function SignIn() {
       await signIn(identifier.trim(), password);
     } catch (e) {
       const status = e instanceof ApiError ? e.status : 0;
-      const code = e instanceof ApiError ? e.body.code : null;
-      setError(
-        code === "EMAIL_NOT_VERIFIED" ? t("me.errors.unverified") : status === 401 ? t("me.errors.credentials") : status === 403 ? t("me.errors.suspended") : status === 429 ? t("me.errors.tooMany") : t("me.errors.network"),
-      );
+      setError(status === 401 ? t("me.errors.credentials") : status === 403 ? t("me.errors.suspended") : status === 429 ? t("me.errors.tooMany") : t("me.errors.network"));
     } finally {
       setBusy(false);
     }
@@ -69,8 +68,9 @@ function SignIn() {
         style={field}
       />
       {error && <Txt tone="danger">{error}</Txt>}
+      {busy && <BusyMark label={t("me.signingIn")} />}
       <Button label={t("me.signIn")} variant="primary" size="lg" onPress={withTap(() => void submit())} loading={busy} disabled={!identifier || !password} />
-      <Button label={t("me.noAccount")} variant="secondary" size="lg" onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/auth/register`))} />
+      <Button label={t("me.createAccount")} variant="secondary" size="lg" onPress={withTap(() => router.push("/auth/sign-up"))} />
     </View>
   );
 }
@@ -139,13 +139,17 @@ function Account() {
   );
 }
 
-/** The account tab: sign in (a native session in secure storage), then the wallet, a creator's earnings (charts), notifications and sign out. */
+/**
+ * The account tab: sign in (a native session in secure storage) or create an account (`/auth/sign-up`), the e-mail
+ * verification step while the address is not confirmed, then the wallet, a creator's earnings (charts), notifications
+ * and sign out.
+ */
 export default function Me() {
   const insets = useSafeAreaInsets();
-  const { user } = useAuth();
+  const { user, pending } = useAuth();
   return (
     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
-      <View style={{ flex: 1, paddingTop: insets.top + space.lg, paddingHorizontal: space.lg }}>{user ? <Account /> : <SignIn />}</View>
+      <View style={{ flex: 1, paddingTop: insets.top + space.lg, paddingHorizontal: space.lg }}>{user ? <Account /> : pending ? <ScrollView><VerifyEmail /></ScrollView> : <SignIn />}</View>
     </KeyboardAvoidingView>
   );
 }
