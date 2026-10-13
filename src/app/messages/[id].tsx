@@ -207,7 +207,7 @@ export default function Thread() {
               </View>
             ) : null
           }
-          ListFooterComponent={hasMore ? <Button label={t("messages.loadOlder")} variant="ghost" size="sm" onPress={() => void loadOlder()} /> : null}
+          ListFooterComponent={hasMore ? <Button label={t("messages.loadOlder")} variant="ghost" size="sm" hitSlop={6} onPress={() => void loadOlder()} /> : null}
           ListEmptyComponent={other ? <EmptyState icon={<MessageCircle size={24} color={theme.accent} />} title={t("messages.startTitle")} description={t("messages.startBody", { username: other.username })} /> : null}
           renderItem={({ item: m }) => {
             const mine = m.senderId === myId;

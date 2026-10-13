@@ -98,7 +98,7 @@ export function VerifyEmail({ onVerified }: { onVerified?: () => void }) {
       {devVerificationUrl && (
         <Button label={t("verify.demo")} variant="outline" size="lg" onPress={withTap(() => void confirmDemo())} loading={busy === "demo"} disabled={busy !== null} />
       )}
-      <Button label={t("verify.otherAccount")} variant="ghost" size="md" onPress={withTap(() => void signOut())} disabled={busy !== null} />
+      <Button label={t("verify.otherAccount")} variant="ghost" size="md" hitSlop={2} onPress={withTap(() => void signOut())} disabled={busy !== null} />
     </View>
   );
 }

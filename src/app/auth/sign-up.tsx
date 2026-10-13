@@ -200,7 +200,7 @@ function SignUpFormView() {
           {words}
         </Txt>
         {result.suggestion && result.reason !== "format" && (
-          <Button label={t("signUp.useSuggestion", { suggestion: result.suggestion })} variant="outline" size="sm" shape="pill" onPress={withTap(() => setUsername(result.suggestion ?? ""))} />
+          <Button label={t("signUp.useSuggestion", { suggestion: result.suggestion })} variant="outline" size="sm" shape="pill" hitSlop={6} onPress={withTap(() => setUsername(result.suggestion ?? ""))} />
         )}
       </View>
     );
@@ -393,7 +393,7 @@ function SignUpFormView() {
       )}
       {busy && <BusyMark label={t("signUp.submitting")} />}
       <Button label={t("signUp.submit")} variant="primary" size="lg" onPress={withTap(() => void submit())} loading={busy} disabled={!ready} />
-      <Button label={t("signUp.haveAccount")} variant="ghost" size="md" onPress={withTap(() => (router.canGoBack() ? router.back() : router.replace("/me")))} />
+      <Button label={t("signUp.haveAccount")} variant="ghost" size="md" hitSlop={2} onPress={withTap(() => (router.canGoBack() ? router.back() : router.replace("/me")))} />
     </View>
   );
 }

@@ -27,7 +27,9 @@
     "trending": "Trending now",
     "empty": "The first videos are on their way",
     "emptyBody": "Creators are setting up their spaces. Pull to refresh.",
-    "error": "Orochia is out of reach. Pull to try again."
+    "error": "Orochia is out of reach. Pull to try again.",
+    "storyPrevious": "Previous story",
+    "storyNext": "Next story"
   },
   "visibility": {
     "PUBLIC": "Free",
