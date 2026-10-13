@@ -33,6 +33,10 @@ jest.mock("expo-notifications", () => ({
   requestPermissionsAsync: jest.fn(async () => notifications.asked),
   getExpoPushTokenAsync: jest.fn(async () => ({ data: "ExponentPushToken[device-1]" })),
   getLastNotificationResponse: jest.fn(() => notifications.lastResponse),
+  // The system keeps the launch response across launches until it is cleared.
+  clearLastNotificationResponse: jest.fn(() => {
+    notifications.lastResponse = null;
+  }),
   addNotificationResponseReceivedListener: jest.fn((listener: (r: Response) => void) => {
     notifications.listener = listener;
     return { remove: () => (notifications.listener = null) };
@@ -128,5 +132,13 @@ describe("a tapped notification", () => {
     await renderHook(() => useOpenTappedPush());
     notifications.listener?.(notifications.lastResponse);
     expect(opened).toHaveLength(1);
+  });
+
+  it("a later launch does not reopen a notification already opened (the launch response is cleared)", async () => {
+    notifications.lastResponse = tap("n3", "/messages?c=0b9c1f2e-3333-4333-8333-333333333333");
+    await renderHook(() => useOpenTappedPush());
+    expect(opened).toEqual(["/messages?c=0b9c1f2e-3333-4333-8333-333333333333"]);
+    // A new process starts with an empty memory of opened notifications: only the system's record could reopen it.
+    expect(Notifications.getLastNotificationResponse()).toBeNull();
   });
 });

@@ -63,6 +63,8 @@ function open(response: Notifications.NotificationResponse | null | undefined) {
   const id = response.notification.request.identifier;
   if (handled.has(id)) return;
   handled.add(id);
+  // The system keeps the launch response across launches: forget it, or every later start reopens that screen.
+  Notifications.clearLastNotificationResponse();
   openPath(path);
 }
 
