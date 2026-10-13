@@ -114,8 +114,8 @@ function StoryViewer({ rings, start, onClose }: { rings: StoryRing[]; start: num
           </View>
         </View>
         <View style={styles.zones}>
-          <Pressable style={{ flex: 1 }} onPress={previous} />
-          <Pressable style={{ flex: 2 }} onPress={next} />
+          <Pressable accessibilityRole="button" accessibilityLabel={t("home.storyPrevious")} style={{ flex: 1 }} onPress={previous} />
+          <Pressable accessibilityRole="button" accessibilityLabel={t("home.storyNext")} style={{ flex: 2 }} onPress={next} />
         </View>
         {story.caption ? (
           <View style={[styles.caption, { backgroundColor: theme.scrim, paddingBottom: insets.bottom + space.lg }]}>
