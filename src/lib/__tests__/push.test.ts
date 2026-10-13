@@ -19,7 +19,12 @@ const notifications = {
 const opened: string[] = [];
 const apiCalls: { path: string; body: unknown; method?: string }[] = [];
 
-jest.mock("expo-device", () => ({ isDevice: true }));
+const mockDevice = { isDevice: true };
+jest.mock("expo-device", () => ({
+  get isDevice() {
+    return mockDevice.isDevice;
+  },
+}));
 jest.mock("expo-constants", () => ({ __esModule: true, default: { expoConfig: { extra: { eas: { projectId: "project-1" } } } } }));
 jest.mock("expo-notifications", () => ({
   AndroidImportance: { HIGH: 4 },
@@ -28,6 +33,10 @@ jest.mock("expo-notifications", () => ({
   requestPermissionsAsync: jest.fn(async () => notifications.asked),
   getExpoPushTokenAsync: jest.fn(async () => ({ data: "ExponentPushToken[device-1]" })),
   getLastNotificationResponse: jest.fn(() => notifications.lastResponse),
+  // The system keeps the launch response across launches until it is cleared.
+  clearLastNotificationResponse: jest.fn(() => {
+    notifications.lastResponse = null;
+  }),
   addNotificationResponseReceivedListener: jest.fn((listener: (r: Response) => void) => {
     notifications.listener = listener;
     return { remove: () => (notifications.listener = null) };
@@ -65,6 +74,17 @@ describe("registering the phone", () => {
     expect(Notifications.setNotificationChannelAsync).toHaveBeenCalledWith("default", expect.objectContaining({ importance: 4 }));
     expect(apiCalls).toEqual([{ path: "/api/me/devices", method: "POST", body: { token: "ExponentPushToken[device-1]", platform: "android" } }]);
     Object.defineProperty(Platform, "OS", { value: "ios", configurable: true });
+  });
+
+  it("registers from an Android emulator (Google APIs: FCM works there), never from an iOS simulator", async () => {
+    mockDevice.isDevice = false;
+    Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+    expect(await registerForPush()).toBe("ExponentPushToken[device-1]");
+    apiCalls.length = 0;
+    Object.defineProperty(Platform, "OS", { value: "ios", configurable: true });
+    expect(await registerForPush()).toBeNull();
+    expect(apiCalls).toEqual([]);
+    mockDevice.isDevice = true;
   });
 
   it("does not ask again once granted", async () => {
@@ -112,5 +132,13 @@ describe("a tapped notification", () => {
     await renderHook(() => useOpenTappedPush());
     notifications.listener?.(notifications.lastResponse);
     expect(opened).toHaveLength(1);
+  });
+
+  it("a later launch does not reopen a notification already opened (the launch response is cleared)", async () => {
+    notifications.lastResponse = tap("n3", "/messages?c=0b9c1f2e-3333-4333-8333-333333333333");
+    await renderHook(() => useOpenTappedPush());
+    expect(opened).toEqual(["/messages?c=0b9c1f2e-3333-4333-8333-333333333333"]);
+    // A new process starts with an empty memory of opened notifications: only the system's record could reopen it.
+    expect(Notifications.getLastNotificationResponse()).toBeNull();
   });
 });
