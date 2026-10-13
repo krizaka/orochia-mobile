@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { api, ApiError, setSignedOutHandler } from "./api";
+import { clearNativeCookies } from "./cookie-jar";
 import { clearToken, readToken, saveToken } from "./session";
 import { registerForPush, unregisterPush } from "./push";
 import { register, type SignUpForm, type SignUpInput } from "./signup";
@@ -72,6 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let live = true;
     setSignedOutHandler(() => {
+      void clearNativeCookies();
       setUser(null);
       setPending(null);
     });
@@ -89,6 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = useCallback(
     async (identifier: string, password: string) => {
+      await clearNativeCookies();
       const res = await api<{ token?: string; emailVerified: boolean }>("/api/auth/login", { method: "POST", body: { identifier, password, client: "native" } });
       if (!res.token) throw new ApiError(500, { error: "No session token" });
       await saveToken(res.token);
@@ -100,6 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = useCallback(
     async (input: SignUpInput, form: SignUpForm, challengeToken: string | null) => {
+      await clearNativeCookies();
       const res = await register(input, form, challengeToken);
       await saveToken(res.token);
       setDevVerificationUrl(res.devVerificationUrl ?? null);
@@ -120,9 +124,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (res.alreadyVerified) await checkVerified();
   }, [checkVerified]);
 
+  /**
+   * Signs out for good (krizaka/orochia#127): the push token, then the session revoked on the server (a copy of the
+   * token opens nothing any more), the token dropped from secure storage, the native cookie jar emptied — and every
+   * screen's data forgotten (`useApi` listens to the session). The next person to sign in on this phone starts clean.
+   */
   const signOut = useCallback(async () => {
     await unregisterPush();
+    await api("/api/auth/logout", { method: "POST" }).catch(() => undefined);
     await clearToken();
+    await clearNativeCookies();
     setUser(null);
     setPending(null);
     setDevVerificationUrl(null);

@@ -22,7 +22,7 @@ export function setSignedOutHandler(handler: (() => void) | null) {
 export const API_TIMEOUT_MS = 20_000;
 
 /**
- * Calls the Orochia API with the session, as JSON. A 401 on a signed-in call drops the stored session. A call that gets
+ * Calls the Orochia API with the session (a bearer token, never a cookie), as JSON. A 401 on a signed-in call drops the stored session. A call that gets
  * no answer within {@link API_TIMEOUT_MS} fails like a network error (a TypeError); one cancelled by its caller's
  * `signal` rejects as cancelled.
  */
@@ -47,6 +47,9 @@ export async function api<T>(path: string, init: { method?: string; body?: unkno
         ...init.headers,
       },
       body: init.body !== undefined ? JSON.stringify(init.body) : undefined,
+      // No cookie jar: the bearer is the only session. React Native's fetch otherwise keeps and replays cookies
+      // (iOS's jar outlives sign-out) — a stale cookie once won over the next account's bearer (krizaka/orochia#127).
+      credentials: "omit",
       signal: controller.signal,
     });
   } catch (error) {

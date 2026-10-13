@@ -63,6 +63,15 @@ export function setOnMessagesTab(value: boolean) {
 export function LiveProvider({ signedIn, children }: { signedIn: boolean; children: React.ReactNode }) {
   const [unread, setUnread] = useState(0);
   const [messagesUnread, setMessagesUnread] = useState(0);
+  // Signed out: nothing of the previous account's badges carries over to the next one (krizaka/orochia#127).
+  const [wasSignedIn, setWasSignedIn] = useState(signedIn);
+  if (wasSignedIn !== signedIn) {
+    setWasSignedIn(signedIn);
+    if (!signedIn) {
+      setUnread(0);
+      setMessagesUnread(0);
+    }
+  }
   const { theme } = useTheme();
   const accent = useRef(theme.accent);
   useEffect(() => {

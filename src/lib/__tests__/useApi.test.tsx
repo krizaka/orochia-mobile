@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, renderHook, waitFor } from "@testing-library/react-native";
 import { useApi } from "@/lib/useApi";
-import { clearToken } from "@/lib/session";
+import { clearToken, saveToken } from "@/lib/session";
 import { answerFetch } from "@/test/api";
 import { resetStorage } from "@/test/storage";
 import feedSeed from "@/__fixtures__/api/feed.local-seed.json";
@@ -62,5 +62,33 @@ describe("useApi", () => {
     });
     expect(result.current.data?.videos).toHaveLength(3);
     expect(result.current.error).toBeNull();
+  });
+
+  it("forgets one account's data when the session ends, and loads the next account's (krizaka/orochia#127)", async () => {
+    await saveToken("session-of-a");
+    answerFetch({ "/api/feed": feedSeed });
+    const { result } = await renderHook(() => useApi<Feed>("/api/feed?limit=30"));
+    await waitFor(() => expect(result.current.data?.videos).toHaveLength(3));
+    answerFetch({ "/api/feed": feedEmpty });
+    await act(async () => {
+      await clearToken();
+    });
+    await waitFor(() => expect(result.current.data?.videos).toEqual([]));
+    answerFetch({ "/api/feed": feedSeed });
+    await act(async () => {
+      await saveToken("session-of-b");
+    });
+    await waitFor(() => expect(result.current.data?.videos).toHaveLength(3));
+  });
+
+  it("does not reload when a token is only refreshed", async () => {
+    await saveToken("session-of-a");
+    const { fetchMock } = answerFetch({ "/api/feed": feedSeed });
+    const { result } = await renderHook(() => useApi<Feed>("/api/feed?limit=30"));
+    await waitFor(() => expect(result.current.data).not.toBeNull());
+    await act(async () => {
+      await saveToken("session-of-a-refreshed");
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });

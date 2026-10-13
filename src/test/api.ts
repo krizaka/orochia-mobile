@@ -6,15 +6,15 @@ import { jest } from "@jest/globals";
  * or a function of the call (method, body, headers) answering one of those — for a path whose answer depends on them.
  * Every call is kept, so a test can check what the app sent (method, headers, body).
  */
-export type Call = { path: string; method: string; headers: Record<string, string>; body: unknown };
+export type Call = { path: string; method: string; headers: Record<string, string>; body: unknown; credentials?: string };
 export type Route = unknown | { status: number; body: unknown } | ((call: Call) => unknown);
 
 export function answerFetch(routes: Record<string, Route>) {
   const calls: Call[] = [];
-  const fetchMock = jest.fn(async (input: unknown, init?: { method?: string; headers?: Record<string, string>; body?: string }) => {
+  const fetchMock = jest.fn(async (input: unknown, init?: { method?: string; headers?: Record<string, string>; body?: string; credentials?: string }) => {
     const url = new URL(String(input));
     const path = url.pathname + url.search;
-    const call: Call = { path, method: init?.method ?? "GET", headers: init?.headers ?? {}, body: init?.body ? JSON.parse(init.body) : undefined };
+    const call: Call = { path, method: init?.method ?? "GET", headers: init?.headers ?? {}, body: init?.body ? JSON.parse(init.body) : undefined, credentials: init?.credentials };
     calls.push(call);
     const key = Object.keys(routes)
       .filter((k) => path.startsWith(k))

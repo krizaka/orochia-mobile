@@ -23,6 +23,15 @@ describe("api", () => {
     expect(calls[0].headers.Accept).toBe("application/json");
   });
 
+  it("never carries cookies: the bearer is the only session (krizaka/orochia#127)", async () => {
+    await saveToken("session-1");
+    const { calls } = answerFetch({ "/api/me/wallet": walletSeed, "/api/auth/login": { success: true } });
+    await api("/api/me/wallet");
+    await api("/api/auth/login", { method: "POST", body: { identifier: "a", password: "b", client: "native" } });
+    // "omit" turns the native cookie jar off for the call: iOS neither sends nor stores a cookie.
+    expect(calls.map((c) => c.credentials)).toEqual(["omit", "omit"]);
+  });
+
   it("sends no Authorization header without a session, and JSON with a body", async () => {
     const { calls } = answerFetch({ "/api/auth/login": { success: true } });
     await api("/api/auth/login", { method: "POST", body: { identifier: "a", password: "b", client: "native" } });

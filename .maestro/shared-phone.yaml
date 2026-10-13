@@ -1,0 +1,26 @@
+# krizaka/orochia#127 — a shared phone: A creates an account in the app and confirms it, signs out, B signs in on the
+# same phone and must see B, never A. Same setup as sign-up.yaml (a development build on a LOCAL Orochia in demo mode,
+# its own database):
+#   maestro test .maestro/shared-phone.yaml -e SIGNUP_NAME=eric_$(date +%s)
+appId: com.krizaka.orochia
+---
+- runFlow: sign-up.yaml
+- scrollUntilVisible:
+    element: "Sign out"
+- tapOn: "Sign out"
+- extendedWaitUntil:
+    visible: "Sign in"
+    timeout: 10000
+- tapOn: "E-mail or username"
+- inputText: "alex@sanctuary.io"
+- tapOn: "Password"
+- inputText: "alex1234"
+# The password field's return key signs in.
+- pressKey: Enter
+- tapOn:
+    text: "Not Now"
+    optional: true
+- extendedWaitUntil:
+    visible: "@alex_vance"
+    timeout: 20000
+- assertNotVisible: "@${SIGNUP_NAME}"
