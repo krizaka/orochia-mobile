@@ -1,11 +1,30 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api, ApiError } from "./api";
+import { onSessionChange } from "./session";
 
-/** Loads an API path, with loading, error, pull-to-refresh and a silent reload — the data of one screen. */
+/**
+ * Loads an API path, with loading, error, pull-to-refresh and a silent reload — the data of one screen. When the session
+ * starts or ends, what was loaded is forgotten and loaded again: one account's data never shows under the next.
+ */
 export function useApi<T>(path: string | null) {
+  const [session, setSession] = useState(0);
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<ApiError | Error | null>(null);
   const [loading, setLoading] = useState(Boolean(path));
+  const hasPath = useRef(Boolean(path));
+  useEffect(() => {
+    hasPath.current = Boolean(path);
+  }, [path]);
+  useEffect(
+    () =>
+      onSessionChange(() => {
+        setData(null);
+        setError(null);
+        setLoading(hasPath.current);
+        setSession((n) => n + 1);
+      }),
+    [],
+  );
   const [refreshing, setRefreshing] = useState(false);
 
   const refresh = useCallback(
@@ -46,7 +65,7 @@ export function useApi<T>(path: string | null) {
     return () => {
       live = false;
     };
-  }, [path]);
+  }, [path, session]);
 
   return { data, error, loading, refreshing, refresh, reload, setData };
 }

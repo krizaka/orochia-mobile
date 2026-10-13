@@ -9,6 +9,7 @@ import { AuthProvider } from "@/lib/auth";
 import { clearToken, readToken, saveToken } from "@/lib/session";
 import { answerFetch } from "@/test/api";
 import { resetStorage } from "@/test/storage";
+import { clearNativeCookies } from "@/lib/cookie-jar";
 import meSeed from "@/__fixtures__/api/auth-me.local-seed.json";
 import walletSeed from "@/__fixtures__/api/me-wallet.local-seed.json";
 import notificationsSeed from "@/__fixtures__/api/me-notifications.local-seed.json";
@@ -20,6 +21,7 @@ jest.mock("expo-web-browser", () => ({ openBrowserAsync: jest.fn() }));
 jest.mock("@/lib/storage", () => jest.requireActual("@/test/storage"));
 // Push needs a device and an EAS project; the live stream an open SSE connection — neither is the subject here.
 jest.mock("@/lib/push", () => ({ registerForPush: jest.fn(async () => null), unregisterPush: jest.fn(async () => undefined) }));
+jest.mock("@/lib/cookie-jar", () => ({ clearNativeCookies: jest.fn(async () => true) }));
 jest.mock("@/lib/live", () => ({ useLive: () => ({ markSeen: () => undefined, unread: 0, messagesUnread: 0 }) }));
 
 const show = () =>
@@ -102,6 +104,34 @@ describe("You (the account tab)", () => {
     await fireEvent.press(screen.getByRole("button", { name: "Sign out" }));
     expect(await screen.findByRole("button", { name: "Sign in" })).toBeTruthy();
     expect(await readToken()).toBeNull();
+  });
+
+  it("on a shared phone, signing out then in as someone else shows the new account — never the previous (krizaka/orochia#127)", async () => {
+    await saveToken("session-of-a");
+    const sam = { user: { ...meSeed.user, id: "sam-id", username: "sam_rivers", displayName: "Sam Rivers", email: "sam@sanctuary.io" } };
+    const { calls } = answerFetch({
+      ...signedIn,
+      "/api/auth/logout": { success: true },
+      "/api/auth/login": { success: true, emailVerified: true, token: "session-of-b", expiresIn: 604800 },
+      "/api/auth/me": (call: { headers: Record<string, string> }) => (call.headers.Authorization === "Bearer session-of-b" ? sam : meSeed),
+    });
+    await show();
+    expect(await screen.findByText("Alex Vance")).toBeTruthy();
+    await fireEvent.press(screen.getByRole("button", { name: "Sign out" }));
+    await screen.findByRole("button", { name: "Sign in" });
+
+    const logout = calls.find((c) => c.path === "/api/auth/logout");
+    expect(logout?.method).toBe("POST");
+    expect(logout?.headers.Authorization).toBe("Bearer session-of-a");
+    expect(clearNativeCookies).toHaveBeenCalled();
+    expect(await readToken()).toBeNull();
+
+    await fireEvent.changeText(screen.getByPlaceholderText("E-mail or username"), "sam@sanctuary.io");
+    await fireEvent.changeText(screen.getByPlaceholderText("Password"), "sam1234");
+    await fireEvent.press(screen.getByRole("button", { name: "Sign in" }));
+    expect(await screen.findByText("Sam Rivers")).toBeTruthy();
+    expect(screen.queryByText("Alex Vance")).toBeNull();
+    expect(calls.every((c) => c.credentials === "omit")).toBe(true);
   });
 
   it("drops a stored session the server no longer accepts", async () => {
