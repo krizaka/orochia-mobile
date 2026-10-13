@@ -157,7 +157,8 @@
       "tooMany": "Too many attempts. Try again later.",
       "network": "Orochia is out of reach. Check your connection."
     },
-    "noNotificationsHint": "Tips, unlocks, bids and follows land here as they happen."
+    "noNotificationsHint": "Tips, unlocks, bids and follows land here as they happen.",
+    "notificationSettings": "Notification settings"
   },
   "errors": {
     "INSUFFICIENT_CREDITS": "Not enough credits — add some on orochia.com.",
@@ -221,5 +222,47 @@
     "ready": "Ready to withdraw — on the web, to your payout method.",
     "toGo": "{amount} more and you can withdraw.",
     "open": "Open your earnings"
+  },
+  "prefs": {
+    "title": "Notifications",
+    "intro": "Choose what reaches you — in the app and on this phone. Each switch is saved at once.",
+    "phoneOff": "Notifications are off for Orochia on this phone",
+    "phoneOffHint": "Turn them on in the system settings to hear of tips, bids and messages with the app closed.",
+    "openSettings": "Open the phone settings",
+    "emailOnWeb": "E-mail, its pace and each event one by one: Settings → Notifications on orochia.com.",
+    "groups": {
+      "messages": {
+        "title": "Messages",
+        "hint": "Private messages, when you are not already in the conversation"
+      },
+      "people": {
+        "title": "Followers and contacts",
+        "hint": "New followers, follow and contact requests"
+      },
+      "comments": {
+        "title": "Comments",
+        "hint": "Comments on your videos, replies to yours"
+      },
+      "earnings": {
+        "title": "Tips and unlocks",
+        "hint": "Someone tipped you or unlocked your video"
+      },
+      "videos": {
+        "title": "Videos",
+        "hint": "Your upload is ready, a creator you follow published"
+      },
+      "auctions": {
+        "title": "Auctions",
+        "hint": "New auctions, bids, outbid, won, sold"
+      },
+      "challenges": {
+        "title": "Challenges",
+        "hint": "Dares, pledges, a goal funded, a delivery"
+      },
+      "storage": {
+        "title": "Storage",
+        "hint": "Your space is nearly full, or an upload is held"
+      }
+    }
   }
 }

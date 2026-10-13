@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Stack } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
@@ -9,24 +9,13 @@ import { AgeGate } from "@/components/AgeGate";
 import { Charts } from "@/components/Charts";
 import { t } from "@/i18n";
 import { AuthProvider, useAuth } from "@/lib/auth";
-import { openPath } from "@/lib/links";
 import { LiveProvider } from "@/lib/live";
+import { useOpenTappedPush } from "@/lib/push";
 
 // In the foreground the live stream shows notifications as toasts; a push that arrives then stays in the list only.
 Notifications.setNotificationHandler({
   handleNotification: async () => ({ shouldShowBanner: false, shouldShowList: true, shouldPlaySound: false, shouldSetBadge: false }),
 });
-
-/** A tapped push opens what it is about (its `path`). */
-function useOpenTappedPush() {
-  useEffect(() => {
-    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
-      const path = response.notification.request.content.data?.path;
-      if (typeof path === "string") openPath(path);
-    });
-    return () => sub.remove();
-  }, []);
-}
 
 /**
  * The app: the 18+ gate first, then tabs and the detail screens, in the system's appearance under the Orochia theme
@@ -56,6 +45,7 @@ function Root() {
         <Stack.Screen name="challenges/[id]" options={{ title: "" }} />
         <Stack.Screen name="auctions/[id]" options={{ title: "" }} />
         <Stack.Screen name="messages/[id]" options={{ title: "" }} />
+        <Stack.Screen name="settings/notifications" options={{ title: t("prefs.title") }} />
       </Stack>
       <Toaster closeLabel={t("common.close")} offset={insets.top + 8} />
       {ageConfirmed === false && <AgeGate onConfirm={() => void confirmAge()} />}
