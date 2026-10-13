@@ -1,0 +1,83 @@
+# Sign-up flow: a fresh install passes the 18+ gate, creates an account in the app, confirms the e-mail and lands on the
+# feed signed in. Run against a development build pointed at a LOCAL Orochia in demo mode (OROCHIA_DEMO_MODE=true: the
+# server answers the verification link, and the app offers "Confirm now (demo server)") on its own database — never
+# the shared one, never dev.orochia.com:
+#   maestro test .maestro/sign-up.yaml -e SIGNUP_NAME=eric_$(date +%s)
+appId: com.krizaka.orochia
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+- extendedWaitUntil:
+    visible: "I am 18 or older — enter"
+    timeout: 30000
+- tapOn: "I am 18 or older — enter"
+- extendedWaitUntil:
+    visible: "Trending now"
+    timeout: 20000
+- tapOn: "You.*"
+- tapOn: "Create an account"
+- extendedWaitUntil:
+    visible: "Create your account"
+    timeout: 10000
+- tapOn:
+    id: "sign-up-email"
+- inputText: ${SIGNUP_NAME}@example.com
+# Each field's return key moves to the next one (the form scrolls it above the keyboard).
+- pressKey: Enter
+- inputText: ${SIGNUP_NAME}
+- extendedWaitUntil:
+    visible: "Available.*"
+    timeout: 10000
+- pressKey: Enter
+- inputText: "Eric"
+- pressKey: Enter
+# A new-password field: iOS offers its own strong password ("Use Strong Password?") at the first keystroke — close
+# the offer and type ours.
+- tapOn:
+    id: "sign-up-password"
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - inputText: "a"
+      - waitForAnimationToEnd:
+          timeout: 3000
+      # The offer is system UI (outside the app's hierarchy): its close button, top right of the sheet.
+      - tapOn:
+          point: "92%,58%"
+      - tapOn:
+          id: "sign-up-password"
+- eraseText: 20
+- inputText: "a-long-password-1"
+- pressKey: Enter
+- inputText: "12"
+# The day moves on to the month, the month to the year.
+- inputText: "04"
+- inputText: "1990"
+- assertVisible: "Private — never shown on your profile.*"
+# The number pad has no return key: a tap on the label closes it.
+- tapOn: "Date of birth"
+- scrollUntilVisible:
+    element: "I am at least 18 years old."
+- tapOn: "I am at least 18 years old."
+- tapOn: "I accept the Terms of Service and the Privacy Policy."
+- scrollUntilVisible:
+    element: "Create account"
+- tapOn: "Create account"
+# iOS offers to save the new password (the field is a real new-password field): decline.
+- tapOn:
+    text: "Not Now"
+    optional: true
+- extendedWaitUntil:
+    visible: "Check your inbox"
+    timeout: 20000
+- tapOn: "Confirm now \\(demo server\\)"
+- extendedWaitUntil:
+    visible: "Trending now"
+    timeout: 20000
+- tapOn: "You.*"
+- extendedWaitUntil:
+    visible: "Wallet"
+    timeout: 20000
+- assertVisible: "@${SIGNUP_NAME}"

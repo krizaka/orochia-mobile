@@ -1,4 +1,5 @@
-# Smoke flow: a fresh install passes the 18+ gate, signs in from the "You" tab and reads the feed.
+# Smoke flow: a fresh install passes the 18+ gate, signs in from the "You" tab and reads the feed. (Creating an account
+# in the app: .maestro/sign-up.yaml.)
 # Run against a development build on a simulator, with an account of the Orochia the build points at:
 #   maestro test .maestro/smoke.yaml -e OROCHIA_ID=<e-mail or username> -e OROCHIA_PASSWORD=<password>
 # (a local Orochia on its development seed: alex@sanctuary.io — see krizaka/orochia `npm run db:seed`).

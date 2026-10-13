@@ -36,7 +36,7 @@
 | **Protected playback** | HLS from Bunny Stream, signed by the server for you for five minutes — the app never holds a raw media URL. Picture-in-picture, full screen |
 | **Challenges** | Goals, dares and open calls: the pot as a ring that fills as pledges land, the clock, the leaderboard, back it in one tap — credits held until delivery |
 | **Auctions** | The price, the clock aligned on the server's, bids by alias, bid in credits |
-| **You** | Sign in (the session lives in the Keychain / Keystore), wallet and what is held, notifications |
+| **You** | Create an account in the app (username checked live, 18+ birth date, terms, e-mail verification) or sign in — the session lives in the Keychain / Keystore —, wallet and what is held, notifications |
 | **Notifications** | In real time while the app is open (a toast, the badge on *You*), push when it is not — a new follower, a tip, an unlock, a bid, a pledge, a message; tapping one opens it |
 
 Paying (top-ups, unlocks) happens on orochia.com, in the payment provider's own checkout: card details never reach
@@ -109,7 +109,7 @@ GitHub, TestFlight / ad hoc on iOS — unless a store-safe edition is decided.
 src/app/                 Expo Router: (tabs) home · challenges · auctions · you; watch/[id], challenges/[id], auctions/[id]
 src/components/          business components only: tiles, stories rail and viewer, amount picker, 18+ gate
                          (every UI component comes from @krizaka/ui/native)
-src/lib/                 api (bearer session, typed errors), auth (sign-in, secure storage), theme (spacing, signature
+src/lib/                 api (bearer session, typed errors), auth (sign-in, sign-up, e-mail verification, secure storage), signup (the sign-up API client), theme (spacing, signature
                          gradient), auction-presenter (shared with the web), useApi / usePolling, config
                          (EXPO_PUBLIC_OROCHIA_URL)
 src/i18n/en.json         every user-facing string (typed keys)

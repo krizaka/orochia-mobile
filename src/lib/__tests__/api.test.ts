@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { api, ApiError, setSignedOutHandler } from "@/lib/api";
+import { api, API_TIMEOUT_MS, ApiError, setSignedOutHandler } from "@/lib/api";
 import { clearToken, readToken, saveToken } from "@/lib/session";
 import { answerFetch } from "@/test/api";
 import { resetStorage } from "@/test/storage";
@@ -55,5 +55,23 @@ describe("api", () => {
     answerFetch({ "/api/auth/login": { status: 401, body: { error: "Invalid credentials" } } });
     await expect(api("/api/auth/login", { method: "POST", body: {} })).rejects.toBeInstanceOf(ApiError);
     expect(signedOut).not.toHaveBeenCalled();
+  });
+});
+
+describe("a request that never answers", () => {
+  it("gives up after API_TIMEOUT_MS instead of leaving a spinner forever", async () => {
+    jest.useFakeTimers();
+    try {
+      global.fetch = jest.fn(
+        (_input: unknown, init?: { signal?: AbortSignal }) =>
+          new Promise((_resolve, reject) => init?.signal?.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")))),
+      ) as unknown as typeof fetch;
+      const call = api("/api/auth/verify-email", { method: "POST", body: { token: "t" } });
+      const outcome = expect(call).rejects.toThrow("Orochia did not answer in time");
+      await jest.advanceTimersByTimeAsync(API_TIMEOUT_MS + 1);
+      await outcome;
+    } finally {
+      jest.useRealTimers();
+    }
   });
 });
