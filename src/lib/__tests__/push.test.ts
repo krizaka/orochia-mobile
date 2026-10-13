@@ -19,7 +19,12 @@ const notifications = {
 const opened: string[] = [];
 const apiCalls: { path: string; body: unknown; method?: string }[] = [];
 
-jest.mock("expo-device", () => ({ isDevice: true }));
+const mockDevice = { isDevice: true };
+jest.mock("expo-device", () => ({
+  get isDevice() {
+    return mockDevice.isDevice;
+  },
+}));
 jest.mock("expo-constants", () => ({ __esModule: true, default: { expoConfig: { extra: { eas: { projectId: "project-1" } } } } }));
 jest.mock("expo-notifications", () => ({
   AndroidImportance: { HIGH: 4 },
@@ -65,6 +70,17 @@ describe("registering the phone", () => {
     expect(Notifications.setNotificationChannelAsync).toHaveBeenCalledWith("default", expect.objectContaining({ importance: 4 }));
     expect(apiCalls).toEqual([{ path: "/api/me/devices", method: "POST", body: { token: "ExponentPushToken[device-1]", platform: "android" } }]);
     Object.defineProperty(Platform, "OS", { value: "ios", configurable: true });
+  });
+
+  it("registers from an Android emulator (Google APIs: FCM works there), never from an iOS simulator", async () => {
+    mockDevice.isDevice = false;
+    Object.defineProperty(Platform, "OS", { value: "android", configurable: true });
+    expect(await registerForPush()).toBe("ExponentPushToken[device-1]");
+    apiCalls.length = 0;
+    Object.defineProperty(Platform, "OS", { value: "ios", configurable: true });
+    expect(await registerForPush()).toBeNull();
+    expect(apiCalls).toEqual([]);
+    mockDevice.isDevice = true;
   });
 
   it("does not ask again once granted", async () => {

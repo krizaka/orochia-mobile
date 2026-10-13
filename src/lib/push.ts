@@ -9,14 +9,16 @@ import { storage } from "./storage";
 
 /**
  * Push notifications. After sign-in the app asks for permission once, gets its Expo push token (FCM on Android, APNs on
- * iOS behind it) and registers it with Orochia (`POST /api/me/devices`); sign-out forgets it. Nothing happens on a
- * simulator, in a build without an EAS project id, or when the person declines — the app works the same without push.
+ * iOS behind it) and registers it with Orochia (`POST /api/me/devices`); sign-out forgets it. Nothing happens on an
+ * iOS simulator (an Android emulator with Google APIs receives pushes like a phone), in a build without an EAS
+ * project id, or when the person declines — the app works the same without push.
  */
 const KEY = "orochia.pushToken";
 
 export async function registerForPush(): Promise<string | null> {
   try {
-    if (!Device.isDevice) return null;
+    // An iOS simulator gets no push token; an Android emulator with Google Play services does (FCM), like a phone.
+    if (!Device.isDevice && Platform.OS === "ios") return null;
     if (Platform.OS === "android") {
       await Notifications.setNotificationChannelAsync("default", { name: "Orochia", importance: Notifications.AndroidImportance.HIGH });
     }
@@ -29,7 +31,8 @@ export async function registerForPush(): Promise<string | null> {
     await api("/api/me/devices", { method: "POST", body: { token, platform: Platform.OS === "ios" ? "ios" : "android" } });
     await storage.set(KEY, token);
     return token;
-  } catch {
+  } catch (error) {
+    if (__DEV__) console.warn("push: not registered", error);
     return null;
   }
 }
