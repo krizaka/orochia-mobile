@@ -30,6 +30,18 @@ export function showNotification(n: NotificationItem, icon?: React.ReactNode): v
   toast(n.text, { id: n.id, icon, onPress: () => openPath(n.path) });
 }
 
+type LiveMessage = { conversationId: string; content: string; isRead?: boolean; readAt?: string | null };
+
+/**
+ * Whether a message heard on the stream deserves a toast: not when Messages or its conversation is on screen (it
+ * arrives in place), and not when it was already read — a reconnection replays the messages since the cursor, read
+ * ones included, and they must not pop up again.
+ */
+export function toastsMessage(message: LiveMessage, screen: { onMessagesTab: boolean; viewing: string | null }): boolean {
+  if (message.isRead || message.readAt) return false;
+  return !screen.onMessagesTab && screen.viewing !== message.conversationId;
+}
+
 /** The conversation on screen (its messages arrive in place: no toast for them). */
 let viewing: string | null = null;
 export function setViewingConversation(id: string | null) {
@@ -100,8 +112,8 @@ export function LiveProvider({ signedIn, children }: { signedIn: boolean; childr
         emit(event);
         if (event.type === "unread" && typeof event.total === "number") setMessagesUnread(event.total);
         if (event.type === "new_message") {
-          const message = event.message as { conversationId: string; content: string } | undefined;
-          if (message && !onMessagesTab && viewing !== message.conversationId) {
+          const message = event.message as LiveMessage | undefined;
+          if (message && toastsMessage(message, { onMessagesTab, viewing })) {
             toast(message.content, { id: `m-${message.conversationId}`, icon: <MessageCircle size={16} color={accent.current} />, onPress: () => openPath(`/messages?c=${message.conversationId}`) });
           }
         }
