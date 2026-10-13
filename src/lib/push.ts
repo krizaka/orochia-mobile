@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { api } from "./api";
+import { openPath } from "./links";
 import { storage } from "./storage";
 
 /**
@@ -42,4 +44,33 @@ export async function unregisterPush(): Promise<void> {
   } catch {
     // Signed out anyway; the server drops the token when the push service reports it dead.
   }
+}
+
+/** The Orochia path a tapped notification opens (`data.path`, set by the server's lib/push.ts); anything else: none. */
+export function pushPath(response: Notifications.NotificationResponse | null | undefined): string | null {
+  const path = response?.notification.request.content.data?.path;
+  return typeof path === "string" && path.startsWith("/") ? path : null;
+}
+
+/** Notifications already opened: the launch response stays "the last one" for the app's whole life. */
+const handled = new Set<string>();
+function open(response: Notifications.NotificationResponse | null | undefined) {
+  const path = pushPath(response);
+  if (!response || !path) return;
+  const id = response.notification.request.identifier;
+  if (handled.has(id)) return;
+  handled.add(id);
+  openPath(path);
+}
+
+/**
+ * A tapped push opens what it is about — while the app runs (the listener) and when the tap is what launched it (the
+ * last response, read once at start: without it a cold start lands on the home screen). Each notification once.
+ */
+export function useOpenTappedPush() {
+  useEffect(() => {
+    open(Notifications.getLastNotificationResponse());
+    const sub = Notifications.addNotificationResponseReceivedListener(open);
+    return () => sub.remove();
+  }, []);
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Haptics from "expo-haptics";
@@ -10,13 +10,14 @@ import { api } from "@/lib/api";
 import { absoluteUrl } from "@/lib/config";
 import { countdownUnits, useClockSkew } from "@/lib/countdown";
 import { errorText } from "@/lib/errors";
-import { usePolling } from "@/lib/usePolling";
+import { useLiveTopic } from "@/lib/live-topic";
+import { applyAuctionEvent } from "@/lib/live-updates";
 import { useApi } from "@/lib/useApi";
 import { withTap } from "@/lib/haptics";
 import { space } from "@/lib/theme";
 import type { AuctionView } from "@/lib/types";
 
-/** An auction: the price, the clock (aligned on the server's), bids by alias, and bidding in credits. */
+/** An auction: the price (live), the clock (aligned on the server's), bids by alias, and bidding in credits. */
 export default function Auction() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { theme } = useTheme();
@@ -26,9 +27,15 @@ export default function Auction() {
   const [amount, setAmount] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
-  const { reload } = view;
-  const tick = useCallback(() => void reload(), [reload]);
-  usePolling(tick, 4000, a?.phase === "OPEN");
+  const { reload, setData } = view;
+  // Live while it is open or about to open: each bid moves the price at once, then a reload says who leads.
+  useLiveTopic(a && (a.phase === "OPEN" || a.phase === "UPCOMING") ? `/api/auctions/${id}/stream` : null, (event) => {
+    const shown = view.data;
+    if (!shown) return;
+    const { view: next, reload: wants } = applyAuctionEvent(shown.auction, event);
+    if (next !== shown.auction) setData({ ...shown, auction: next });
+    if (wants) void reload();
+  });
 
   if (!a) return <View style={{ padding: space.lg }}>{view.loading ? <Skeleton shape="rect" height={320} /> : <Txt>{t("errors.generic")}</Txt>}</View>;
   const chosen = amount && amount >= a.minimumNextBidCents ? amount : a.minimumNextBidCents;

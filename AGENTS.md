@@ -27,7 +27,12 @@
   reopened with `?after=<last message seq>` when the app comes back) shows toasts and the badges, and screens listen to
   it with `useLiveEvents` (Messages: conversations, presence, typing, receipts — rules and events in krizaka/orochia
   `docs/NOTIFICATIONS.md` §5; message ordering and merging in `src/lib/chat.ts`, the same as the web's); in the background, push (`src/lib/push.ts`, Expo token registered at sign-in, forgotten at sign-out).
-  A tapped push opens its `path` through `openPath` (`src/lib/links.ts`). Push needs a development or EAS build, never
+  A tapped push opens its `path` through `openPath` (`src/lib/links.ts`) — while the app runs and when the tap launched
+  it (`useOpenTappedPush`, each notification once). An auction or a challenge on screen follows its own public feed
+  (`src/lib/live-topic.ts`, `/api/auctions|challenges/:id/stream`): an event updates the screen at once
+  (`src/lib/live-updates.ts`, numbers never go back down), then a reload brings what is the viewer's — no polling.
+  Preferences by kind (`orochia://settings/notifications`, `src/lib/notification-prefs.ts`) write the account's
+  `inAppOff` list, which covers the bell, the toasts and the push. Push needs a development or EAS build, never
   Expo Go; the Expo project (`owner`, `extra.eas.projectId`) is in `app.json`; `google-services.json` comes from the EAS file environment variable `GOOGLE_SERVICES_JSON` (`app.config.js`).
 
 ## Expo changes with every SDK

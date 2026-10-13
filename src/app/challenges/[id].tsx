@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Haptics from "expo-haptics";
@@ -12,7 +12,8 @@ import { countdownUnits, useClockSkew } from "@/lib/countdown";
 import { challengeRatio, TICKING } from "@/lib/challenge";
 import { errorText } from "@/lib/errors";
 import { withTap } from "@/lib/haptics";
-import { usePolling } from "@/lib/usePolling";
+import { useLiveTopic } from "@/lib/live-topic";
+import { applyChallengeEvent } from "@/lib/live-updates";
 import { useApi } from "@/lib/useApi";
 import { space } from "@/lib/theme";
 import type { ChallengeView } from "@/lib/types";
@@ -30,9 +31,15 @@ export default function Challenge() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const live = Boolean(ch) && (TICKING.has(ch?.stage ?? "") || ch?.stage === "IN_PROGRESS");
-  const { reload } = view;
-  const tick = useCallback(() => void reload(), [reload]);
-  usePolling(tick, 5000, live);
+  const { reload, setData } = view;
+  // Live while it moves: each pledge fills the pot at once, then a reload brings the stage and the viewer's share.
+  useLiveTopic(live ? `/api/challenges/${id}/stream` : null, (event) => {
+    const shown = view.data;
+    if (!shown) return;
+    const { view: next, reload: wants } = applyChallengeEvent(shown.challenge, event);
+    if (next !== shown.challenge) setData({ ...shown, challenge: next });
+    if (wants) void reload();
+  });
   const skewMs = useClockSkew(ch?.serverNow);
 
   const pledge = async () => {

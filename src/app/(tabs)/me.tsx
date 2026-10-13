@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, RefreshControl, ScrollView, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { Bell, ExternalLink, LogOut, Wallet as WalletIcon } from "lucide-react-native";
+import { Bell, ExternalLink, LogOut, Settings, Wallet as WalletIcon } from "lucide-react-native";
 import { Avatar, Button, Card, EmptyState, Mascot, Txt, useTheme } from "@krizaka/ui/native";
 import { EarningsCard } from "@/components/EarningsCard";
 import { OrochiaMark } from "@/components/OrochiaMark";
@@ -131,6 +132,7 @@ function Account() {
         </Card.Body>
       </Card.Root>
 
+      <Button label={t("me.notificationSettings")} variant="secondary" size="lg" icon={<Settings size={14} color={theme.textPrimary} />} onPress={withTap(() => router.push("/settings/notifications"))} />
       <Button label={t("me.profile")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/@${user?.username}`))} />
       <Button label={t("me.signOut")} variant="secondary" size="lg" icon={<LogOut size={14} color={theme.textPrimary} />} onPress={withTap(() => void signOut())} />
     </ScrollView>
