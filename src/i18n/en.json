@@ -143,6 +143,7 @@
     "password": "Password",
     "signIn": "Sign in",
     "createAccount": "Create an account",
+    "signupClosed": "Sign-ups are closed while Orochia is in development.",
     "wallet": "Wallet",
     "balance": "Balance",
     "held": "{amount} held in bids and pledges",

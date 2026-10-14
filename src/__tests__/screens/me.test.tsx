@@ -1,6 +1,6 @@
 import React from "react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import { ThemeProvider } from "@krizaka/ui/native";
 import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
 import { router } from "expo-router";
@@ -94,6 +94,20 @@ describe("You (the account tab)", () => {
     await fireEvent.press(await screen.findByRole("button", { name: "Create an account" }));
     expect(router.push).toHaveBeenCalledWith("/auth/sign-up");
     expect(screen.queryByText(/orochia\.com/)).toBeNull();
+  });
+
+  it("hides sign-up while the deployment says it is closed (signupEnabled: false) — signing in stays", async () => {
+    answerFetch({ "/api/auth/providers": { success: true, providers: [], signupEnabled: false } });
+    await show();
+    expect(await screen.findByRole("button", { name: "Sign in" })).toBeTruthy();
+    await waitFor(() => expect(screen.queryByRole("button", { name: "Create an account" })).toBeNull());
+    expect(screen.getByText("Sign-ups are closed while Orochia is in development.")).toBeTruthy();
+  });
+
+  it("offers sign-up when the deployment says it is open", async () => {
+    answerFetch({ "/api/auth/providers": { success: true, providers: [], signupEnabled: true } });
+    await show();
+    expect(await screen.findByRole("button", { name: "Create an account" })).toBeTruthy();
   });
 
   it("opens on the account when a stored session is still accepted, and signs out", async () => {

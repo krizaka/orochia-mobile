@@ -27,6 +27,10 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Whether this deployment takes new accounts (`signupEnabled` of the public config). Until it answers nothing is
+  // offered; a server that does not say (older) or that cannot be reached keeps the button — the sign-up itself refuses.
+  const config = useApi<{ signupEnabled?: boolean }>("/api/auth/providers");
+  const signupOpen = config.error ? true : config.data ? config.data.signupEnabled !== false : null;
   const field = { borderWidth: 1, borderColor: theme.borderDefault, backgroundColor: theme.surface1, color: theme.textPrimary, borderRadius: radius.md, padding: space.md, fontSize: 16 };
   const submit = async () => {
     setBusy(true);
@@ -70,7 +74,8 @@ function SignIn() {
       {error && <Txt tone="danger">{error}</Txt>}
       {busy && <BusyMark label={t("me.signingIn")} />}
       <Button label={t("me.signIn")} variant="primary" size="lg" onPress={withTap(() => void submit())} loading={busy} disabled={!identifier || !password} />
-      <Button label={t("me.createAccount")} variant="secondary" size="lg" onPress={withTap(() => router.push("/auth/sign-up"))} />
+      {signupOpen === true && <Button label={t("me.createAccount")} variant="secondary" size="lg" onPress={withTap(() => router.push("/auth/sign-up"))} />}
+      {signupOpen === false && <Txt tone="muted" style={{ textAlign: "center" }}>{t("me.signupClosed")}</Txt>}
     </View>
   );
 }
