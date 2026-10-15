@@ -22,8 +22,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.krizaka.com/en/products/orochia#tour"><img src="https://raw.githubusercontent.com/krizaka/.github/main/profile/assets/orochia-tour.gif" alt="Orochia, signed in as Alex: Elena's story opened from the ring on her profile, sound on, a like, a private reply and a $10 tip" width="760"></a>
-  <br><sub>Alex opens Elena's story, likes it, replies privately and tips her — recorded on the web; the app does the same on the same API. <a href="https://www.krizaka.com/en/products/orochia#tour">Full tour</a> · <a href="https://www.krizaka.com/docs/orochia">Documentation</a></sub>
+  <br><sub>Alex opens Elena's story, likes it, replies privately and tips her — recorded on the web; the app does the same on the same API. <a href="https://dev.orochia.com">Full tour</a> · <a href="https://www.krizaka.com/docs/orochia">Documentation</a></sub>
 </p>
 
 ---
@@ -125,3 +124,7 @@ src/i18n/en.json         every user-facing string (typed keys)
 
 Apache-2.0 · Part of [Orochia](https://github.com/krizaka/orochia) by [Krizaka](https://www.krizaka.com) — open source,
 closed to compromise.
+
+---
+
+<sub>A Krizaka product · [krizaka.com](https://www.krizaka.com) · Apache-2.0</sub>
