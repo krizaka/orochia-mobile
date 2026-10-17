@@ -12,7 +12,10 @@
       "bundleIdentifier": "com.krizaka.orochia",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "associatedDomains": [
+        "applinks:dev.orochia.com"
+      ]
     },
     "android": {
       "package": "com.krizaka.orochia",
@@ -22,7 +25,69 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/@"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/watch/"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "path": "/me"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/me/"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "path": "/auctions"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/auctions/"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "path": "/challenges"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/challenges/"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "path": "/messages"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/messages/"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",

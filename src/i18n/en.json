@@ -354,5 +354,28 @@
     "demo": "Confirm now (demo server)",
     "otherAccount": "Use another account",
     "checking": "Checking your address…"
+  },
+  "profile": {
+    "videos": "Videos",
+    "empty": "No videos yet.",
+    "notFound": "This profile does not exist.",
+    "openWeb": "Open on the web"
+  },
+  "space": {
+    "openWeb": "Open this view on the web",
+    "settings": "Notification settings",
+    "sections": {
+      "videos": "My videos",
+      "library": "Library",
+      "collections": "Collections",
+      "lists": "Lists",
+      "network": "Network",
+      "invitations": "Invitations",
+      "insights": "Insights",
+      "transactions": "Transactions",
+      "earnings": "Earnings & payouts",
+      "treasury": "Treasury",
+      "settings": "Settings"
+    }
   }
 }

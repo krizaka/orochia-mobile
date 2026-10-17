@@ -1,0 +1,7 @@
+{
+  "native": {
+    "appJson": "app.json",
+    "appDir": "src/app",
+    "routes": "https://raw.githubusercontent.com/krizaka/orochia/main/app-links.routes.json"
+  }
+}
