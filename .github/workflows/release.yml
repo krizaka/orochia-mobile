@@ -7,10 +7,12 @@ on:
     tags: ["v*"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   android:
+    permissions:
+      contents: write
     name: Android preview APK
     runs-on: ubuntu-latest
     timeout-minutes: 60
