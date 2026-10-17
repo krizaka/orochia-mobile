@@ -37,12 +37,18 @@ describe("a conversation on the phone", () => {
   });
 
   it("the list moves the conversation up and counts what is not being read", () => {
-    const conv = (id: string, unread = 0): Conversation => ({ id, lastMessageAt: "", otherUser: { id: "you", username: "you", displayName: "You", avatarUrl: null }, lastMessage: null, unreadCount: unread, blockedByMe: false });
+    const conv = (id: string, unread = 0): Conversation => ({ id, kind: "direct", title: null, memberCount: 2, muted: false, lastMessageAt: "", otherUser: { id: "you", username: "you", displayName: "You", avatarUrl: null }, lastMessage: null, unreadCount: unread, blockedByMe: false });
     const next = applyMessageToList([conv("a"), conv("c1")], msg(4, { senderId: "you", recipientId: me }), me, false)!;
     expect(next.map((c) => c.id)).toEqual(["c1", "a"]);
     expect(next[0].unreadCount).toBe(1);
     expect(markListRead(next, "c1")[0].unreadCount).toBe(0);
     expect(applyMessageToList([conv("a")], msg(1), me, false)).toBeNull();
+  });
+
+  it("a group message (no recipient) from someone else is unread, one's own is not", () => {
+    const group: Conversation = { id: "c1", kind: "group", title: "Crew", memberCount: 3, muted: false, lastMessageAt: "", otherUser: { id: "c1", username: "", displayName: "Crew", avatarUrl: null }, lastMessage: null, unreadCount: 0, blockedByMe: false };
+    expect(applyMessageToList([group], msg(4, { senderId: "you", recipientId: null }), me, false)![0].unreadCount).toBe(1);
+    expect(applyMessageToList([group], msg(5, { senderId: me, recipientId: null }), me, false)![0].unreadCount).toBe(0);
   });
 
   it("makes client ids that look like UUIDs", () => {

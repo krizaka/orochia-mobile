@@ -13,6 +13,11 @@ export interface PresenceView {
 
 export interface Conversation {
   id: string;
+  /** `group`: `otherUser` is the group itself (id = the conversation, displayName = its title). */
+  kind: "direct" | "group";
+  title: string | null;
+  memberCount: number;
+  muted: boolean;
   lastMessageAt: string;
   otherUser: { id: string; username: string; displayName: string; avatarUrl: string | null };
   lastMessage: { id: string; seq: number; content: string; senderId: string; createdAt: string; deliveredAt: string | null; isRead: boolean } | null;
@@ -27,7 +32,8 @@ export interface ServerMessage {
   clientId: string | null;
   conversationId: string;
   senderId: string;
-  recipientId: string;
+  /** The other person of a direct conversation; null in a group. */
+  recipientId: string | null;
   content: string;
   storyId: string | null;
   deliveredAt: string | null;
@@ -92,7 +98,7 @@ export function applyMessageToList(list: Conversation[], message: ServerMessage,
   if (index < 0) return null;
   const c = list[index];
   if (c.lastMessage && c.lastMessage.seq >= message.seq) return list;
-  const incoming = message.recipientId === myId;
+  const incoming = message.senderId !== myId;
   const updated: Conversation = {
     ...c,
     lastMessageAt: message.createdAt,

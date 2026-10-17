@@ -207,6 +207,22 @@
       "minutes": "{count} min ago",
       "hours": "{count} h ago",
       "days": "{count} d ago"
+    },
+    "group": {
+      "members": "{count} members",
+      "info": "Group details",
+      "startBody": "Say hello to the group.",
+      "someone": "Someone",
+      "mute": "Mute this group",
+      "muteHint": "No notification and no badge for 8 hours.",
+      "membersTitle": "Members",
+      "owner": "Owner",
+      "leave": "Leave the group",
+      "leaveTitle": "Leave this group?",
+      "leaveBody": "You will no longer receive its messages. You need a new invitation to come back.",
+      "closed": "This group is closed. You can read it but nobody can write.",
+      "manageOnWeb": "Add people, invitation links and other changes are made on orochia.com.",
+      "cancel": "Cancel"
     }
   },
   "charts": {

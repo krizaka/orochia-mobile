@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
 import { AccessibilityInfo, AppState, FlatList, KeyboardAvoidingView, Platform, Pressable, TextInput, View } from "react-native";
-import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
+import { router, Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Check, CheckCheck, MessageCircle, Send } from "lucide-react-native";
+import { Check, CheckCheck, MessageCircle, Send, Users } from "lucide-react-native";
 import { Button, EmptyState, IconButton, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
 import { PresenceAvatar, presenceLabel } from "@/components/PresenceAvatar";
 import { t } from "@/i18n";
@@ -34,18 +34,21 @@ export default function Thread() {
   const [error, setError] = useState(false);
   const [typing, setTyping] = useState(false);
   const [draft, setDraft] = useState("");
+  /** Who wrote, in a group (user id → display name). */
+  const [names, setNames] = useState<Record<string, string>>({});
   const typingSent = useRef(0);
   const typingStop = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const load = useCallback(async () => {
     try {
       const [page, list] = await Promise.all([
-        api<{ messages: ServerMessage[]; hasMore: boolean }>(`/api/conversations/${id}/messages`),
+        api<{ messages: ServerMessage[]; hasMore: boolean; names?: Record<string, string> }>(`/api/conversations/${id}/messages`),
         api<{ conversations: Conversation[] }>("/api/conversations"),
       ]);
       const c = list.conversations.find((x) => x.id === id) ?? null;
       setConversation(c);
       setPresence(c?.presence);
+      if (page.names) setNames((all) => ({ ...all, ...page.names }));
       setMessages((current) => mergeMessages(current, page.messages));
       setHasMore(page.hasMore);
       setError(false);
@@ -76,7 +79,7 @@ export default function Thread() {
   const markRead = (upTo?: number) => void api(`/api/conversations/${id}/read`, { method: "POST", body: upTo ? { upTo } : {} }).catch(() => undefined);
 
   useLiveEvents((event) => {
-    if (event.type === "connected" || event.type === "resync") return void load();
+    if (event.type === "connected" || event.type === "resync" || (event.type === "conversation_changed" && event.conversationId === id)) return void load();
     if ((event.type === "new_message" || event.type === "message_sent") && (event.message as ServerMessage).conversationId === id) {
       const message = event.message as ServerMessage;
       setMessages((current) => mergeMessages(current, [message]));
@@ -116,7 +119,7 @@ export default function Thread() {
       clientId,
       conversationId: id,
       senderId: myId,
-      recipientId: conversation.otherUser.id,
+      recipientId: conversation.kind === "group" ? null : conversation.otherUser.id,
       content: text,
       storyId: null,
       deliveredAt: null,
@@ -163,7 +166,8 @@ export default function Thread() {
   };
 
   const other = conversation?.otherUser;
-  const status = typing ? t("messages.typing") : (presenceLabel(presence) ?? (other ? `@${other.username}` : ""));
+  const isGroup = conversation?.kind === "group";
+  const status = typing ? t("messages.typing") : isGroup ? t("messages.group.members", { count: conversation?.memberCount ?? 0 }) : (presenceLabel(presence) ?? (other ? `@${other.username}` : ""));
   const lastMine = [...messages].reverse().find((m) => m.senderId === myId && !m.local);
   const ordered = [...messages].reverse(); // the list is inverted: newest at the bottom, where the thumb is
 
@@ -171,10 +175,12 @@ export default function Thread() {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined} keyboardVerticalOffset={insets.top + 44}>
       <Stack.Screen
         options={{
+          headerRight: () =>
+            isGroup ? <IconButton label={t("messages.group.info")} icon={<Users size={18} color={theme.textPrimary} />} variant="ghost" onPress={() => router.push(`/messages/group/${id}`)} /> : null,
           headerTitle: () =>
             other ? (
               <View style={{ flexDirection: "row", alignItems: "center", gap: space.sm }} accessible accessibilityLabel={`${other.displayName}, ${status}`}>
-                <PresenceAvatar src={other.avatarUrl} name={other.displayName} presence={presence} size={32} />
+                <PresenceAvatar src={other.avatarUrl} name={other.displayName} presence={isGroup ? undefined : presence} size={32} />
                 <View>
                   <Txt style={{ fontWeight: "700" }}>{other.displayName}</Txt>
                   <Txt variant="caption" tone={typing ? "accent" : "secondary"}>
@@ -208,11 +214,11 @@ export default function Thread() {
             ) : null
           }
           ListFooterComponent={hasMore ? <Button label={t("messages.loadOlder")} variant="ghost" size="sm" hitSlop={6} onPress={() => void loadOlder()} /> : null}
-          ListEmptyComponent={other ? <EmptyState icon={<MessageCircle size={24} color={theme.accent} />} title={t("messages.startTitle")} description={t("messages.startBody", { username: other.username })} /> : null}
+          ListEmptyComponent={other ? <EmptyState icon={<MessageCircle size={24} color={theme.accent} />} title={t("messages.startTitle")} description={isGroup ? t("messages.group.startBody") : t("messages.startBody", { username: other.username })} /> : null}
           renderItem={({ item: m }) => {
             const mine = m.senderId === myId;
             const receipt = receiptOf(m);
-            const showStatus = mine && (m.local || m.id === lastMine?.id);
+            const showStatus = mine && !isGroup && (m.local || m.id === lastMine?.id);
             return (
               <View style={{ alignItems: mine ? "flex-end" : "flex-start", gap: 2 }}>
                 <Pressable
@@ -230,6 +236,11 @@ export default function Thread() {
                     opacity: m.local === "sending" ? 0.7 : 1,
                   }}
                 >
+                  {isGroup && !mine && (
+                    <Txt variant="caption" tone="accent" style={{ fontWeight: "700" }}>
+                      {names[m.senderId] ?? t("messages.group.someone")}
+                    </Txt>
+                  )}
                   {m.storyId && (
                     <Txt variant="caption" tone={mine ? "onAccent" : "secondary"}>
                       {t("messages.storyReply")}
