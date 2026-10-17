@@ -5,6 +5,7 @@
   "dependencies": {
     "@krizaka/app-config": "^0.1.0",
     "@krizaka/charts": "^0.1.0",
+    "@krizaka/i18n": "^0.2.2",
     "@krizaka/orochia-design-system": "^4.1.1",
     "@krizaka/pacer": "^0.1.0",
     "@krizaka/tokens": "^3.22.0",
@@ -52,16 +53,17 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint",
+    "lint": "expo lint && npm run check:i18n",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "check:app-links": "node scripts/check-app-links.mjs",
     "check": "npm run lint && npm run check:app-links && npm run typecheck && npm test && npm run export",
     "export": "expo export --platform ios --platform android --output-dir dist",
-    "doctor": "expo-doctor"
+    "doctor": "expo-doctor",
+    "check:i18n": "krizaka-i18n check src/i18n && krizaka-i18n scan src/app src/components src/lib --skip __tests__ --skip __fixtures__ --allow Orochia"
   },
   "private": true,
-  "description": "Orochia for iOS and Android \u2014 the creator video platform, in your pocket. React Native (Expo).",
+  "description": "Orochia for iOS and Android — the creator video platform, in your pocket. React Native (Expo).",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -83,7 +85,14 @@
       "^@krizaka/app-config/client$": "<rootDir>/node_modules/@krizaka/app-config/dist/client.js",
       "^@krizaka/app-config/react$": "<rootDir>/node_modules/@krizaka/app-config/dist/react.js",
       "^@krizaka/app-config/server$": "<rootDir>/node_modules/@krizaka/app-config/dist/server.js",
-      "^@krizaka/app-config$": "<rootDir>/node_modules/@krizaka/app-config/dist/index.js"
+      "^@krizaka/app-config$": "<rootDir>/node_modules/@krizaka/app-config/dist/index.js",
+      "^@krizaka/i18n$": "<rootDir>/node_modules/@krizaka/i18n/dist/index.js",
+      "^@krizaka/intl/plural$": "<rootDir>/node_modules/@krizaka/intl/dist/plural.js"
+    }
+  },
+  "overrides": {
+    "@krizaka/i18n": {
+      "typescript": "$typescript"
     }
   }
 }

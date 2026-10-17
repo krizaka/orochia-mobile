@@ -19,7 +19,7 @@
   amount picker, 18+ gate). **A missing component is a PR in [krizaka-ui](https://github.com/krizaka/krizaka-ui)**,
   released, then adopted here — never a local copy. Same for a missing token or mark. Haptics stay in the app
   (`src/lib/haptics.ts`, in `onPress`).
-- **Every user-facing string is in `src/i18n/en.json`** and read with `t("key")` (typed keys). No literal text in JSX.
+- **Every user-facing string is in `src/i18n/en.json` and `fr.json`** and read with `t("key")` (`src/i18n/index.ts`, bound to [`@krizaka/i18n`](https://www.npmjs.com/package/@krizaka/i18n) like the web app: keys typed from `en.json`, `fr.json` typed against it, plurals as `{ one, other }` sets). The app speaks the **phone's language** (French for `fr`, `fr-CA`… — Québec French, « vous », the web app's vocabulary: *pourboire*, *crédits*, *défi*, *contribution*, *courriel*); money and counts are formatted in `fr-CA`/`en-US`, and every API call sends `Accept-Language` so the server's messages, e-mails and push follow. No literal text in JSX: `npm run check:i18n` (part of `npm run lint`) runs `krizaka-i18n check` and `scan`.
 - **Both themes**: colours come from `useTheme()` of `@krizaka/ui/native` only (roles: `surface0`, `textPrimary`,
   `accent`…); a screen is checked in dark and light.
 - **The 18+ gate** runs before anything else on a fresh install.

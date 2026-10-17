@@ -79,7 +79,7 @@ export default function Watch() {
             <View>
               <Txt variant="label">{details.creatorName}</Txt>
               <Txt variant="caption" tone="secondary">
-                {t("video.views", { count: compact(details.viewsCount) })}
+                {t("video.views", { count: details.viewsCount, shown: compact(details.viewsCount) })}
               </Txt>
             </View>
           </View>
