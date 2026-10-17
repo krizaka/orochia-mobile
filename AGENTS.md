@@ -34,6 +34,11 @@
   Preferences by kind (`orochia://settings/notifications`, `src/lib/notification-prefs.ts`) write the account's
   `inAppOff` list, which covers the bell, the toasts and the push. Push needs a development or EAS build, never
   Expo Go; the Expo project (`owner`, `extra.eas.projectId`) is in `app.json`; `google-services.json` comes from the EAS file environment variable `PUSH_ANDROID_CONFIG_FILE` (`app.config.js`).
+- **Universal links / App Links** (`app.json` `associatedDomains` + Android `intentFilters` with `autoVerify`): the paths the web app claims in
+  `/.well-known/apple-app-site-association` and `assetlinks.json` (krizaka/orochia `app-links.json`) each open a screen of this app
+  (`/@handle` is rewritten to `u/[handle]` by `src/app/+native-intent.ts`). `scripts/check-app-links.mjs` (identical in every Krizaka
+  repository, from krizaka/.github) fails CI when a claimed path has no screen or `app.json` does not cover it. Add a web route that
+  should open the app: claim it there, add the screen and the `app.json` filter here.
 - **Environment variables are named by bounded context** (krizaka/.github#46): `EXPO_PUBLIC_<CONTEXT>_<THING>` for what the
   JavaScript reads (`EXPO_PUBLIC_APP_URL`, validated in `src/lib/config.ts`, the app's one env module), `<CONTEXT>_<THING>` for
   build inputs (`PUSH_ANDROID_CONFIG_FILE`) — never a product (`OROCHIA_…`) nor a vendor (`GOOGLE_…`, `EXPO_…`).

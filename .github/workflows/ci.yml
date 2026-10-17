@@ -25,6 +25,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - name: Universal links — app.json and the Expo Router screens against the web app's routes (check-app-links)
+        run: npm run check:app-links
       - run: npm run typecheck
       - run: npm test -- --ci
       - run: npm run export
