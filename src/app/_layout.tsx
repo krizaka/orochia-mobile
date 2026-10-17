@@ -1,13 +1,17 @@
 import React from "react";
+import { appStateResume, useAppConfig } from "@krizaka/app-config/react";
+import { AppState } from "react-native";
 import { Stack } from "expo-router";
 import * as Notifications from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ThemeProvider, Toaster, useTheme } from "@krizaka/ui/native";
 import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
+import { AppGate } from "@/components/AppGate";
 import { AgeGate } from "@/components/AgeGate";
 import { Charts } from "@/components/Charts";
 import { t } from "@/i18n";
+import { appConfig } from "@/lib/api";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { LiveProvider } from "@/lib/live";
 import { useOpenTappedPush } from "@/lib/push";
@@ -22,12 +26,17 @@ Notifications.setNotificationHandler({
  * (`nativeTheme` over the @krizaka/ui roles) — with the live stream (toasts, the account tab's badge) while signed in,
  * and pushes opened where they point.
  */
+const resume = appStateResume(AppState);
+
 function Root() {
+  const version = useAppConfig(appConfig, resume);
+  const decision = version.upgradeRequired ? { kind: "force" as const, config: version.upgradeRequired } : version.decision;
   const { theme, scheme } = useTheme();
   const insets = useSafeAreaInsets();
   const { ageConfirmed, confirmAge, user } = useAuth();
   useOpenTappedPush();
   return (
+    <AppGate decision={decision} onDismiss={version.dismissSoft} onRetry={version.refresh}>
     <Charts>
     <LiveProvider signedIn={Boolean(user)}>
       <StatusBar style={scheme === "dark" ? "light" : "dark"} />
@@ -55,6 +64,7 @@ function Root() {
       {ageConfirmed === false && <AgeGate onConfirm={() => void confirmAge()} />}
     </LiveProvider>
     </Charts>
+    </AppGate>
   );
 }
 
