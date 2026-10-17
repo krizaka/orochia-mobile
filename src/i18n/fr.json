@@ -1,0 +1,398 @@
+{
+  "app": {
+    "name": "Orochia"
+  },
+  "units": {
+    "d": "j",
+    "h": "h",
+    "m": "min",
+    "s": "s"
+  },
+  "age": {
+    "badge": "Réservé aux adultes",
+    "title": "Bienvenue sur Orochia",
+    "body": "Orochia est une plateforme vidéo pour créateurs indépendants. Elle contient du contenu pour adultes et est donc réservée aux adultes. En entrant, vous confirmez avoir 18 ans ou plus (ou l’âge de la majorité là où vous habitez) et acceptez les conditions.",
+    "enter": "J’ai 18 ans ou plus — entrer",
+    "terms": "Lire les conditions"
+  },
+  "tabs": {
+    "home": "Accueil",
+    "challenges": "Défis",
+    "auctions": "Enchères",
+    "me": "Vous",
+    "messages": "Messages"
+  },
+  "home": {
+    "stories": "Stories",
+    "trending": "En ce moment",
+    "empty": "Les premières vidéos arrivent",
+    "emptyBody": "Les créateurs aménagent leur espace. Tirez pour actualiser.",
+    "error": "Orochia est inaccessible. Tirez pour réessayer.",
+    "storyPrevious": "Story précédente",
+    "storyNext": "Story suivante"
+  },
+  "visibility": {
+    "PUBLIC": "Gratuit",
+    "APPROVED_FOLLOWERS_ONLY": "Abonnés",
+    "CONTACTS_ONLY": "Contacts",
+    "TIPPED_UNLOCKED": "Déblocage",
+    "INVITED_ONLY": "Invités",
+    "AUCTION": "Enchère",
+    "CHALLENGE": "Contributeurs"
+  },
+  "video": {
+    "views": {
+      "one": "{shown} vue",
+      "other": "{shown} vues"
+    },
+    "locked": {
+      "PAYWALL_REQUIRED": "Débloquez cette vidéo dès {amount} pour la regarder.",
+      "FOLLOWERS_ONLY": "Réservée aux abonnés approuvés du créateur.",
+      "CONTACTS_ONLY": "Réservée aux contacts du créateur.",
+      "INVITED_ONLY": "Partagée uniquement avec les personnes invitées.",
+      "AUCTION": "Aux enchères : seul le gagnant la regarde.",
+      "CHALLENGE": "Réalisée pour un défi : seuls ses contributeurs la regardent.",
+      "AGE_VERIFICATION_REQUIRED": "Connectez-vous avec un compte 18+ vérifié pour la regarder.",
+      "NOT_FOUND": "Cette vidéo n’est plus disponible.",
+      "SIGN_IN": "Connectez-vous pour la regarder."
+    },
+    "unlockOnWeb": "Débloquer sur orochia.com",
+    "more": "Plus de {name}",
+    "signIn": "Se connecter"
+  },
+  "challenge": {
+    "kind": {
+      "GOAL": "Objectif",
+      "REQUEST": "Demande",
+      "OPEN_CALL": "Appel ouvert"
+    },
+    "stage": {
+      "FUNDING": "Financement",
+      "GOAL_REACHED": "Objectif atteint",
+      "AWAITING_ANSWER": "En attente de réponse",
+      "CASTING": "Candidatures ouvertes",
+      "CLOSING": "Clôture",
+      "IN_PROGRESS": "En cours de réalisation",
+      "DELIVERED": "Livré",
+      "DECLINED": "Refusé",
+      "EXPIRED": "Expiré",
+      "FAILED": "Non livré",
+      "CANCELLED": "Retiré"
+    },
+    "title": "Financez-le. Lancez-le. Réalisez-le.",
+    "subtitle": "Les crédits sont réservés jusqu’à la livraison de la vidéo — et rendus si elle n’a pas lieu.",
+    "tabs": {
+      "open": "En cours",
+      "calls": "Appels ouverts",
+      "done": "Livrés",
+      "backing": "Soutenus"
+    },
+    "empty": "Rien ici pour l’instant",
+    "emptyBody": "Lancez-en un depuis orochia.com, ou soutenez le prochain ici.",
+    "backers": "Contributeurs · {count}",
+    "raised": "Amassé jusqu’ici",
+    "ofGoal": "sur {goal}",
+    "anyCreator": "N’importe quel créateur",
+    "endsIn": "Se termine dans",
+    "deliverIn": "Livraison attendue dans",
+    "pledge": "Contribuer {amount}",
+    "held": "Réservé en crédits jusqu’à la livraison — rendu si elle n’a pas lieu.",
+    "balance": "Solde : {amount}",
+    "yours": "Vous avez mis {amount}",
+    "recent": "Dernières contributions",
+    "backer": "Contributeur {n}",
+    "you": "Vous",
+    "leaderboard": "Meilleurs contributeurs",
+    "watch": "La regarder",
+    "deliveredLocked": "Livrée à ses contributeurs.",
+    "pledged": "Contribution reçue — merci!",
+    "signIn": "Connectez-vous pour le soutenir",
+    "tabsLabel": "Défis à afficher",
+    "amounts": "Montants de contribution"
+  },
+  "auction": {
+    "phase": {
+      "UPCOMING": "À venir",
+      "OPEN": "En cours",
+      "ENDING": "Clôture",
+      "AWAITING_DECISION": "En examen",
+      "SOLD": "Vendue",
+      "DECLINED": "Refusée",
+      "UNSOLD": "Sans mise",
+      "CANCELLED": "Annulée"
+    },
+    "endsIn": "Se termine dans",
+    "startsIn": "Commence dans",
+    "empty": "Aucune enchère en cours pour l’instant",
+    "emptyBody": "La prochaine apparaîtra ici dès son lancement.",
+    "currentBid": "Mise actuelle",
+    "startingPrice": "Prix de départ",
+    "soldFor": "Vendue pour",
+    "bid": "Miser {amount}",
+    "bids": "Mises · {count}",
+    "leading": "Vous êtes en tête",
+    "won": "Vous l’avez remportée",
+    "bidder": "Enchérisseur {n}",
+    "placed": "Mise placée",
+    "rights": {
+      "WATCH": "Le gagnant la regarde",
+      "DOWNLOAD": "Le gagnant la regarde et la télécharge"
+    },
+    "amounts": "Montants de mise"
+  },
+  "me": {
+    "signInTitle": "Connectez-vous à Orochia",
+    "identifier": "Courriel ou nom d’utilisateur",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "createAccount": "Créer un compte",
+    "signupClosed": "Les inscriptions sont fermées pendant le développement d’Orochia.",
+    "wallet": "Portefeuille",
+    "balance": "Solde",
+    "held": "{amount} réservés dans des mises et des contributions",
+    "topUp": "Ajouter des crédits",
+    "notifications": "Notifications",
+    "noNotifications": "Rien de nouveau.",
+    "profile": "Votre page publique",
+    "signOut": "Se déconnecter",
+    "history": "Mouvements récents",
+    "errors": {
+      "credentials": "Courriel, nom d’utilisateur ou mot de passe incorrect.",
+      "suspended": "Ce compte est suspendu.",
+      "tooMany": "Trop de tentatives. Réessayez plus tard.",
+      "network": "Orochia est inaccessible. Vérifiez votre connexion."
+    },
+    "noNotificationsHint": "Les pourboires, déblocages, mises et abonnements s’affichent ici au fur et à mesure.",
+    "notificationSettings": "Paramètres des notifications",
+    "signingIn": "Connexion en cours…"
+  },
+  "errors": {
+    "INSUFFICIENT_CREDITS": "Crédits insuffisants — ajoutez-en sur orochia.com.",
+    "generic": "Un problème est survenu. Réessayez."
+  },
+  "common": {
+    "close": "Fermer",
+    "retry": "Réessayer"
+  },
+  "messages": {
+    "title": "Messages",
+    "subtitle": "Des conversations privées, en temps réel.",
+    "onlineNow": "En ligne maintenant",
+    "empty": "Aucune conversation pour l’instant",
+    "emptyBody": "Commencez-en une depuis le profil d’un créateur ou d’un contact sur orochia.com.",
+    "signIn": "Connectez-vous pour lire vos messages",
+    "error": "Vos messages sont inaccessibles. Tirez pour réessayer.",
+    "noMessages": "Aucun message pour l’instant",
+    "you": "Vous : {text}",
+    "typing": "écrit…",
+    "unread": {
+      "one": "{count} non lu",
+      "other": "{count} non lus"
+    },
+    "presence": {
+      "online": "En ligne",
+      "away": "Absent",
+      "seen": "Dernière activité {when}"
+    },
+    "status": {
+      "sending": "Envoi…",
+      "failed": "Non envoyé — touchez pour réessayer",
+      "sent": "Envoyé",
+      "delivered": "Remis",
+      "read": "Lu"
+    },
+    "placeholder": "Écrire un message…",
+    "send": "Envoyer",
+    "startTitle": "Commencer la conversation",
+    "startBody": "Dites bonjour à @{username}.",
+    "blocked": "Vous avez bloqué @{username}. Débloquez ce compte sur orochia.com pour écrire de nouveau.",
+    "loadOlder": "Afficher les messages précédents",
+    "storyReply": "A répondu à une story",
+    "ago": {
+      "now": "à l’instant",
+      "minutes": "il y a {count} min",
+      "hours": "il y a {count} h",
+      "days": "il y a {count} j"
+    },
+    "group": {
+      "members": {
+        "one": "{count} membre",
+        "other": "{count} membres"
+      },
+      "info": "Détails du groupe",
+      "startBody": "Dites bonjour au groupe.",
+      "someone": "Quelqu’un",
+      "mute": "Mettre ce groupe en sourdine",
+      "muteHint": "Aucune notification ni pastille pendant 8 heures.",
+      "membersTitle": "Membres",
+      "owner": "Propriétaire",
+      "leave": "Quitter le groupe",
+      "leaveTitle": "Quitter ce groupe?",
+      "leaveBody": "Vous ne recevrez plus ses messages. Il vous faudra une nouvelle invitation pour y revenir.",
+      "closed": "Ce groupe est fermé. Vous pouvez le lire, mais personne ne peut y écrire.",
+      "manageOnWeb": "L’ajout de personnes, les liens d’invitation et les autres modifications se font sur orochia.com.",
+      "cancel": "Annuler"
+    }
+  },
+  "charts": {
+    "empty": "Rien à afficher pour l’instant.",
+    "loading": "Chargement du graphique…"
+  },
+  "earnings": {
+    "title": "Vos revenus, 30 derniers jours",
+    "net": "Après les frais de plateforme de {fee} % · {payments} paiements",
+    "tips": "Pourboires, 30 derniers jours",
+    "months": "Votre part, 6 derniers mois",
+    "share": "Votre part",
+    "payout": "Votre prochain versement",
+    "available": "disponible",
+    "minimum": "Versement minimum",
+    "ready": "Prêt à retirer — sur le Web, vers votre mode de versement.",
+    "toGo": "Encore {amount} et vous pourrez retirer.",
+    "open": "Ouvrir vos revenus"
+  },
+  "prefs": {
+    "title": "Notifications",
+    "intro": "Choisissez ce qui vous parvient — dans l’appli et sur ce téléphone. Chaque interrupteur est enregistré aussitôt.",
+    "phoneOff": "Les notifications sont désactivées pour Orochia sur ce téléphone",
+    "phoneOffHint": "Activez-les dans les réglages du système pour être avisé des pourboires, des mises et des messages même appli fermée.",
+    "openSettings": "Ouvrir les réglages du téléphone",
+    "emailOnWeb": "Courriel, sa fréquence et chaque événement un à un : Paramètres → Notifications sur orochia.com.",
+    "groups": {
+      "messages": {
+        "title": "Messages",
+        "hint": "Les messages privés, quand vous n’êtes pas déjà dans la conversation"
+      },
+      "people": {
+        "title": "Abonnés et contacts",
+        "hint": "Nouveaux abonnés, demandes d’abonnement et de contact"
+      },
+      "comments": {
+        "title": "Commentaires",
+        "hint": "Commentaires sur vos vidéos, réponses aux vôtres"
+      },
+      "earnings": {
+        "title": "Pourboires et déblocages",
+        "hint": "Quelqu’un vous a laissé un pourboire ou a débloqué votre vidéo"
+      },
+      "videos": {
+        "title": "Vidéos",
+        "hint": "Votre téléversement est prêt, un créateur que vous suivez a publié"
+      },
+      "auctions": {
+        "title": "Enchères",
+        "hint": "Nouvelles enchères, mises, surenchères, enchères remportées ou vendues"
+      },
+      "challenges": {
+        "title": "Défis",
+        "hint": "Demandes, contributions, objectif financé, livraison"
+      },
+      "storage": {
+        "title": "Stockage",
+        "hint": "Votre espace est presque plein, ou un téléversement est en attente"
+      }
+    }
+  },
+  "signUp": {
+    "title": "Créer votre compte",
+    "subtitle": "Regardez, abonnez-vous et soutenez des créateurs. La publication viendra plus tard, depuis votre compte.",
+    "email": "Courriel",
+    "emailPlaceholder": "vous@exemple.com",
+    "username": "Nom d’utilisateur",
+    "usernamePlaceholder": "votrenom",
+    "usernameChecking": "Vérification…",
+    "usernameFree": "Disponible — votre adresse : orochia.com/@{username}",
+    "usernameTaken": "Déjà pris — essayez @{suggestion}",
+    "usernameReserved": "Réservé — essayez @{suggestion}",
+    "usernameFormat": "De 3 à 30 lettres, chiffres ou _",
+    "useSuggestion": "Utiliser @{suggestion}",
+    "displayName": "Nom affiché (facultatif)",
+    "displayNamePlaceholder": "Comment les gens vous voient",
+    "password": "Mot de passe",
+    "passwordRule": "Au moins 10 caractères",
+    "birthDate": "Date de naissance",
+    "day": "JJ",
+    "month": "MM",
+    "year": "AAAA",
+    "dayLabel": "Jour de naissance",
+    "monthLabel": "Mois de naissance",
+    "yearLabel": "Année de naissance",
+    "birthDateHint": "Privée — jamais affichée sur votre profil. Orochia est réservée aux adultes.",
+    "birthDateInvalid": "Saisissez une vraie date : jour, mois, année.",
+    "underageTitle": "Orochia est réservée aux adultes",
+    "underageBody": "Vous devez avoir 18 ans ou plus (ou l’âge de la majorité là où vous habitez) pour créer un compte.",
+    "ageCertify": "J’ai au moins 18 ans.",
+    "acceptTerms": "J’accepte les conditions d’utilisation et la politique de confidentialité.",
+    "terms": "Lire les conditions d’utilisation",
+    "privacy": "Lire la politique de confidentialité",
+    "challenge": "Vérification en cours…",
+    "submit": "Créer le compte",
+    "haveAccount": "Vous avez déjà un compte? Connectez-vous",
+    "errors": {
+      "UNDERAGE": "Orochia est réservée aux adultes : vous devez avoir 18 ans ou plus.",
+      "BIRTH_DATE_INVALID": "Saisissez une vraie date de naissance.",
+      "USERNAME_RESERVED": "Ce nom d’utilisateur est réservé. Choisissez-en un autre.",
+      "EMAIL_DOMAIN_REFUSED": "Les adresses courriel jetables ne sont pas acceptées. Utilisez une adresse que vous gardez.",
+      "ACCOUNT_EXISTS": "Ce nom d’utilisateur ou ce courriel a déjà un compte. Connectez-vous, ou choisissez-en un autre.",
+      "FORM_EXPIRED": "Ce formulaire a expiré. Réessayez.",
+      "RETRY": "Veuillez réessayer.",
+      "CHALLENGE_FAILED": "La vérification antirobot a échoué. Réessayez.",
+      "CHALLENGE_UNAVAILABLE": "La vérification antirobot est indisponible pour le moment. Réessayez dans quelques minutes.",
+      "AUTOMATION_REFUSED": "Cette requête semble automatisée. Mettez l’appli à jour et réessayez.",
+      "TOO_MANY": "Trop d’inscriptions depuis ici. Réessayez plus tard.",
+      "field_email": "Saisissez une adresse courriel valide.",
+      "field_username": "De 3 à 30 caractères : lettres, chiffres, trait de soulignement.",
+      "field_displayName": "Choisissez un nom affiché d’au plus 80 caractères.",
+      "field_password": "Choisissez un mot de passe d’au moins 10 caractères.",
+      "field_dateOfBirth": "Saisissez votre date de naissance.",
+      "field_isAgeVerified": "Confirmez que vous avez 18 ans ou plus.",
+      "field_acceptTerms": "Acceptez les conditions d’utilisation pour continuer.",
+      "network": "Orochia est inaccessible. Vérifiez votre connexion.",
+      "generic": "Un problème est survenu. Réessayez."
+    },
+    "submitting": "Création de votre compte…"
+  },
+  "verify": {
+    "badge": "Une dernière étape",
+    "title": "Consultez votre boîte de réception",
+    "body": "Nous avons envoyé un lien à {email}. Ouvrez-le pour confirmer votre adresse, puis revenez ici.",
+    "check": "Je l’ai confirmée",
+    "notYet": "Pas encore confirmée — ouvrez le lien dans le courriel, puis réessayez.",
+    "resend": "Renvoyer le lien",
+    "sent": "Un nouveau lien est en route. Le précédent ne fonctionne plus.",
+    "demo": "Confirmer maintenant (serveur de démonstration)",
+    "otherAccount": "Utiliser un autre compte",
+    "checking": "Vérification de votre adresse…"
+  },
+  "profile": {
+    "videos": "Vidéos",
+    "empty": "Aucune vidéo pour l’instant.",
+    "notFound": "Ce profil n’existe pas.",
+    "openWeb": "Ouvrir sur le Web"
+  },
+  "space": {
+    "openWeb": "Ouvrir cette vue sur le Web",
+    "settings": "Paramètres des notifications",
+    "sections": {
+      "videos": "Mes vidéos",
+      "library": "Bibliothèque",
+      "collections": "Collections",
+      "lists": "Listes",
+      "network": "Réseau",
+      "invitations": "Invitations",
+      "insights": "Statistiques",
+      "transactions": "Transactions",
+      "earnings": "Revenus et versements",
+      "treasury": "Trésorerie",
+      "settings": "Paramètres"
+    }
+  },
+  "update": {
+    "forceTitle": "Mettez Orochia à jour pour continuer",
+    "softTitle": "Une mise à jour est disponible",
+    "version": "Version {version}",
+    "update": "Mettre à jour",
+    "later": "Plus tard",
+    "maintenanceTitle": "Orochia est en maintenance"
+  }
+}

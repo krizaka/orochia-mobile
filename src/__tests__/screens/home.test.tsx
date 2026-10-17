@@ -1,9 +1,10 @@
 import React from "react";
-import { describe, expect, it, jest } from "@jest/globals";
+import { afterEach, describe, expect, it, jest } from "@jest/globals";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { ThemeProvider } from "@krizaka/ui/native";
 import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
 import Home from "@/app/(tabs)/index";
+import { setLocale } from "@/i18n";
 import { answerFetch } from "@/test/api";
 import feedSeed from "@/__fixtures__/api/feed.local-seed.json";
 import storiesSeed from "@/__fixtures__/api/stories.local-seed.json";
@@ -19,6 +20,8 @@ jest.mock("@/lib/storage", () => jest.requireActual("@/test/storage"));
 const show = () => render(<ThemeProvider overrides={nativeTheme}><Home /></ThemeProvider>);
 
 describe("Home", () => {
+  afterEach(() => setLocale("en"));
+
   it("shows the stories rail and the feed the API answers (local Orochia, development seed)", async () => {
     answerFetch({ "/api/feed": feedSeed, "/api/stories": storiesSeed });
     await show();
@@ -53,5 +56,21 @@ describe("Home", () => {
     answerFetch({});
     await show();
     expect(await screen.findByText("Orochia is out of reach. Pull to try again.")).toBeTruthy();
+  });
+
+  it("reads in French on a French phone: the trending title, the empty feed, the stories rail's names", async () => {
+    setLocale("fr");
+    answerFetch({ "/api/feed": feedSeed, "/api/stories": storiesSeed });
+    await show();
+    expect(await screen.findByText("Midnight Noir — Acoustic Lounge Session")).toBeTruthy();
+    expect(screen.getByText("En ce moment")).toBeTruthy();
+    expect(screen.queryByText("Trending now")).toBeNull();
+  });
+
+  it("says the first videos are on their way, in French, when the feed is empty", async () => {
+    setLocale("fr");
+    answerFetch({ "/api/feed": feedEmpty, "/api/stories": storiesEmpty });
+    await show();
+    expect(await screen.findByText("Les premières vidéos arrivent")).toBeTruthy();
   });
 });

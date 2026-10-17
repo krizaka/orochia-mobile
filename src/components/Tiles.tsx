@@ -58,7 +58,7 @@ export function VideoTile({ v }: { v: VideoSummary }) {
         <Avatar src={absoluteUrl(v.creatorAvatar)} alt={v.creatorName} size="sm" />
         <View style={{ flex: 1 }}>
           <Card.Title numberOfLines={2}>{v.title}</Card.Title>
-          <Card.Description numberOfLines={1}>{`${v.creatorName} · ${t("video.views", { count: compact(v.viewsCount) })}`}</Card.Description>
+          <Card.Description numberOfLines={1}>{`${v.creatorName} · ${t("video.views", { count: v.viewsCount, shown: compact(v.viewsCount) })}`}</Card.Description>
         </View>
       </Card.Body>
     </Card.Root>

@@ -1,6 +1,8 @@
 import { createAppConfigClient } from "@krizaka/app-config/client";
 import { Platform } from "react-native";
 
+import { acceptLanguage } from "@/i18n";
+
 import { APP_VERSION, OROCHIA_URL } from "./config";
 import { clearToken, readToken } from "./session";
 import { storage } from "./storage";
@@ -58,6 +60,7 @@ export async function api<T>(path: string, init: { method?: string; body?: unkno
       method: init.method ?? "GET",
       headers: {
         Accept: "application/json",
+        "Accept-Language": acceptLanguage(),
         ...(init.body !== undefined ? { "Content-Type": "application/json" } : {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...init.headers,

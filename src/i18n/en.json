@@ -41,7 +41,10 @@
     "CHALLENGE": "Backers"
   },
   "video": {
-    "views": "{count} views",
+    "views": {
+      "one": "{shown} view",
+      "other": "{shown} views"
+    },
     "locked": {
       "PAYWALL_REQUIRED": "Unlock this video from {amount} to watch it.",
       "FOLLOWERS_ONLY": "For the creator's approved followers.",
@@ -182,7 +185,10 @@
     "noMessages": "No messages yet",
     "you": "You: {text}",
     "typing": "typing…",
-    "unread": "{count} unread",
+    "unread": {
+      "one": "{count} unread",
+      "other": "{count} unread"
+    },
     "presence": {
       "online": "Online",
       "away": "Away",
@@ -209,7 +215,10 @@
       "days": "{count} d ago"
     },
     "group": {
-      "members": "{count} members",
+      "members": {
+        "one": "{count} member",
+        "other": "{count} members"
+      },
       "info": "Group details",
       "startBody": "Say hello to the group.",
       "someone": "Someone",
