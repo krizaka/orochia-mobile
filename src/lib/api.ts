@@ -1,5 +1,9 @@
-import { OROCHIA_URL } from "./config";
+import { createAppConfigClient } from "@krizaka/app-config/client";
+import { Platform } from "react-native";
+
+import { APP_VERSION, OROCHIA_URL } from "./config";
 import { clearToken, readToken } from "./session";
+import { storage } from "./storage";
 
 /** An API refusal: the HTTP status and the body the server answered (its `code`, `minimum`, `balance`…). */
 export class ApiError extends Error {
@@ -11,6 +15,18 @@ export class ApiError extends Error {
     this.name = "ApiError";
   }
 }
+
+/**
+ * The app-version contract (krizaka/.github#75): every request says which app and version it is (`X-Client-*`), a
+ * `426 Upgrade Required` anywhere shows the update screen, and the launch/resume check asks `/api/v1/app-config`.
+ */
+export const appConfig = createAppConfigClient({
+  baseUrl: OROCHIA_URL,
+  platform: Platform.OS === "ios" ? "ios" : "android",
+  version: APP_VERSION,
+  fetch: (input, init) => fetch(input, init),
+  storage: { getItem: (k) => storage.get(k), setItem: (k, v) => void storage.set(k, v) },
+});
 
 let onSignedOut: (() => void) | null = null;
 /** Called when the server no longer accepts the stored session (expired, suspended account). */
@@ -38,7 +54,7 @@ export async function api<T>(path: string, init: { method?: string; body?: unkno
   }, API_TIMEOUT_MS);
   let res: Response;
   try {
-    res = await fetch(`${OROCHIA_URL}${path}`, {
+    res = await appConfig.fetch(`${OROCHIA_URL}${path}`, {
       method: init.method ?? "GET",
       headers: {
         Accept: "application/json",

@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
+    "@krizaka/app-config": "^0.1.0",
     "@krizaka/charts": "^0.1.0",
     "@krizaka/orochia-design-system": "^4.1.1",
-    "@krizaka/tokens": "^2.3.0",
-    "@krizaka/ui": "^2.3.0",
+    "@krizaka/pacer": "^0.1.0",
+    "@krizaka/tokens": "^3.22.0",
+    "@krizaka/ui": "^3.22.0",
     "expo": "~57.0.27",
     "expo-constants": "~57.0.21",
     "expo-dev-client": "~57.0.19",
@@ -59,7 +61,7 @@
     "doctor": "expo-doctor"
   },
   "private": true,
-  "description": "Orochia for iOS and Android — the creator video platform, in your pocket. React Native (Expo).",
+  "description": "Orochia for iOS and Android \u2014 the creator video platform, in your pocket. React Native (Expo).",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -68,14 +70,20 @@
   "jest": {
     "preset": "jest-expo",
     "transformIgnorePatterns": [
-      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@krizaka))"
+      "/node_modules/(?!(.pnpm|react-native|@react-native|@react-native-community|expo|@expo|@expo-google-fonts|react-navigation|@react-navigation|@krizaka|@tanstack))"
     ],
     "moduleNameMapper": {
       "^@krizaka/ui/native$": "<rootDir>/node_modules/@krizaka/ui/dist/native.js",
       "^@krizaka/tokens/native$": "<rootDir>/node_modules/@krizaka/tokens/dist/native.js",
       "^@krizaka/orochia-design-system/tokens$": "<rootDir>/node_modules/@krizaka/orochia-design-system/dist/tokens.js",
       "^@krizaka/charts/native$": "<rootDir>/node_modules/@krizaka/charts/dist/native.js",
-      "^@krizaka/intl$": "<rootDir>/node_modules/@krizaka/intl/dist/index.js"
+      "^@krizaka/intl$": "<rootDir>/node_modules/@krizaka/intl/dist/index.js",
+      "^@krizaka/pacer/react$": "<rootDir>/node_modules/@krizaka/pacer/dist/react.js",
+      "^@krizaka/pacer$": "<rootDir>/node_modules/@krizaka/pacer/dist/index.js",
+      "^@krizaka/app-config/client$": "<rootDir>/node_modules/@krizaka/app-config/dist/client.js",
+      "^@krizaka/app-config/react$": "<rootDir>/node_modules/@krizaka/app-config/dist/react.js",
+      "^@krizaka/app-config/server$": "<rootDir>/node_modules/@krizaka/app-config/dist/server.js",
+      "^@krizaka/app-config$": "<rootDir>/node_modules/@krizaka/app-config/dist/index.js"
     }
   }
 }

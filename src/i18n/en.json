@@ -377,5 +377,13 @@
       "treasury": "Treasury",
       "settings": "Settings"
     }
+  },
+  "update": {
+    "forceTitle": "Update Orochia to continue",
+    "softTitle": "An update is available",
+    "version": "Version {version}",
+    "update": "Update",
+    "later": "Later",
+    "maintenanceTitle": "Orochia is under maintenance"
   }
 }
