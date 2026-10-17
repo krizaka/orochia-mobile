@@ -17,7 +17,8 @@ beforeEach(() => {
 
 describe("a notification's path opens the right screen", () => {
   it.each([
-    [`/messages?c=${ID}`, `/messages/${ID}`],
+    [`/messages/${ID}`, `/messages/${ID}`],
+    [`/messages/${ID}?x=1`, `/messages/${ID}`],
     ["/messages", "/messages"],
     [`/auctions/${ID}`, `/auctions/${ID}`],
     [`/challenges/${ID}`, `/challenges/${ID}`],

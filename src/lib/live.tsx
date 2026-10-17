@@ -123,7 +123,7 @@ export function LiveProvider({ signedIn, children }: { signedIn: boolean; childr
         if (event.type === "new_message") {
           const message = event.message as LiveMessage | undefined;
           if (message && toastsMessage(message, { onMessagesTab, viewing })) {
-            toast(message.content, { id: `m-${message.conversationId}`, icon: <MessageCircle size={16} color={accent.current} />, onPress: () => openPath(`/messages?c=${message.conversationId}`) });
+            toast(message.content, { id: `m-${message.conversationId}`, icon: <MessageCircle size={16} color={accent.current} />, onPress: () => openPath(`/messages/${message.conversationId}`) });
           }
         }
         if (event.type !== "notification" || !event.notification) return;
