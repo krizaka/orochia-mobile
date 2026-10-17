@@ -75,6 +75,11 @@
               "scheme": "https",
               "host": "dev.orochia.com",
               "path": "/messages"
+            },
+            {
+              "scheme": "https",
+              "host": "dev.orochia.com",
+              "pathPrefix": "/messages/"
             }
           ],
           "category": [
