@@ -58,7 +58,20 @@
     },
     "unlockOnWeb": "Débloquer sur orochia.com",
     "more": "Plus de {name}",
-    "signIn": "Se connecter"
+    "signIn": "Se connecter",
+    "info": {
+      "fps": "{fps} i/s",
+      "ai": {
+        "badge": "Générée par IA",
+        "title": "Comment cette vidéo a été faite",
+        "madeWith": "Faite avec Orazaka",
+        "run": "Exécution",
+        "model": "Modèle",
+        "hardware": "Matériel",
+        "show": "Voir comment elle a été faite",
+        "hide": "Masquer comment elle a été faite"
+      }
+    }
   },
   "challenge": {
     "kind": {

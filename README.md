@@ -18,7 +18,7 @@
   <img src="https://img.shields.io/badge/Expo-SDK%2057-000?logo=expo" alt="Expo SDK 57">
   <img src="https://img.shields.io/badge/React%20Native-0.86-61dafb?logo=react" alt="React Native 0.86">
   <img src="https://img.shields.io/badge/license-Apache--2.0-blue" alt="Apache-2.0">
-  <a href="https://www.krizaka.com/docs/orochia"><img src="https://img.shields.io/badge/docs-krizaka.com%2Fdocs%2Forochia-7c3aed" alt="Documentation"></a>
+  <a href="https://dev.orochia.com/docs"><img src="https://img.shields.io/badge/docs-dev.orochia.com%2Fdocs-7c3aed" alt="Documentation"></a>
 </p>
 
 <p align="center">
