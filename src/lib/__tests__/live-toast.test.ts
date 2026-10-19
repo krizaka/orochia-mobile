@@ -1,10 +1,9 @@
 import { describe, expect, it, jest } from "@jest/globals";
+import { toastsMessage } from "@/lib/live";
 
 jest.mock("react-native-sse", () => ({ __esModule: true, default: function MockEventSource() {} }));
 jest.mock("lucide-react-native", () => new Proxy({}, { get: () => () => null }));
 jest.mock("expo-router", () => ({ router: { push: jest.fn() } }));
-
-import { toastsMessage } from "@/lib/live";
 
 const message = { conversationId: "c1", content: "Doors at 8" };
 const elsewhere = { onMessagesTab: false, viewing: null };
