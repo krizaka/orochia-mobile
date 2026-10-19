@@ -54,6 +54,7 @@ function Root() {
         <Stack.Screen name="challenges/[id]" options={{ title: "" }} />
         <Stack.Screen name="auctions/[id]" options={{ title: "" }} />
         <Stack.Screen name="messages/[id]" options={{ title: "" }} />
+        <Stack.Screen name="messages/new-group" options={{ title: t("messages.group.new") }} />
         <Stack.Screen name="messages/group/[id]" options={{ title: t("messages.group.info") }} />
         <Stack.Screen name="u/[handle]" options={{ title: "" }} />
         <Stack.Screen name="me/[section]" options={{ title: "" }} />
