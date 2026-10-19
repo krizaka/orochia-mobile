@@ -231,7 +231,25 @@
       "leaveBody": "Vous ne recevrez plus ses messages. Il vous faudra une nouvelle invitation pour y revenir.",
       "closed": "Ce groupe est fermé. Vous pouvez le lire, mais personne ne peut y écrire.",
       "manageOnWeb": "L’ajout de personnes, les liens d’invitation et les autres modifications se font sur orochia.com.",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "new": "Nouveau groupe",
+      "newTitle": "Nouveau groupe",
+      "nameLabel": "Nom du groupe",
+      "nameHint": "Tous les membres le voient.",
+      "pickTitle": "Ajouter des personnes",
+      "pickHint": "Seulement vos contacts, jusqu’à {max} en plus de vous.",
+      "picked": {
+        "one": "{count} personne choisie",
+        "other": "{count} personnes choisies"
+      },
+      "create": "Créer le groupe",
+      "noContacts": "Vous n’avez pas encore de contacts. Ajoutez d’abord des personnes depuis leur profil.",
+      "contactsError": "Vos contacts n’ont pas pu être chargés.",
+      "problemTitle": "Donnez un nom au groupe.",
+      "problemTitleLong": "Le nom est trop long.",
+      "problemMembers": "Choisissez au moins un contact.",
+      "failed": "Le groupe n’a pas pu être créé. Réessayez.",
+      "full": "Un groupe compte 50 personnes, vous inclus."
     }
   },
   "charts": {

@@ -3,7 +3,7 @@ import { FlatList, Pressable, RefreshControl, ScrollView, View } from "react-nat
 import { router, useFocusEffect } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CheckCheck, MessageCircle } from "lucide-react-native";
-import { Badge, EmptyState, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
+import { Badge, Button, EmptyState, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
 import { PresenceAvatar, ago, presenceLabel } from "@/components/PresenceAvatar";
 import { t } from "@/i18n";
 import { api } from "@/lib/api";
@@ -122,6 +122,7 @@ export default function Messages() {
         <View style={{ gap: space.sm, paddingHorizontal: space.lg, marginBottom: space.md }}>
           <Txt variant="display">{t("messages.title")}</Txt>
           <Txt tone="secondary">{t("messages.subtitle")}</Txt>
+          <Button label={t("messages.group.new")} variant="secondary" size="lg" onPress={withTap(() => router.push("/messages/new-group"))} />
           {online.length > 0 && (
             <View style={{ marginTop: space.sm, gap: space.sm }}>
               <Txt variant="label" tone="secondary">
