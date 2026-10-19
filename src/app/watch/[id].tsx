@@ -6,6 +6,7 @@ import { Image } from "expo-image";
 import * as WebBrowser from "expo-web-browser";
 import { Lock } from "lucide-react-native";
 import { Avatar, Button, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
+import { VideoInfo } from "@/components/VideoInfo";
 import { VideoTile } from "@/components/Tiles";
 import { compact, t, usd, type MessageKey } from "@/i18n";
 import { api, ApiError } from "@/lib/api";
@@ -14,6 +15,7 @@ import { OROCHIA_URL, absoluteUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { space } from "@/lib/theme";
 import type { StreamAccess, VideoDetails } from "@/lib/types";
+import { withoutCredit } from "@/lib/video-info";
 
 /** The player: HLS signed for this viewer by the server (5-minute token), never a raw URL. */
 function Player({ uri, poster }: { uri: string; poster: string | null }) {
@@ -83,7 +85,8 @@ export default function Watch() {
               </Txt>
             </View>
           </View>
-          {details.description ? <Txt tone="secondary">{details.description}</Txt> : null}
+          <VideoInfo video={details} />
+          {withoutCredit(details.description) ? <Txt tone="secondary">{withoutCredit(details.description)}</Txt> : null}
           {details.moreFromCreator.length > 0 && (
             <View style={{ gap: space.lg }}>
               <Txt variant="title">{t("video.more", { name: details.creatorName })}</Txt>

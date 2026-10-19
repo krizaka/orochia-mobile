@@ -58,7 +58,20 @@
     },
     "unlockOnWeb": "Unlock on orochia.com",
     "more": "More from {name}",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "info": {
+      "fps": "{fps} fps",
+      "ai": {
+        "badge": "AI-generated",
+        "title": "How this video was made",
+        "madeWith": "Made with Orazaka",
+        "run": "Run",
+        "model": "Model",
+        "hardware": "Hardware",
+        "show": "Show how it was made",
+        "hide": "Hide how it was made"
+      }
+    }
   },
   "challenge": {
     "kind": {

@@ -27,6 +27,13 @@ export interface VideoSummary {
 
 export interface VideoDetails extends VideoSummary {
   description: string | null;
+  /** What Bunny read from the file (the quiet line under the video) and when it went online. */
+  width?: number | null;
+  height?: number | null;
+  framerate?: number | null;
+  createdAt?: string;
+  /** How an AI-made clip was made (orochia#268), when the server says so; older videos carry it in the description. */
+  aiProvenance?: { generator: "orazaka"; runId: string; model?: string | null; hardware?: string | null } | null;
   moreFromCreator: VideoSummary[];
 }
 
