@@ -1,3 +1,4 @@
+import "@/lib/intl-polyfill";
 import React from "react";
 import { appStateResume, useAppConfig } from "@krizaka/app-config/react";
 import { AppState } from "react-native";
