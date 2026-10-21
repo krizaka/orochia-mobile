@@ -40,7 +40,7 @@
   repository, from krizaka/.github) fails CI when a claimed path has no screen or `app.json` does not cover it. Add a web route that
   should open the app: claim it there, add the screen and the `app.json` filter here.
 - **Environment variables are named by bounded context** (krizaka/.github#46): `EXPO_PUBLIC_<CONTEXT>_<THING>` for what the
-  JavaScript reads (`EXPO_PUBLIC_APP_URL`, validated in `src/lib/config.ts`, the app's one env module), `<CONTEXT>_<THING>` for
+  JavaScript reads (`EXPO_PUBLIC_APP_URL`, `EXPO_PUBLIC_APP_ENV`, validated in `src/lib/config.ts`, the app's one env module), `<CONTEXT>_<THING>` for
   build inputs (`PUSH_ANDROID_CONFIG_FILE`) — never a product (`OROCHIA_…`) nor a vendor (`GOOGLE_…`, `EXPO_…`).
   `src/__tests__/env.test.ts` refuses another name.
 

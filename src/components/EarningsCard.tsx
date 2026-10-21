@@ -5,7 +5,7 @@ import { BarChart, Gauge, Sparkline } from "@krizaka/charts/native";
 import { Button, Card, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
 import { ExternalLink, Landmark } from "lucide-react-native";
 import { t, usd } from "@/i18n";
-import { OROCHIA_URL } from "@/lib/config";
+import { orochiaWebUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { space } from "@/lib/theme";
 import type { CreatorEarnings } from "@/lib/types";
@@ -66,7 +66,7 @@ export function EarningsCard() {
         <Txt variant="caption" tone="secondary">
           {s.availableCents >= minimum ? t("earnings.ready") : t("earnings.toGo", { amount: usd(minimum - s.availableCents) })}
         </Txt>
-        <Button label={t("earnings.open")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/earnings`))} />
+        <Button label={t("earnings.open")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/earnings`))} />
       </Card.Body>
     </Card.Root>
   );

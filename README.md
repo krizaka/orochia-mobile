@@ -65,8 +65,11 @@ npx expo start             # press i (iOS simulator), a (Android emulator) — o
 npm run check              # lint, type-check, tests, iOS and Android bundles
 ```
 
-It talks to `https://dev.orochia.com` by default. To use a local Orochia (`npm run dev` in
-[krizaka/orochia](https://github.com/krizaka/orochia)):
+It never hard-codes where Orochia is: at start it reads the **signed manifest** `https://www.krizaka.com/.well-known/krizaka/services.json`
+([`@krizaka/discovery`](https://ui.krizaka.com/packages/discovery), [ADR-003](https://github.com/krizaka/.github/blob/main/docs/adr/ADR-003-mobile-service-discovery.md)),
+so moving Orochia is a manifest edit and a krizaka.com deploy, never a store release. Without a network it falls back to its cache,
+then to the baked address (`https://dev.orochia.com`). To use a local Orochia (`npm run dev` in
+[krizaka/orochia](https://github.com/krizaka/orochia)), override discovery for your build:
 
 ```bash
 EXPO_PUBLIC_APP_URL=http://192.168.1.10:3000 npx expo start   # your machine's address, reachable from the phone
@@ -110,7 +113,7 @@ src/components/          business components only: tiles, stories rail and viewe
                          (every UI component comes from @krizaka/ui/native)
 src/lib/                 api (bearer session, typed errors), auth (sign-in, sign-up, e-mail verification, secure storage), signup (the sign-up API client), theme (spacing, signature
                          gradient), auction-presenter (shared with the web), useApi / usePolling, config
-                         (EXPO_PUBLIC_APP_URL)
+                         (discovery of the backend address; EXPO_PUBLIC_APP_URL overrides it for local work)
 src/i18n/en.json         every user-facing string (typed keys)
 ```
 

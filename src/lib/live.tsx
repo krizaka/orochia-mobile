@@ -4,7 +4,7 @@ import EventSource from "react-native-sse";
 import { Bell, MessageCircle } from "lucide-react-native";
 import { toast, useTheme } from "@krizaka/ui/native";
 import { api } from "./api";
-import { OROCHIA_URL } from "./config";
+import { orochiaUrl } from "./config";
 import { openPath } from "./links";
 import { readToken } from "./session";
 import type { NotificationItem } from "./types";
@@ -101,7 +101,7 @@ export function LiveProvider({ signedIn, children }: { signedIn: boolean; childr
     void readToken().then((token) => {
       if (closed || !token) return;
       const after = lastSeq.current !== null ? `?after=${lastSeq.current}` : "";
-      source = new EventSource<"connected">(`${OROCHIA_URL}/api/conversations/stream${after}`, { headers: { Authorization: `Bearer ${token}` }, pollingInterval: 5000 });
+      source = new EventSource<"connected">(`${orochiaUrl()}/api/conversations/stream${after}`, { headers: { Authorization: `Bearer ${token}` }, pollingInterval: 5000 });
       source.addEventListener("connected", (e) => {
         try {
           emit({ type: "connected", ...(JSON.parse(e.data ?? "{}") as object), reconnect: true });

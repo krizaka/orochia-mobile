@@ -1,20 +1,32 @@
 import { describe, expect, it } from "@jest/globals";
 import fs from "fs";
 import path from "path";
-import { appUrlFrom } from "../lib/config";
+import { appEnvironmentFrom, appUrlOverrideFrom } from "../lib/config";
 
 const ROOT = path.resolve(__dirname, "../..");
 const CONTEXT = /^(EXPO_PUBLIC_)?(APP|AUTH|MEDIA|PUSH|PAYMENTS|REALTIME|ABUSE|OBSERVABILITY|AI|OPERATOR)_[A-Z0-9_]+$/;
 
 describe("environment (krizaka/.github#46)", () => {
-  it("defaults to the development deployment and trims a trailing slash", () => {
-    expect(appUrlFrom(undefined)).toBe("https://dev.orochia.com");
-    expect(appUrlFrom("http://10.0.2.2:3000/")).toBe("http://10.0.2.2:3000");
+  it("has no platform URL unless one is given for local work, and trims a trailing slash", () => {
+    expect(appUrlOverrideFrom(undefined)).toBeUndefined();
+    expect(appUrlOverrideFrom("  ")).toBeUndefined();
+    expect(appUrlOverrideFrom("http://10.0.2.2:3000/")).toBe("http://10.0.2.2:3000");
   });
 
   it("refuses a malformed platform URL at start", () => {
-    expect(() => appUrlFrom("dev.orochia.com")).toThrow("EXPO_PUBLIC_APP_URL");
-    expect(() => appUrlFrom("ftp://dev.orochia.com")).toThrow("EXPO_PUBLIC_APP_URL");
+    expect(() => appUrlOverrideFrom("dev.orochia.com")).toThrow("EXPO_PUBLIC_APP_URL");
+    expect(() => appUrlOverrideFrom("ftp://dev.orochia.com")).toThrow("EXPO_PUBLIC_APP_URL");
+  });
+
+  it("follows the dev entry of the manifest unless told otherwise, and refuses any other channel", () => {
+    expect(appEnvironmentFrom(undefined)).toBe("dev");
+    expect(appEnvironmentFrom("prod")).toBe("prod");
+    expect(() => appEnvironmentFrom("staging")).toThrow("EXPO_PUBLIC_APP_ENV");
+  });
+
+  it("never bakes a backend address into an EAS profile: discovery decides (an override would win over it)", () => {
+    const eas = JSON.parse(fs.readFileSync(path.join(ROOT, "eas.json"), "utf8")) as { build: Record<string, { env?: Record<string, string> }> };
+    for (const profile of Object.values(eas.build)) expect(Object.keys(profile.env ?? {})).not.toContain("EXPO_PUBLIC_APP_URL");
   });
 
   it("names every variable it reads by its bounded context, never a product or a vendor", () => {
