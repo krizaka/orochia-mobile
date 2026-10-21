@@ -6,7 +6,7 @@ import { ExternalLink } from "lucide-react-native";
 import { Button, EmptyState, Txt, useTheme } from "@krizaka/ui/native";
 import { EarningsCard } from "@/components/EarningsCard";
 import { t, type MessageKey } from "@/i18n";
-import { OROCHIA_URL } from "@/lib/config";
+import { orochiaWebUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { space } from "@/lib/theme";
 
@@ -33,7 +33,7 @@ export default function SpaceSection() {
         <View style={{ gap: space.md }}>
           <Txt variant="title">{title}</Txt>
           {section === "settings" && <Button label={t("space.settings")} variant="secondary" size="lg" onPress={withTap(() => router.push("/settings/notifications"))} />}
-          <Button label={t("space.openWeb")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/me/${section}`))} />
+          <Button label={t("space.openWeb")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/me/${section}`))} />
         </View>
       )}
     </ScrollView>

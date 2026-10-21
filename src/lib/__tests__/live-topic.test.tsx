@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { act, renderHook } from "@testing-library/react-native";
 import { AppState } from "react-native";
 import { useLiveTopic } from "@/lib/live-topic";
-import { OROCHIA_URL } from "@/lib/config";
+import { orochiaUrl } from "@/lib/config";
 
 /** The live feed of one auction or challenge: opened while the screen is shown and the app in front, closed otherwise. */
 type Listener = (e: { data?: string | null }) => void;
@@ -53,7 +53,7 @@ describe("useLiveTopic", () => {
     const events: unknown[] = [];
     await renderHook(() => useLiveTopic("/api/auctions/a1/stream", (e) => events.push(e)));
     expect(MockSource.all).toHaveLength(1);
-    expect(MockSource.all[0].url).toBe(`${OROCHIA_URL}/api/auctions/a1/stream`);
+    expect(MockSource.all[0].url).toBe(`${orochiaUrl()}/api/auctions/a1/stream`);
     await act(async () => {
       MockSource.all[0].emit("connected", '{"status":"connected"}');
       MockSource.all[0].emit("message", '{"type":"bid","highestBidCents":1200}');

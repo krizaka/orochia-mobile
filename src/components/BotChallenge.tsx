@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { WebView, type WebViewMessageEvent } from "react-native-webview";
 import { Txt, useTheme } from "@krizaka/ui/native";
 import { t } from "@/i18n";
-import { OROCHIA_URL } from "@/lib/config";
+import { orochiaWebUrl } from "@/lib/config";
 import { space } from "@/lib/theme";
 
 /**
@@ -35,10 +35,10 @@ export function BotChallenge({ onToken }: { onToken: (token: string | null) => v
       )}
       <WebView
         testID="bot-challenge"
-        source={{ uri: `${OROCHIA_URL}/auth/native-challenge?theme=${scheme === "light" ? "light" : "dark"}` }}
+        source={{ uri: `${orochiaWebUrl()}/auth/native-challenge?theme=${scheme === "light" ? "light" : "dark"}` }}
         onMessage={onMessage}
         onError={() => onToken(null)}
-        originWhitelist={[OROCHIA_URL, "https://challenges.cloudflare.com"]}
+        originWhitelist={[orochiaWebUrl(), "https://challenges.cloudflare.com"]}
         style={{ height: interactive ? 72 : 1, backgroundColor: theme.surface0 }}
         scrollEnabled={false}
         javaScriptEnabled

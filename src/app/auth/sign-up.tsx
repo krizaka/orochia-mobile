@@ -11,7 +11,7 @@ import { OrochiaMark } from "@/components/OrochiaMark";
 import { VerifyEmail } from "@/components/VerifyEmail";
 import { t } from "@/i18n";
 import { useAuth } from "@/lib/auth";
-import { OROCHIA_URL } from "@/lib/config";
+import { orochiaWebUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { checkUsername, isAdult, isoDate, openSignUp, signUpProblem, type SignUpField, type SignUpForm, type UsernameCheck } from "@/lib/signup";
 import { space } from "@/lib/theme";
@@ -375,10 +375,10 @@ function SignUpFormView() {
         <Tick checked={isAgeVerified} onChange={(v) => (setAgeVerified(v), clear("isAgeVerified"))} label={t("signUp.ageCertify")} error={fieldErrors.isAgeVerified} />
         <Tick checked={acceptTerms} onChange={(v) => (setAcceptTerms(v), clear("acceptTerms"))} label={t("signUp.acceptTerms")} error={fieldErrors.acceptTerms} />
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: space.md, paddingLeft: 32 }}>
-          <Txt variant="caption" tone="accent" role="link" onPress={() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/legal/terms`)}>
+          <Txt variant="caption" tone="accent" role="link" onPress={() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/legal/terms`)}>
             {t("signUp.terms")}
           </Txt>
-          <Txt variant="caption" tone="accent" role="link" onPress={() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/legal/privacy`)}>
+          <Txt variant="caption" tone="accent" role="link" onPress={() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/legal/privacy`)}>
             {t("signUp.privacy")}
           </Txt>
         </View>

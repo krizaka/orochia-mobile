@@ -11,7 +11,7 @@ import { VideoTile } from "@/components/Tiles";
 import { compact, t, usd, type MessageKey } from "@/i18n";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import { OROCHIA_URL, absoluteUrl } from "@/lib/config";
+import { orochiaWebUrl, absoluteUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { space } from "@/lib/theme";
 import type { StreamAccess, VideoDetails } from "@/lib/types";
@@ -69,7 +69,7 @@ export default function Watch() {
           {reason === "SIGN_IN" ? (
             <Button label={t("video.signIn")} variant="primary" size="lg" onPress={withTap(() => router.push("/me"))} />
           ) : reason === "PAYWALL_REQUIRED" ? (
-            <Button label={t("video.unlockOnWeb")} variant="primary" size="lg" onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/watch/${id}`))} />
+            <Button label={t("video.unlockOnWeb")} variant="primary" size="lg" onPress={withTap(() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/watch/${id}`))} />
           ) : null}
         </View>
       )}

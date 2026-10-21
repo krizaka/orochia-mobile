@@ -14,7 +14,7 @@ import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { openPath } from "@/lib/links";
 import { useLive } from "@/lib/live";
-import { OROCHIA_URL, absoluteUrl } from "@/lib/config";
+import { orochiaWebUrl, absoluteUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { useApi } from "@/lib/useApi";
 import { space } from "@/lib/theme";
@@ -113,7 +113,7 @@ function Account() {
             {t("me.held", { amount: usd(wallet.data?.heldCents ?? 0) })}
           </Txt>
         )}
-        <Button label={t("me.topUp")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/wallet`))} />
+        <Button label={t("me.topUp")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/wallet`))} />
         </Card.Body>
       </Card.Root>
 
@@ -138,7 +138,7 @@ function Account() {
       </Card.Root>
 
       <Button label={t("me.notificationSettings")} variant="secondary" size="lg" icon={<Settings size={14} color={theme.textPrimary} />} onPress={withTap(() => router.push("/settings/notifications"))} />
-      <Button label={t("me.profile")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/@${user?.username}`))} />
+      <Button label={t("me.profile")} variant="secondary" size="lg" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/@${user?.username}`))} />
       <Button label={t("me.signOut")} variant="secondary" size="lg" icon={<LogOut size={14} color={theme.textPrimary} />} onPress={withTap(() => void signOut())} />
     </ScrollView>
   );

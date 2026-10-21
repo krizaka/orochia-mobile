@@ -9,6 +9,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-cont
 import { ThemeProvider, Toaster, useTheme } from "@krizaka/ui/native";
 import { nativeTheme } from "@krizaka/orochia-design-system/tokens";
 import { AppGate } from "@/components/AppGate";
+import { Discovery, DiscoveryGate } from "@/components/DiscoveryGate";
 import { AgeGate } from "@/components/AgeGate";
 import { Charts } from "@/components/Charts";
 import { t } from "@/i18n";
@@ -74,9 +75,13 @@ export default function Layout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider overrides={nativeTheme}>
-        <AuthProvider>
-          <Root />
-        </AuthProvider>
+        <Discovery>
+          <DiscoveryGate>
+            <AuthProvider>
+              <Root />
+            </AuthProvider>
+          </DiscoveryGate>
+        </Discovery>
       </ThemeProvider>
     </SafeAreaProvider>
   );

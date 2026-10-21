@@ -3,7 +3,7 @@ import { Platform } from "react-native";
 
 import { acceptLanguage } from "@/i18n";
 
-import { APP_VERSION, OROCHIA_URL } from "./config";
+import { APP_VERSION, orochiaUrl } from "./config";
 import { clearToken, readToken } from "./session";
 import { storage } from "./storage";
 
@@ -23,7 +23,7 @@ export class ApiError extends Error {
  * `426 Upgrade Required` anywhere shows the update screen, and the launch/resume check asks `/api/v1/app-config`.
  */
 export const appConfig = createAppConfigClient({
-  baseUrl: OROCHIA_URL,
+  baseUrl: orochiaUrl,
   platform: Platform.OS === "ios" ? "ios" : "android",
   version: APP_VERSION,
   fetch: (input, init) => fetch(input, init),
@@ -56,7 +56,7 @@ export async function api<T>(path: string, init: { method?: string; body?: unkno
   }, API_TIMEOUT_MS);
   let res: Response;
   try {
-    res = await appConfig.fetch(`${OROCHIA_URL}${path}`, {
+    res = await appConfig.fetch(`${orochiaUrl()}${path}`, {
       method: init.method ?? "GET",
       headers: {
         Accept: "application/json",

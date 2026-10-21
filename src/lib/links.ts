@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { OROCHIA_URL } from "./config";
+import { orochiaWebUrl } from "./config";
 
 /**
  * Opens an Orochia path (a notification's `path`): the screens the app has natively, the web page for the rest.
@@ -17,5 +17,5 @@ export function openPath(path: string) {
   if (auction) return router.push(`/auctions/${auction[1]}`);
   if (path.startsWith("/challenges")) return router.push("/challenges");
   if (path.startsWith("/auctions")) return router.push("/auctions");
-  void WebBrowser.openBrowserAsync(`${OROCHIA_URL}${path}`);
+  void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}${path}`);
 }

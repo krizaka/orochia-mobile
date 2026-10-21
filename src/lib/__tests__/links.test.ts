@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { openPath } from "@/lib/links";
-import { OROCHIA_URL } from "@/lib/config";
+import { orochiaWebUrl } from "@/lib/config";
 
 const pushed: string[] = [];
 const browsed: string[] = [];
@@ -34,6 +34,6 @@ describe("a notification's path opens the right screen", () => {
   it("anything the app has no screen for opens on orochia.com", () => {
     openPath("/dashboard?tab=earnings");
     expect(pushed).toEqual([]);
-    expect(browsed).toEqual([`${OROCHIA_URL}/dashboard?tab=earnings`]);
+    expect(browsed).toEqual([`${orochiaWebUrl()}/dashboard?tab=earnings`]);
   });
 });

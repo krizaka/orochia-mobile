@@ -6,7 +6,7 @@ import { ExternalLink } from "lucide-react-native";
 import { Avatar, Button, EmptyState, Skeleton, Txt, useTheme } from "@krizaka/ui/native";
 import { VideoTile } from "@/components/Tiles";
 import { t } from "@/i18n";
-import { absoluteUrl, OROCHIA_URL } from "@/lib/config";
+import { absoluteUrl, orochiaWebUrl } from "@/lib/config";
 import { withTap } from "@/lib/haptics";
 import { space } from "@/lib/theme";
 import type { VideoSummary } from "@/lib/types";
@@ -48,7 +48,7 @@ export default function PublicProfile() {
             </View>
           </View>
           {creator.bio ? <Txt tone="secondary">{creator.bio}</Txt> : null}
-          <Button label={t("profile.openWeb")} variant="secondary" size="md" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${OROCHIA_URL}/@${creator.username}`))} />
+          <Button label={t("profile.openWeb")} variant="secondary" size="md" icon={<ExternalLink size={14} color={theme.textPrimary} />} onPress={withTap(() => void WebBrowser.openBrowserAsync(`${orochiaWebUrl()}/@${creator.username}`))} />
           <Txt variant="label">{t("profile.videos")}</Txt>
         </View>
       }
