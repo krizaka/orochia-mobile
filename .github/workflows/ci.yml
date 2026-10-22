@@ -23,17 +23,3 @@ jobs:
       extra-scripts: |
         check:app-links
         export
-
-  # The required check keeps its name (branch protection); it reads the gate's verdict. Once protection requires
-  # « ci / CI gate », this shim goes.
-  check:
-    name: Lint, types, tests, iOS and Android bundles
-    needs: ci
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    permissions: {}
-    env:
-      RESULT: ${{ needs.ci.outputs.result }}
-    steps:
-      - run: test "$RESULT" = success
