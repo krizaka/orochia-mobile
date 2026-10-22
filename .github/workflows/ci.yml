@@ -18,9 +18,8 @@ jobs:
   ci:
     permissions:
       contents: read
-    uses: krizaka/.github/.github/workflows/expo-ci.yml@98a0517a83118348aacca8aa4d1c90e15d7a4163 # v1.3.1
+    uses: krizaka/.github/.github/workflows/expo-ci.yml@babcdf0d85b0ef2ce30802ec8377d664d31fd118 # v1.3.3
     with:
-      install-command: npm ci --prefer-offline --no-audit --no-fund
       extra-scripts: |
         check:app-links
         export
