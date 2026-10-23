@@ -54,14 +54,15 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint && npm run check:i18n",
+    "lint": "expo lint && npm run check:i18n && node scripts/check-icons.mjs && npm run test:icons",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "check:app-links": "node scripts/check-app-links.mjs",
     "check": "npm run lint && npm run check:app-links && npm run typecheck && npm test && npm run export",
     "export": "expo export --platform ios --platform android --output-dir dist",
     "doctor": "expo-doctor",
-    "check:i18n": "krizaka-i18n check src/i18n && krizaka-i18n scan src/app src/components src/lib --skip __tests__ --skip __fixtures__ --allow Orochia"
+    "check:i18n": "krizaka-i18n check src/i18n && krizaka-i18n scan src/app src/components src/lib --skip __tests__ --skip __fixtures__ --allow Orochia",
+    "test:icons": "node --test scripts/check-icons.test.mjs"
   },
   "private": true,
   "description": "Orochia for iOS and Android — the creator video platform, in your pocket. React Native (Expo).",

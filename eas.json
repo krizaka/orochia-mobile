@@ -23,6 +23,16 @@
     "testflight": {
       "extends": "production",
       "distribution": "store"
+    },
+    "simulator": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_APP_URL": "https://dev.orochia.com"
+      }
     }
   },
   "submit": {
